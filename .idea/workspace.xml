@@ -13,10 +13,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2df1b545-2161-4cbd-96ac-f50285fb7514" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/common/molten_slog.c" beforeDir="false" afterPath="$PROJECT_DIR$/common/molten_slog.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/common/molten_slog.h" beforeDir="false" afterPath="$PROJECT_DIR$/common/molten_slog.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/molten.c" beforeDir="false" afterPath="$PROJECT_DIR$/molten.c" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/molten_log.h" beforeDir="false" afterPath="$PROJECT_DIR$/molten_log.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -106,7 +104,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="molten_span.h" pinned="false" current-in-tab="true">
+      <file leaf-file-name="molten_span.h" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/molten_span.h">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-277">
@@ -116,6 +114,15 @@
                 <element signature="e#723#742#0" expanded="true" />
                 <element signature="e#3524#3598#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="110">
+              <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -179,18 +186,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="molten_chain.h" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/molten_chain.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="48" column="13" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="13" />
-              <folding>
-                <element signature="e#676#695#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FindInProjectRecents">
@@ -226,6 +221,7 @@
         <option value="$PROJECT_DIR$/molten.c" />
         <option value="$PROJECT_DIR$/molten_log.h" />
         <option value="$PROJECT_DIR$/molten_log.c" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -239,7 +235,7 @@
     <packageJsonPaths />
   </component>
   <component name="OCFindUsagesOptions" text="true" ivars="false" properties="true" derivedClasses="false" />
-  <component name="ProjectFrameBounds" extendedState="6">
+  <component name="ProjectFrameBounds" extendedState="7">
     <option name="width" value="1920" />
     <option name="height" value="1026" />
   </component>
@@ -255,11 +251,6 @@
             <path>
               <item name="Molten" type="b2602c69:ProjectViewProjectNode" />
               <item name="Molten" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Molten" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Molten" type="462c0819:PsiDirectoryNode" />
-              <item name="common" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -318,12 +309,12 @@
       <workItem from="1532101166837" duration="150000" />
       <workItem from="1532101318604" duration="903000" />
       <workItem from="1532181271490" duration="7965000" />
-      <workItem from="1532289526891" duration="7619000" />
+      <workItem from="1532289526891" duration="8061000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17266000" />
+    <option name="totallyTimeSpent" value="17708000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1920" height="1026" extended-state="6" />
@@ -338,7 +329,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32993197" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.32993197" />
+      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.32993197" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.26757368" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -513,18 +504,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/molten_log.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7788">
-          <caret line="354" selection-start-line="354" selection-end-line="354" />
-          <folding>
-            <element signature="e#5793#5867#0" expanded="true" />
-            <element signature="e#5897#5929#0" expanded="true" />
-            <element signature="e#12848#12935#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///opt/php-7.2.7/Zend/zend_string.h">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="6578">
@@ -1005,6 +984,13 @@
             <element signature="e#723#742#0" expanded="true" />
             <element signature="e#3524#3598#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="110">
+          <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
         </state>
       </provider>
     </entry>

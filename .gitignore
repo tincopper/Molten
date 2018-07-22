@@ -40,8 +40,10 @@ ctrl
 tags
 
 # Extension
+.idea
 .deps
 .libs
+cmake-build-debug
 Makefile
 Makefile.fragments
 Makefile.global

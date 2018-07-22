@@ -30,7 +30,10 @@ void slog_init(int type, char *log_file) {
 }
 
 void slog_destroy() {
-    if (slg.fp != NULL)  fclose(slg.fp);
+    if (slg.fp != NULL) {
+        /* 关闭流 stream。刷新所有的缓冲区。 */
+        fclose(slg.fp);
+    }
 }
 
 void slog_record(int level, const char *file, int line, const char *fmt, ...) {
@@ -59,8 +62,14 @@ void slog_record(int level, const char *file, int line, const char *fmt, ...) {
     strcat(log_buf, "\n");
     if (slg.type == SLOG_FILE) {
         //avoid warning with -Wformat-security
+        //printf("the log file path is : [%s][%s][%s]\n", slg.log_file, slg.fp, log_buf);
         fprintf(slg.fp, log_buf, NULL);
+        //fputs(log_buf, slg.fp);
+        //flush the buffer data to log file
+        fflush(slg.fp);
+        //fclose(slg.fp);
     } else {
         fprintf(stdout, log_buf, NULL);
+        fflush(stdout);
     }
 }

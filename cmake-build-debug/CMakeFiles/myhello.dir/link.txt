@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/myhello.dir/molten.c.o  -o myhello 

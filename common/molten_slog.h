@@ -16,12 +16,14 @@
 #ifndef MOLTEN_SLOG_H
 #define MOLTEN_SLOG_H
 
+#define MOLTEN_DEBUG
+
 #include <time.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdarg.h>
 
-#ifdef MOLTEN_DEBUG
+#ifdef MOLTEN_DEBUG //如果定义了_DEBUG则进行日子记录
 #define SLOG_INIT(type, log_file)               slog_init(type, log_file)
 #define SLOG_DESTROY()                          slog_destroy()
 #define SLOG(level, format, ...)                slog_record(level, __FILE__, __LINE__, format, ##__VA_ARGS__)

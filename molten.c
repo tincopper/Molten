@@ -552,7 +552,8 @@ PHP_MINIT_FUNCTION(molten)
     CHECK_SAPI_NAME;
     
     /* slog */
-    SLOG_INIT(SLOG_STDOUT, "/tmp/molten.log");
+    SLOG_INIT(SLOG_FILE, "/tmp/molten.log");
+    //SLOG_INIT(SLOG_FILE, "~/logs/molten.log");
 
     /* Replace executor */
 #if PHP_VERSION_ID < 50500
@@ -682,6 +683,8 @@ PHP_RINIT_FUNCTION(molten)
 
     /* Tracing basic info generate */
     mo_chain_ctor(&PTG(pct), &PTG(pcl), &PTG(psb), &PTG(span_stack), PTG(service_name), PTG(ip));
+
+    printf("Init intercept module ....");
 
     /* Init  intercept module */
     mo_intercept_init(&PTG(pit));

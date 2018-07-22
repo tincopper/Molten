@@ -56,13 +56,13 @@
 #include "molten_slog.h"
 
 #ifndef PATH_MAX
-#define PATH_MAX 4096 
+#define PATH_MAX 4096
 #endif
 
 #define ALLOC_LOG_SIZE  1024
 #define DEFAULT_LOG_DIR "/var/wd/log/tracing/php/"
 #define DEFAULT_PREFIX  "tracing"
-#define LOG_FORMAT      "%Y%m%d" 
+#define LOG_FORMAT      "%Y%m%d"
 
 #define SINK_NONE       0
 #define SINK_LOG        1

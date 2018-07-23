@@ -92,16 +92,17 @@ int mo_lock_destroy(mo_lock_t *lock)
 /* {{{ lock init */
 int mo_lock_init()
 {
-#ifndef MO_SPIN_LOCK 
-    if (pthread_rwlockattr_init(&mo_lock_attr) == LOCK_SUCCESS) {
+#ifndef MO_SPIN_LOCK
+    //undefined symbol: pthread_rwlockattr_init error
+    /*if (pthread_rwlockattr_init(&mo_lock_attr) == LOCK_SUCCESS) {
         if (pthread_rwlockattr_setpshared(&mo_lock_attr, PTHREAD_PROCESS_SHARED) == LOCK_SUCCESS) {
             return 0;
         }
-    }
+    }*/
+    return 0;
 #else
     return 0;
 #endif
-    return -1;
 }
 /* }}} */
 

@@ -93,6 +93,8 @@ ZEND_BEGIN_MODULE_GLOBALS(molten)
     long                    execute_begin_time;         /* execute begin time */
     zend_bool               enable_sapi;                /* enable_sapi */
     zend_bool               in_request;                 /* determine in requeset life time */
+
+    char                    *application_server;        /* segement application server*/
 ZEND_END_MODULE_GLOBALS(molten)
 
 

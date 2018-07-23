@@ -507,3 +507,66 @@ void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, l
 {
     ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
+
+
+/** span function wrapper for opentracing */
+void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long start_time, long finish_time, struct mo_chain_st *pct, uint8_t an_type)
+{
+    ot_start_span(span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time);
+    if (an_type == AN_SERVER) {
+        ot_add_tag(*span, "span.kind", "server");
+    } else {
+        ot_add_tag(*span, "span.kind", "client");
+    }
+}
+
+void sk_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type)
+{
+    char *span_id;
+    char *parent_span_id;
+
+    retrieve_span_id_4_frame(frame, &span_id);
+    retrieve_parent_span_id_4_frame(frame, &parent_span_id);
+
+    sk_start_span_builder(span, service_name, pct->pch.trace_id->val, span_id, parent_span_id, frame->entry_time, frame->exit_time, pct, an_type);
+}
+
+void sk_span_add_ba_builder(zval *span, const char *key, const char *value, long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
+{
+    switch (ba_type) {
+        case BA_NORMAL:
+            ot_add_tag(span, key, value);
+            break;
+        case BA_SA:
+            ot_add_tag(span, "peer.ipv4", ipv4);
+            ot_add_tag_long(span, "peer.port", port);
+            ot_add_tag(span, "peer.service", service_name);
+            break;
+        case BA_SA_HOST:
+            ot_add_tag(span, "peer.hostname", ipv4);
+            ot_add_tag_long(span, "peer.port", port);
+            ot_add_tag(span, "peer.service", service_name);
+            break;
+        case BA_SA_IP:
+            ot_add_tag(span, "peer.ipv4", ipv4);
+            ot_add_tag_long(span, "peer.port", port);
+            ot_add_tag(span, "peer.service", service_name);
+            break;
+        case BA_SA_DSN:
+            ot_add_tag(span, "peer.address", value);
+            break;
+        case BA_PATH:
+            /* not use for opentracing */
+            break;
+        case BA_ERROR:
+            ot_add_tag_bool(span, "error", 1);
+            ot_add_log(span, timestamp, 3, "event", "error", "error.kind", "Exception", "message", value);
+        default:
+            break;
+    }
+
+}
+void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
+{
+    ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
+}

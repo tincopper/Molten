@@ -3,6 +3,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/Molten.dir/common/molten_shm.c.o"
   "CMakeFiles/Molten.dir/common/molten_slog.c.o"
   "CMakeFiles/Molten.dir/common/molten_stack.c.o"
+  "CMakeFiles/Molten.dir/common/cJSON.c.o"
+  "CMakeFiles/Molten.dir/molten_http_util.c.o"
   "CMakeFiles/Molten.dir/molten.c.o"
   "CMakeFiles/Molten.dir/molten_chain.c.o"
   "CMakeFiles/Molten.dir/molten_ctrl.c.o"

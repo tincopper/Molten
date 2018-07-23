@@ -34,19 +34,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /opt/clion-2018.1.6/bin/cmake/bin/cmake
+CMAKE_COMMAND = /usr/bin/cmake
 
 # The command to remove a file.
-RM = /opt/clion-2018.1.6/bin/cmake/bin/cmake -E remove -f
+RM = /usr/bin/cmake -E remove -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/tomgs/CLionProjects/Molten
+CMAKE_SOURCE_DIR = /home/tangzy/workspace/Molten
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/tomgs/CLionProjects/Molten/cmake-build-debug
+CMAKE_BINARY_DIR = /home/tangzy/workspace/Molten/cmake-build-debug
 
 # Include any dependencies generated for this target.
 include CMakeFiles/Molten.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/Molten.dir/flags.make
 
 CMakeFiles/Molten.dir/common/molten_lock.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/common/molten_lock.c.o: ../common/molten_lock.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/Molten.dir/common/molten_lock.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/common/molten_lock.c.o   -c /home/tomgs/CLionProjects/Molten/common/molten_lock.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building C object CMakeFiles/Molten.dir/common/molten_lock.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/common/molten_lock.c.o   -c /home/tangzy/workspace/Molten/common/molten_lock.c
 
 CMakeFiles/Molten.dir/common/molten_lock.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/common/molten_lock.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/common/molten_lock.c > CMakeFiles/Molten.dir/common/molten_lock.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/common/molten_lock.c > CMakeFiles/Molten.dir/common/molten_lock.c.i
 
 CMakeFiles/Molten.dir/common/molten_lock.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/common/molten_lock.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/common/molten_lock.c -o CMakeFiles/Molten.dir/common/molten_lock.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/common/molten_lock.c -o CMakeFiles/Molten.dir/common/molten_lock.c.s
 
 CMakeFiles/Molten.dir/common/molten_lock.c.o.requires:
 
@@ -83,16 +83,16 @@ CMakeFiles/Molten.dir/common/molten_lock.c.o.provides.build: CMakeFiles/Molten.d
 
 CMakeFiles/Molten.dir/common/molten_shm.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/common/molten_shm.c.o: ../common/molten_shm.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/Molten.dir/common/molten_shm.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/common/molten_shm.c.o   -c /home/tomgs/CLionProjects/Molten/common/molten_shm.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building C object CMakeFiles/Molten.dir/common/molten_shm.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/common/molten_shm.c.o   -c /home/tangzy/workspace/Molten/common/molten_shm.c
 
 CMakeFiles/Molten.dir/common/molten_shm.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/common/molten_shm.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/common/molten_shm.c > CMakeFiles/Molten.dir/common/molten_shm.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/common/molten_shm.c > CMakeFiles/Molten.dir/common/molten_shm.c.i
 
 CMakeFiles/Molten.dir/common/molten_shm.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/common/molten_shm.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/common/molten_shm.c -o CMakeFiles/Molten.dir/common/molten_shm.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/common/molten_shm.c -o CMakeFiles/Molten.dir/common/molten_shm.c.s
 
 CMakeFiles/Molten.dir/common/molten_shm.c.o.requires:
 
@@ -107,16 +107,16 @@ CMakeFiles/Molten.dir/common/molten_shm.c.o.provides.build: CMakeFiles/Molten.di
 
 CMakeFiles/Molten.dir/common/molten_slog.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/common/molten_slog.c.o: ../common/molten_slog.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/Molten.dir/common/molten_slog.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/common/molten_slog.c.o   -c /home/tomgs/CLionProjects/Molten/common/molten_slog.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/Molten.dir/common/molten_slog.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/common/molten_slog.c.o   -c /home/tangzy/workspace/Molten/common/molten_slog.c
 
 CMakeFiles/Molten.dir/common/molten_slog.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/common/molten_slog.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/common/molten_slog.c > CMakeFiles/Molten.dir/common/molten_slog.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/common/molten_slog.c > CMakeFiles/Molten.dir/common/molten_slog.c.i
 
 CMakeFiles/Molten.dir/common/molten_slog.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/common/molten_slog.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/common/molten_slog.c -o CMakeFiles/Molten.dir/common/molten_slog.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/common/molten_slog.c -o CMakeFiles/Molten.dir/common/molten_slog.c.s
 
 CMakeFiles/Molten.dir/common/molten_slog.c.o.requires:
 
@@ -131,16 +131,16 @@ CMakeFiles/Molten.dir/common/molten_slog.c.o.provides.build: CMakeFiles/Molten.d
 
 CMakeFiles/Molten.dir/common/molten_stack.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/common/molten_stack.c.o: ../common/molten_stack.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/Molten.dir/common/molten_stack.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/common/molten_stack.c.o   -c /home/tomgs/CLionProjects/Molten/common/molten_stack.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/Molten.dir/common/molten_stack.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/common/molten_stack.c.o   -c /home/tangzy/workspace/Molten/common/molten_stack.c
 
 CMakeFiles/Molten.dir/common/molten_stack.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/common/molten_stack.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/common/molten_stack.c > CMakeFiles/Molten.dir/common/molten_stack.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/common/molten_stack.c > CMakeFiles/Molten.dir/common/molten_stack.c.i
 
 CMakeFiles/Molten.dir/common/molten_stack.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/common/molten_stack.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/common/molten_stack.c -o CMakeFiles/Molten.dir/common/molten_stack.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/common/molten_stack.c -o CMakeFiles/Molten.dir/common/molten_stack.c.s
 
 CMakeFiles/Molten.dir/common/molten_stack.c.o.requires:
 
@@ -153,18 +153,66 @@ CMakeFiles/Molten.dir/common/molten_stack.c.o.provides: CMakeFiles/Molten.dir/co
 CMakeFiles/Molten.dir/common/molten_stack.c.o.provides.build: CMakeFiles/Molten.dir/common/molten_stack.c.o
 
 
+CMakeFiles/Molten.dir/common/cJSON.c.o: CMakeFiles/Molten.dir/flags.make
+CMakeFiles/Molten.dir/common/cJSON.c.o: ../common/cJSON.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/Molten.dir/common/cJSON.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/common/cJSON.c.o   -c /home/tangzy/workspace/Molten/common/cJSON.c
+
+CMakeFiles/Molten.dir/common/cJSON.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/common/cJSON.c.i"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/common/cJSON.c > CMakeFiles/Molten.dir/common/cJSON.c.i
+
+CMakeFiles/Molten.dir/common/cJSON.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/common/cJSON.c.s"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/common/cJSON.c -o CMakeFiles/Molten.dir/common/cJSON.c.s
+
+CMakeFiles/Molten.dir/common/cJSON.c.o.requires:
+
+.PHONY : CMakeFiles/Molten.dir/common/cJSON.c.o.requires
+
+CMakeFiles/Molten.dir/common/cJSON.c.o.provides: CMakeFiles/Molten.dir/common/cJSON.c.o.requires
+	$(MAKE) -f CMakeFiles/Molten.dir/build.make CMakeFiles/Molten.dir/common/cJSON.c.o.provides.build
+.PHONY : CMakeFiles/Molten.dir/common/cJSON.c.o.provides
+
+CMakeFiles/Molten.dir/common/cJSON.c.o.provides.build: CMakeFiles/Molten.dir/common/cJSON.c.o
+
+
+CMakeFiles/Molten.dir/molten_http_util.c.o: CMakeFiles/Molten.dir/flags.make
+CMakeFiles/Molten.dir/molten_http_util.c.o: ../molten_http_util.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/Molten.dir/molten_http_util.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_http_util.c.o   -c /home/tangzy/workspace/Molten/molten_http_util.c
+
+CMakeFiles/Molten.dir/molten_http_util.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten_http_util.c.i"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten_http_util.c > CMakeFiles/Molten.dir/molten_http_util.c.i
+
+CMakeFiles/Molten.dir/molten_http_util.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten_http_util.c.s"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten_http_util.c -o CMakeFiles/Molten.dir/molten_http_util.c.s
+
+CMakeFiles/Molten.dir/molten_http_util.c.o.requires:
+
+.PHONY : CMakeFiles/Molten.dir/molten_http_util.c.o.requires
+
+CMakeFiles/Molten.dir/molten_http_util.c.o.provides: CMakeFiles/Molten.dir/molten_http_util.c.o.requires
+	$(MAKE) -f CMakeFiles/Molten.dir/build.make CMakeFiles/Molten.dir/molten_http_util.c.o.provides.build
+.PHONY : CMakeFiles/Molten.dir/molten_http_util.c.o.provides
+
+CMakeFiles/Molten.dir/molten_http_util.c.o.provides.build: CMakeFiles/Molten.dir/molten_http_util.c.o
+
+
 CMakeFiles/Molten.dir/molten.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/molten.c.o: ../molten.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/Molten.dir/molten.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten.c.o   -c /home/tomgs/CLionProjects/Molten/molten.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/Molten.dir/molten.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten.c.o   -c /home/tangzy/workspace/Molten/molten.c
 
 CMakeFiles/Molten.dir/molten.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/molten.c > CMakeFiles/Molten.dir/molten.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten.c > CMakeFiles/Molten.dir/molten.c.i
 
 CMakeFiles/Molten.dir/molten.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/molten.c -o CMakeFiles/Molten.dir/molten.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten.c -o CMakeFiles/Molten.dir/molten.c.s
 
 CMakeFiles/Molten.dir/molten.c.o.requires:
 
@@ -179,16 +227,16 @@ CMakeFiles/Molten.dir/molten.c.o.provides.build: CMakeFiles/Molten.dir/molten.c.
 
 CMakeFiles/Molten.dir/molten_chain.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/molten_chain.c.o: ../molten_chain.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/Molten.dir/molten_chain.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_chain.c.o   -c /home/tomgs/CLionProjects/Molten/molten_chain.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/Molten.dir/molten_chain.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_chain.c.o   -c /home/tangzy/workspace/Molten/molten_chain.c
 
 CMakeFiles/Molten.dir/molten_chain.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten_chain.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/molten_chain.c > CMakeFiles/Molten.dir/molten_chain.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten_chain.c > CMakeFiles/Molten.dir/molten_chain.c.i
 
 CMakeFiles/Molten.dir/molten_chain.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten_chain.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/molten_chain.c -o CMakeFiles/Molten.dir/molten_chain.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten_chain.c -o CMakeFiles/Molten.dir/molten_chain.c.s
 
 CMakeFiles/Molten.dir/molten_chain.c.o.requires:
 
@@ -203,16 +251,16 @@ CMakeFiles/Molten.dir/molten_chain.c.o.provides.build: CMakeFiles/Molten.dir/mol
 
 CMakeFiles/Molten.dir/molten_ctrl.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/molten_ctrl.c.o: ../molten_ctrl.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building C object CMakeFiles/Molten.dir/molten_ctrl.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_ctrl.c.o   -c /home/tomgs/CLionProjects/Molten/molten_ctrl.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/Molten.dir/molten_ctrl.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_ctrl.c.o   -c /home/tangzy/workspace/Molten/molten_ctrl.c
 
 CMakeFiles/Molten.dir/molten_ctrl.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten_ctrl.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/molten_ctrl.c > CMakeFiles/Molten.dir/molten_ctrl.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten_ctrl.c > CMakeFiles/Molten.dir/molten_ctrl.c.i
 
 CMakeFiles/Molten.dir/molten_ctrl.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten_ctrl.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/molten_ctrl.c -o CMakeFiles/Molten.dir/molten_ctrl.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten_ctrl.c -o CMakeFiles/Molten.dir/molten_ctrl.c.s
 
 CMakeFiles/Molten.dir/molten_ctrl.c.o.requires:
 
@@ -227,16 +275,16 @@ CMakeFiles/Molten.dir/molten_ctrl.c.o.provides.build: CMakeFiles/Molten.dir/molt
 
 CMakeFiles/Molten.dir/molten_intercept.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/molten_intercept.c.o: ../molten_intercept.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building C object CMakeFiles/Molten.dir/molten_intercept.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_intercept.c.o   -c /home/tomgs/CLionProjects/Molten/molten_intercept.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/Molten.dir/molten_intercept.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_intercept.c.o   -c /home/tangzy/workspace/Molten/molten_intercept.c
 
 CMakeFiles/Molten.dir/molten_intercept.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten_intercept.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/molten_intercept.c > CMakeFiles/Molten.dir/molten_intercept.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten_intercept.c > CMakeFiles/Molten.dir/molten_intercept.c.i
 
 CMakeFiles/Molten.dir/molten_intercept.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten_intercept.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/molten_intercept.c -o CMakeFiles/Molten.dir/molten_intercept.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten_intercept.c -o CMakeFiles/Molten.dir/molten_intercept.c.s
 
 CMakeFiles/Molten.dir/molten_intercept.c.o.requires:
 
@@ -251,16 +299,16 @@ CMakeFiles/Molten.dir/molten_intercept.c.o.provides.build: CMakeFiles/Molten.dir
 
 CMakeFiles/Molten.dir/molten_log.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/molten_log.c.o: ../molten_log.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building C object CMakeFiles/Molten.dir/molten_log.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_log.c.o   -c /home/tomgs/CLionProjects/Molten/molten_log.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/Molten.dir/molten_log.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_log.c.o   -c /home/tangzy/workspace/Molten/molten_log.c
 
 CMakeFiles/Molten.dir/molten_log.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten_log.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/molten_log.c > CMakeFiles/Molten.dir/molten_log.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten_log.c > CMakeFiles/Molten.dir/molten_log.c.i
 
 CMakeFiles/Molten.dir/molten_log.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten_log.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/molten_log.c -o CMakeFiles/Molten.dir/molten_log.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten_log.c -o CMakeFiles/Molten.dir/molten_log.c.s
 
 CMakeFiles/Molten.dir/molten_log.c.o.requires:
 
@@ -275,16 +323,16 @@ CMakeFiles/Molten.dir/molten_log.c.o.provides.build: CMakeFiles/Molten.dir/molte
 
 CMakeFiles/Molten.dir/molten_report.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/molten_report.c.o: ../molten_report.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building C object CMakeFiles/Molten.dir/molten_report.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_report.c.o   -c /home/tomgs/CLionProjects/Molten/molten_report.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/Molten.dir/molten_report.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_report.c.o   -c /home/tangzy/workspace/Molten/molten_report.c
 
 CMakeFiles/Molten.dir/molten_report.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten_report.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/molten_report.c > CMakeFiles/Molten.dir/molten_report.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten_report.c > CMakeFiles/Molten.dir/molten_report.c.i
 
 CMakeFiles/Molten.dir/molten_report.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten_report.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/molten_report.c -o CMakeFiles/Molten.dir/molten_report.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten_report.c -o CMakeFiles/Molten.dir/molten_report.c.s
 
 CMakeFiles/Molten.dir/molten_report.c.o.requires:
 
@@ -299,16 +347,16 @@ CMakeFiles/Molten.dir/molten_report.c.o.provides.build: CMakeFiles/Molten.dir/mo
 
 CMakeFiles/Molten.dir/molten_span.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/molten_span.c.o: ../molten_span.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building C object CMakeFiles/Molten.dir/molten_span.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_span.c.o   -c /home/tomgs/CLionProjects/Molten/molten_span.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/Molten.dir/molten_span.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_span.c.o   -c /home/tangzy/workspace/Molten/molten_span.c
 
 CMakeFiles/Molten.dir/molten_span.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten_span.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/molten_span.c > CMakeFiles/Molten.dir/molten_span.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten_span.c > CMakeFiles/Molten.dir/molten_span.c.i
 
 CMakeFiles/Molten.dir/molten_span.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten_span.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/molten_span.c -o CMakeFiles/Molten.dir/molten_span.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten_span.c -o CMakeFiles/Molten.dir/molten_span.c.s
 
 CMakeFiles/Molten.dir/molten_span.c.o.requires:
 
@@ -323,16 +371,16 @@ CMakeFiles/Molten.dir/molten_span.c.o.provides.build: CMakeFiles/Molten.dir/molt
 
 CMakeFiles/Molten.dir/molten_status.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/molten_status.c.o: ../molten_status.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building C object CMakeFiles/Molten.dir/molten_status.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_status.c.o   -c /home/tomgs/CLionProjects/Molten/molten_status.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building C object CMakeFiles/Molten.dir/molten_status.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_status.c.o   -c /home/tangzy/workspace/Molten/molten_status.c
 
 CMakeFiles/Molten.dir/molten_status.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten_status.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/molten_status.c > CMakeFiles/Molten.dir/molten_status.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten_status.c > CMakeFiles/Molten.dir/molten_status.c.i
 
 CMakeFiles/Molten.dir/molten_status.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten_status.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/molten_status.c -o CMakeFiles/Molten.dir/molten_status.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten_status.c -o CMakeFiles/Molten.dir/molten_status.c.s
 
 CMakeFiles/Molten.dir/molten_status.c.o.requires:
 
@@ -347,16 +395,16 @@ CMakeFiles/Molten.dir/molten_status.c.o.provides.build: CMakeFiles/Molten.dir/mo
 
 CMakeFiles/Molten.dir/molten_util.c.o: CMakeFiles/Molten.dir/flags.make
 CMakeFiles/Molten.dir/molten_util.c.o: ../molten_util.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building C object CMakeFiles/Molten.dir/molten_util.c.o"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_util.c.o   -c /home/tomgs/CLionProjects/Molten/molten_util.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building C object CMakeFiles/Molten.dir/molten_util.c.o"
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/Molten.dir/molten_util.c.o   -c /home/tangzy/workspace/Molten/molten_util.c
 
 CMakeFiles/Molten.dir/molten_util.c.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/Molten.dir/molten_util.c.i"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tomgs/CLionProjects/Molten/molten_util.c > CMakeFiles/Molten.dir/molten_util.c.i
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /home/tangzy/workspace/Molten/molten_util.c > CMakeFiles/Molten.dir/molten_util.c.i
 
 CMakeFiles/Molten.dir/molten_util.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/Molten.dir/molten_util.c.s"
-	/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tomgs/CLionProjects/Molten/molten_util.c -o CMakeFiles/Molten.dir/molten_util.c.s
+	/usr/bin/gcc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /home/tangzy/workspace/Molten/molten_util.c -o CMakeFiles/Molten.dir/molten_util.c.s
 
 CMakeFiles/Molten.dir/molten_util.c.o.requires:
 
@@ -375,6 +423,8 @@ Molten_OBJECTS = \
 "CMakeFiles/Molten.dir/common/molten_shm.c.o" \
 "CMakeFiles/Molten.dir/common/molten_slog.c.o" \
 "CMakeFiles/Molten.dir/common/molten_stack.c.o" \
+"CMakeFiles/Molten.dir/common/cJSON.c.o" \
+"CMakeFiles/Molten.dir/molten_http_util.c.o" \
 "CMakeFiles/Molten.dir/molten.c.o" \
 "CMakeFiles/Molten.dir/molten_chain.c.o" \
 "CMakeFiles/Molten.dir/molten_ctrl.c.o" \
@@ -392,6 +442,8 @@ Molten: CMakeFiles/Molten.dir/common/molten_lock.c.o
 Molten: CMakeFiles/Molten.dir/common/molten_shm.c.o
 Molten: CMakeFiles/Molten.dir/common/molten_slog.c.o
 Molten: CMakeFiles/Molten.dir/common/molten_stack.c.o
+Molten: CMakeFiles/Molten.dir/common/cJSON.c.o
+Molten: CMakeFiles/Molten.dir/molten_http_util.c.o
 Molten: CMakeFiles/Molten.dir/molten.c.o
 Molten: CMakeFiles/Molten.dir/molten_chain.c.o
 Molten: CMakeFiles/Molten.dir/molten_ctrl.c.o
@@ -403,7 +455,7 @@ Molten: CMakeFiles/Molten.dir/molten_status.c.o
 Molten: CMakeFiles/Molten.dir/molten_util.c.o
 Molten: CMakeFiles/Molten.dir/build.make
 Molten: CMakeFiles/Molten.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Linking C executable Molten"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Linking C executable Molten"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/Molten.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -415,6 +467,8 @@ CMakeFiles/Molten.dir/requires: CMakeFiles/Molten.dir/common/molten_lock.c.o.req
 CMakeFiles/Molten.dir/requires: CMakeFiles/Molten.dir/common/molten_shm.c.o.requires
 CMakeFiles/Molten.dir/requires: CMakeFiles/Molten.dir/common/molten_slog.c.o.requires
 CMakeFiles/Molten.dir/requires: CMakeFiles/Molten.dir/common/molten_stack.c.o.requires
+CMakeFiles/Molten.dir/requires: CMakeFiles/Molten.dir/common/cJSON.c.o.requires
+CMakeFiles/Molten.dir/requires: CMakeFiles/Molten.dir/molten_http_util.c.o.requires
 CMakeFiles/Molten.dir/requires: CMakeFiles/Molten.dir/molten.c.o.requires
 CMakeFiles/Molten.dir/requires: CMakeFiles/Molten.dir/molten_chain.c.o.requires
 CMakeFiles/Molten.dir/requires: CMakeFiles/Molten.dir/molten_ctrl.c.o.requires
@@ -432,6 +486,6 @@ CMakeFiles/Molten.dir/clean:
 .PHONY : CMakeFiles/Molten.dir/clean
 
 CMakeFiles/Molten.dir/depend:
-	cd /home/tomgs/CLionProjects/Molten/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tomgs/CLionProjects/Molten /home/tomgs/CLionProjects/Molten /home/tomgs/CLionProjects/Molten/cmake-build-debug /home/tomgs/CLionProjects/Molten/cmake-build-debug /home/tomgs/CLionProjects/Molten/cmake-build-debug/CMakeFiles/Molten.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/tangzy/workspace/Molten/cmake-build-debug && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/tangzy/workspace/Molten /home/tangzy/workspace/Molten /home/tangzy/workspace/Molten/cmake-build-debug /home/tangzy/workspace/Molten/cmake-build-debug /home/tangzy/workspace/Molten/cmake-build-debug/CMakeFiles/Molten.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/Molten.dir/depend
 

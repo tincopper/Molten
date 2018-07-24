@@ -49,7 +49,7 @@ add_executable(Molten
         php_molten.h)
 
 #定义php源码路径，这里根据自己的真实路径来更改
-set(PHP_SOURCE /opt/php-5.6.9)
+set(PHP_SOURCE /opt/php-7.2.7)
 #引入php需要的扩展源码，这里也是根据自己需要的来更改
 include_directories(${PHP_SOURCE}/main)
 include_directories(${PHP_SOURCE}/Zend)
@@ -63,8 +63,8 @@ include_directories(${PHP_SOURCE})
 #add_custom_target(makefile COMMAND sudo ./usr/local/php7_debug/bin/phpize && ./configure --with-php-config=/usr/local/php7_debug/bin/php-config && make
 #        WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 
-add_custom_target(makefile COMMAND sudo sh /usr/local/php_debug/bin/phpize
-        && sudo ./configure --with-php-config=/usr/local/php_debug/bin/php-config
+add_custom_target(makefile COMMAND sudo sh /usr/local/php7_debug/bin/phpize
+        && sudo ./configure --with-php-config=/usr/local/php7_debug/bin/php-config
         && sudo make clean
         && sudo make
         && sudo make install WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})

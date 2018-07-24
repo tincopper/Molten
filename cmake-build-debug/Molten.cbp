@@ -8,206 +8,206 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="/home/tangzy/workspace/Molten/cmake-build-debug"/>
+				<Option working_dir="/home/tomgs/CLionProjects/Molten/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="makefile">
-				<Option working_dir="/home/tangzy/workspace/Molten/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 makefile"/>
-					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="/home/tangzy/workspace/Molten/cmake-build-debug"/>
+				<Option working_dir="/home/tomgs/CLionProjects/Molten/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="makefile">
+				<Option working_dir="/home/tomgs/CLionProjects/Molten/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 makefile"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="edit_cache">
-				<Option working_dir="/home/tangzy/workspace/Molten/cmake-build-debug"/>
+				<Option working_dir="/home/tomgs/CLionProjects/Molten/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Molten">
-				<Option output="/home/tangzy/workspace/Molten/cmake-build-debug/Molten" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/tangzy/workspace/Molten/cmake-build-debug"/>
+				<Option output="/home/tomgs/CLionProjects/Molten/cmake-build-debug/Molten" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tomgs/CLionProjects/Molten/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/home/tangzy/workspace/Molten/."/>
-					<Add directory="/home/tangzy/workspace/Molten/common"/>
-					<Add directory="/opt/php-5.6.9/main"/>
-					<Add directory="/opt/php-5.6.9/Zend"/>
-					<Add directory="/opt/php-5.6.9/sapi"/>
-					<Add directory="/opt/php-5.6.9/pear"/>
-					<Add directory="/opt/php-5.6.9/TSRM"/>
-					<Add directory="/opt/php-5.6.9/win32"/>
-					<Add directory="/opt/php-5.6.9/netware"/>
-					<Add directory="/opt/php-5.6.9"/>
-					<Add directory="/usr/lib/gcc/i686-linux-gnu/5/include"/>
+					<Add directory="/home/tomgs/CLionProjects/Molten/."/>
+					<Add directory="/home/tomgs/CLionProjects/Molten/common"/>
+					<Add directory="/opt/php-7.2.7/main"/>
+					<Add directory="/opt/php-7.2.7/Zend"/>
+					<Add directory="/opt/php-7.2.7/sapi"/>
+					<Add directory="/opt/php-7.2.7/pear"/>
+					<Add directory="/opt/php-7.2.7/TSRM"/>
+					<Add directory="/opt/php-7.2.7/win32"/>
+					<Add directory="/opt/php-7.2.7/netware"/>
+					<Add directory="/opt/php-7.2.7"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/i686-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/i386-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 Molten"/>
-					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 Molten"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="Molten/fast">
-				<Option output="/home/tangzy/workspace/Molten/cmake-build-debug/Molten" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="/home/tangzy/workspace/Molten/cmake-build-debug"/>
+				<Option output="/home/tomgs/CLionProjects/Molten/cmake-build-debug/Molten" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/tomgs/CLionProjects/Molten/cmake-build-debug"/>
 				<Option object_output="./"/>
 				<Option type="1"/>
 				<Option compiler="gcc"/>
 				<Compiler>
-					<Add directory="/home/tangzy/workspace/Molten/."/>
-					<Add directory="/home/tangzy/workspace/Molten/common"/>
-					<Add directory="/opt/php-5.6.9/main"/>
-					<Add directory="/opt/php-5.6.9/Zend"/>
-					<Add directory="/opt/php-5.6.9/sapi"/>
-					<Add directory="/opt/php-5.6.9/pear"/>
-					<Add directory="/opt/php-5.6.9/TSRM"/>
-					<Add directory="/opt/php-5.6.9/win32"/>
-					<Add directory="/opt/php-5.6.9/netware"/>
-					<Add directory="/opt/php-5.6.9"/>
-					<Add directory="/usr/lib/gcc/i686-linux-gnu/5/include"/>
+					<Add directory="/home/tomgs/CLionProjects/Molten/."/>
+					<Add directory="/home/tomgs/CLionProjects/Molten/common"/>
+					<Add directory="/opt/php-7.2.7/main"/>
+					<Add directory="/opt/php-7.2.7/Zend"/>
+					<Add directory="/opt/php-7.2.7/sapi"/>
+					<Add directory="/opt/php-7.2.7/pear"/>
+					<Add directory="/opt/php-7.2.7/TSRM"/>
+					<Add directory="/opt/php-7.2.7/win32"/>
+					<Add directory="/opt/php-7.2.7/netware"/>
+					<Add directory="/opt/php-7.2.7"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
 					<Add directory="/usr/local/include"/>
-					<Add directory="/usr/lib/gcc/i686-linux-gnu/5/include-fixed"/>
-					<Add directory="/usr/include/i386-linux-gnu"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
 					<Add directory="/usr/include"/>
 				</Compiler>
 				<MakeCommands>
-					<Build command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 Molten/fast"/>
-					<CompileFile command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="/usr/bin/make -j3 -f &quot;/home/tangzy/workspace/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 Molten/fast"/>
+					<CompileFile command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j8 -f &quot;/home/tomgs/CLionProjects/Molten/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_cJSON.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_cJSON.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_cJSON.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_cJSON.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_common.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_common.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_http_util.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_http_util.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_http_util.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_http_util.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_lock.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_lock.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_lock.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_lock.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_shm.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_shm.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_shm.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_shm.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_slog.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_slog.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_slog.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_slog.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_stack.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_stack.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/common/molten_stack.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/common/molten_stack.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_chain.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_chain.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_chain.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_chain.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_ctrl.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_ctrl.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_ctrl.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_ctrl.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_intercept.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_intercept.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_intercept.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_intercept.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_log.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_log.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_log.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_log.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_report.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_report.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_report.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_report.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_span.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_span.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_span.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_span.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_status.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_status.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_status.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_status.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_struct.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_struct.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_util.c">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_util.c">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/molten_util.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/molten_util.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/php7_wrapper.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/php7_wrapper.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/php_molten.h">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/php_molten.h">
 			<Option target="Molten"/>
 		</Unit>
-		<Unit filename="/home/tangzy/workspace/Molten/CMakeLists.txt">
+		<Unit filename="/home/tomgs/CLionProjects/Molten/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>

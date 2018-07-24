@@ -34,7 +34,7 @@
 /* log format */
 #define ZIPKIN      1
 #define OPENTRACING 1<<1
-#define SKYWALKING 1<<2
+#define SKYWALKING  1<<2
 
 /* annotation type */
 #define AN_SERVER      0
@@ -128,6 +128,8 @@ static void inline mo_span_ctor(mo_span_builder *psb, char *span_format)
     }
 }
 /* }}} */
+
+static void inline mo_span_init_type_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name);
 
 /* {{{ record fucntion for zipkin format, it is the default set */
 void zn_sart_span(zval **span, char *trace_id, char *service_name, char *span_id, char *parent_id, long timestamp, long duration);

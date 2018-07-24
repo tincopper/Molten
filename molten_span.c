@@ -15,6 +15,9 @@
  */
 
 #include "molten_span.h"
+#include "common/molten_http_util.h"
+#include "common/molten_cJSON.h"
+#include "php_molten.h"
 
 /* use span context */
 /* {{{ build span context */
@@ -569,4 +572,34 @@ void sk_span_add_ba_builder(zval *span, const char *key, const char *value, long
 void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
 {
     ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
+}
+
+static void inline mo_span_init_type_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name) {
+    if (psb->type == SKYWALKING) {
+        //char* server_url = "http://10.40.6.114:10800/agent/jetty";
+        char* server_url = sink_http_uri;
+
+        //get the apm server address
+        char* response = request(server_url, NULL);
+
+        //parse josn string to json object
+        cJSON *pJSON = cJSON_Parse(response);
+        //get the josn array size
+        int size = cJSON_GetArraySize(pJSON);
+        if (size <= 0) {
+            return ;
+        }
+
+        //get the first apm server address
+        //char* http_url = "10.40.6.114:12800/application/register";
+        char* http_url = cJSON_GetArrayItem(pJSON, 0)->valuestring;
+
+        SLOG(SLOG_INFO, "molten register service name [%s:%s]", http_url, service_name);
+        //TODO:parse service name to json array
+        //
+        //TODO:get register application url
+
+        //TODO:post_reqeust(http_url, service_name);
+
+    }
 }

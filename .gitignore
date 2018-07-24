@@ -43,6 +43,8 @@ tags
 .idea
 .deps
 .libs
+
+CMakeLists.txt
 cmake-build-debug
 Makefile
 Makefile.fragments
@@ -86,3 +88,5 @@ tests/tmplog
 tests/*.mem
 tests/vendor
 tests/composer.lock
+
+*.log

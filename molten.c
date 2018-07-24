@@ -19,13 +19,13 @@
 #endif
 
 #include <curl/curl.h>
+#include <unistd.h>
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"
 #include "php_molten.h"
 #include "zend_extensions.h"
 #include "SAPI.h"
-#include "common/molten_cJSON.h"
 
 #include "molten_chain.h"
 #include "molten_log.h"
@@ -51,8 +51,8 @@ PHP_FUNCTION(molten_curl_setopt_array);
 PHP_FUNCTION(molten_curl_reset);
 PHP_FUNCTION(molten_span_format);
 
-static void get_reqeust(char *get_uri);
-static void post_reqeust(char *post_uri, char *post_data);
+//static void get_reqeust(char *get_uri);
+//static void post_reqeust(char *post_uri, char *post_data);
 void add_http_trace_header(mo_chain_t *pct, zval *header, char *span_id);
 static void frame_build(mo_frame_t *frame, zend_bool internal, unsigned char type, zend_execute_data *caller, zend_execute_data *ex, zend_op_array *op_array TSRMLS_DC);
 static void frame_destroy(mo_frame_t *frame);
@@ -557,7 +557,6 @@ PHP_MINIT_FUNCTION(molten)
     
     /* slog */
     SLOG_INIT(SLOG_FILE, "/tmp/molten.log");
-    //SLOG_INIT(SLOG_FILE, "~/logs/molten.log");
 
     /* Replace executor */
 #if PHP_VERSION_ID < 50500
@@ -585,33 +584,13 @@ PHP_MINIT_FUNCTION(molten)
     }
 
     SLOG(SLOG_INFO, "molten start");
-    //char* server_url = "http://10.40.6.114:10800/agent/jetty";
-    char* server_url = PTG(sink_http_uri);
-
-    //get the apm server address
-    get_reqeust(server_url);
-
-    //parse josn string to json object
-    cJSON *pJSON = cJSON_Parse(PTG(application_server));
-    //get the josn array size
-    int size = cJSON_GetArraySize(pJSON);
-    if (size <= 0) {
-        return SUCCESS;
-    }
-
-    //get the first apm server address
-    //char* http_url = "10.40.6.114:12800/application/register";
-    char* http_url = cJSON_GetArrayItem(pJSON, 0)->valuestring;
-    char* service_name = PTG(service_name);
-    SLOG(SLOG_INFO, "molten register service name [%s:%s]", http_url, service_name);
-
-    //post_reqeust(http_url, service_name);
 
     /* module ctor */
     mo_obtain_local_ip(PTG(ip));
     mo_shm_ctor(&PTG(msm));   
     mo_ctrl_ctor(&PTG(prt), &PTG(msm), PTG(notify_uri), PTG(ip), PTG(sampling_type), PTG(sampling_rate), PTG(sampling_request), PTG(pct).is_cli);
     mo_span_ctor(&PTG(psb), PTG(span_format));
+    mo_span_init_type_ctor(&PTG(psb), PTG(sink_http_uri), PTG(service_name));
     mo_chain_log_ctor(&PTG(pcl), PTG(host_name), PTG(chain_log_path), PTG(sink_type), PTG(output_type), PTG(sink_http_uri), PTG(sink_syslog_unix_socket));
     mo_intercept_ctor(&PTG(pit), &PTG(pct), &PTG(psb));
 
@@ -1290,68 +1269,3 @@ void add_http_trace_header(mo_chain_t *pct, zval *header, char *span_id)
         }
     }
 }
-
-/* deal with the http response */
-static size_t process_data(void *data, size_t size, size_t nmemb, char *content) {
-    SLOG(SLOG_INFO, "[get][http] http response data:%s", data);
-    PTG(application_server) = (char*)data;
-    return 0;
-}
-
-static void get_reqeust(char *get_uri)
-{
-    SLOG(SLOG_INFO, "[get][http] http data sender, get_uri:%s", get_uri);
-    if (get_uri != NULL && strlen(get_uri) > 5) {
-        CURL *curl = curl_easy_init();
-        if (curl) {
-            CURLcode res;
-
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, &process_data);
-
-            curl_easy_setopt(curl, CURLOPT_URL, get_uri);
-            curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 10000L);
-
-            //curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
-
-            res = curl_easy_perform(curl);
-            //curl_easy_perform(curl);
-            SLOG(SLOG_INFO, "[get][http] curl response code:%d", res);
-            curl_easy_cleanup(curl);
-            //avoid unused warning
-            (void)res;
-        } else {
-            SLOG(SLOG_INFO, "[get][http] init curl error");
-        }
-    }
-}
-
-/* {{{ post request , current use curl not php_stream */
-static void post_reqeust(char *post_uri, char *post_data)
-{
-    SLOG(SLOG_INFO, "[post][http] http data sender, post_uri:%s", post_uri);
-    if (post_uri != NULL && strlen(post_uri) > 5) {
-        CURL *curl = curl_easy_init();
-        if (curl) {
-            CURLcode res;
-            struct curl_slist *list = NULL;
-
-            list = curl_slist_append(list, "Content-Type: application/json");
-            curl_easy_setopt(curl, CURLOPT_URL, post_uri);
-            curl_easy_setopt(curl, CURLOPT_POSTFIELDS, post_data);
-            curl_easy_setopt(curl, CURLOPT_TIMEOUT_MS, 10000L);
-            curl_easy_setopt(curl, CURLOPT_HTTPHEADER, list);
-            //curl_easy_setopt(curl, CURLOPT_NOBODY, 1L);
-
-            res = curl_easy_perform(curl);
-            //curl_easy_perform(curl);
-            SLOG(SLOG_INFO, "[post][http] curl response code:%d", res);
-            curl_easy_cleanup(curl);
-            curl_slist_free_all(list);
-            //avoid unused warning
-            (void)res;
-        } else {
-            SLOG(SLOG_INFO, "[post][http] init curl error");
-        }
-    }
-}
-

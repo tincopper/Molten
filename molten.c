@@ -25,7 +25,7 @@
 #include "php_molten.h"
 #include "zend_extensions.h"
 #include "SAPI.h"
-#include "cJSON.h"
+#include "common/molten_cJSON.h"
 
 #include "molten_chain.h"
 #include "molten_log.h"
@@ -591,11 +591,21 @@ PHP_MINIT_FUNCTION(molten)
     //get the apm server address
     get_reqeust(server_url);
 
-    char* http_url = "10.40.6.114:12800/application/register";
-    char* service_name = PTG(service_name);
-    SLOG(SLOG_INFO, "molten register service name [%s]", service_name);
+    //parse josn string to json object
+    cJSON *pJSON = cJSON_Parse(PTG(application_server));
+    //get the josn array size
+    int size = cJSON_GetArraySize(pJSON);
+    if (size <= 0) {
+        return SUCCESS;
+    }
 
-    post_reqeust(http_url, service_name);
+    //get the first apm server address
+    //char* http_url = "10.40.6.114:12800/application/register";
+    char* http_url = cJSON_GetArrayItem(pJSON, 0)->valuestring;
+    char* service_name = PTG(service_name);
+    SLOG(SLOG_INFO, "molten register service name [%s:%s]", http_url, service_name);
+
+    //post_reqeust(http_url, service_name);
 
     /* module ctor */
     mo_obtain_local_ip(PTG(ip));

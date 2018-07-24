@@ -169,6 +169,8 @@ if test "$PHP_PRACING" != "no"; then
     common/molten_stack.c \
     common/molten_lock.c \
     common/molten_slog.c \
+    common/molten_cJSON.c \
+    common/molten_http_util.c \
     molten_util.c \
     molten_span.c \
     molten_status.c \

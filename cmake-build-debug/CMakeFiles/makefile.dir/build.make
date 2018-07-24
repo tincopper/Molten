@@ -54,7 +54,7 @@ CMAKE_BINARY_DIR = /home/tangzy/workspace/Molten/cmake-build-debug
 include CMakeFiles/makefile.dir/progress.make
 
 CMakeFiles/makefile:
-	cd /home/tangzy/workspace/Molten && sudo sh /usr/local/php_debug/bin/phpize && sudo ./configure --with-php-config=/usr/local/php_debug/bin/php-config && sudo make && sudo make install
+	cd /home/tangzy/workspace/Molten && sudo sh /usr/local/php_debug/bin/phpize && sudo ./configure --with-php-config=/usr/local/php_debug/bin/php-config && sudo make clean && sudo make && sudo make install
 
 makefile: CMakeFiles/makefile
 makefile: CMakeFiles/makefile.dir/build.make

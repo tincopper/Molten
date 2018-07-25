@@ -46,6 +46,8 @@ tags
 
 CMakeLists.txt
 cmake-build-debug
+cmake-build-debug/*
+cmake-build-debug/CMakeCache.txt
 Makefile
 Makefile.fragments
 Makefile.global

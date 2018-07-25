@@ -47,7 +47,7 @@ void slog_record(int level, const char *file, int line, const char *fmt, ...) {
     
     time_t t = time(NULL); 
     struct tm *lt = localtime(&t);
-    strftime(time_buf, sizeof(time_buf), "%H:%M:%S", lt);
+    strftime(time_buf, sizeof(time_buf), "%Y-%m-%d %H:%M:%S", lt);
 
     if (slg.type == SLOG_FILE) {
         sprintf(log_buf, normal_format, time_buf, level_names[level], file, line);

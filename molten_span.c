@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+#include <string.h>
 #include "molten_span.h"
 #include "common/molten_http_util.h"
 #include "common/molten_cJSON.h"
 #include "php_molten.h"
+#include "curl/curl.h"
 
 /* use span context */
 /* {{{ build span context */
@@ -574,13 +576,28 @@ void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, l
     ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
 
-static void inline mo_span_init_type_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name) {
+void mo_span_init_type_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name) {
     if (psb->type == SKYWALKING) {
         //char* server_url = "http://10.40.6.114:10800/agent/jetty";
-        char* server_url = sink_http_uri;
+        char *server_url = sink_http_uri;
+
+        globale_init();
+
+        /*char response[128] = "";
+        CURLcode lcode = get_request(server_url, response);
+        SLOG(SLOG_INFO, "get result [%s][%d][%s]", server_url, lcode, response);
+
+        char *http_url1 = "10.40.6.114:12800/application/register";
+        char response1[128] = "";
+        CURLcode curLcode = post_request(http_url1, "[test]", response1);
+        SLOG(SLOG_INFO, "post result [%s][%d][%s]", http_url1, curLcode, response1);*/
 
         //get the apm server address
-        char* response = request(server_url, NULL);
+        char response[128] = "";
+        CURLcode lcode = get_request(server_url, response);
+        if (lcode != CURLE_OK || response == "") {
+            return ;
+        }
 
         //parse josn string to json object
         cJSON *pJSON = cJSON_Parse(response);
@@ -593,13 +610,33 @@ static void inline mo_span_init_type_ctor(mo_span_builder *psb, char* sink_http_
         //get the first apm server address
         //char* http_url = "10.40.6.114:12800/application/register";
         char* http_url = cJSON_GetArrayItem(pJSON, 0)->valuestring;
+        //parse service name to json array "[\"php_service_01\"]";
+        char post_data[64] = "[";
+        strcat(strcat(post_data, service_name), "]");
 
-        SLOG(SLOG_INFO, "molten register service name [%s:%s]", http_url, service_name);
-        //TODO:parse service name to json array
-        //
-        //TODO:get register application url
+        //get register application url
+        strcat(http_url, SK_REGISTER_APPLICATION);
 
-        //TODO:post_reqeust(http_url, service_name);
+        //post_reqeust(http_url, service_name)
+        //char* result = request(url, post_data);
+        char register_application_response[128] = "";
+        SLOG(SLOG_INFO, "molten register service, url:[%s], service_name:[%s]", http_url, service_name);
 
+        CURLcode curLcode = post_request(http_url, post_data, register_application_response);
+        if (curLcode != CURLE_OK || register_application_response == "") {
+            SLOG(SLOG_ERROR, "molten register service has error ret code [%d] response [%s]", curLcode, register_application_response);
+            return ;
+        }
+        SLOG(SLOG_INFO, "molten register service [%s] result [%s]", http_url, register_application_response);
+
+        cJSON *registerJson = cJSON_Parse(register_application_response);
+        cJSON *json_name = cJSON_GetObjectItem(registerJson, "c");  //获取键值内容
+
+        int application_id =  (int)json_name->valuestring;
+        SLOG(SLOG_INFO, "molten register application id [%d]", http_url, application_id);
+
+        cJSON_Delete(registerJson);  //释放内存
+        //release curl
+        globale_release();
     }
 }

@@ -40,6 +40,12 @@
 #define AN_SERVER      0
 #define AN_CLIENT      1
 
+#define SK_REGISTER_APPLICATION  "application/register"
+#define SK_REGISTER_SERVICE      "instance/register"
+#define SK_SERVICENAME_DISCOVERY "servicename/discovery"
+#define SK_INSTANCE_HEARTBEAT    "instance/heartbeat"
+#define SK_SEGMENTS              "segments"
+
 /* ba type */
 enum ba_type {BA_NORMAL, BA_SA, BA_SA_HOST, BA_SA_IP, BA_SA_DSN, BA_ERROR, BA_PATH};
 
@@ -74,6 +80,9 @@ void ot_span_add_ba_builder(zval *span, const char *key, const char *value, long
 void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type);
 
 //skywalking
+void sk_register_application_builder(zval **span);
+void sk_register_service_builder();
+void sk_segments_builder();
 void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long start_time, long finish_time, struct mo_chain_st *pct, uint8_t an_type);
 void sk_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
 void sk_span_add_ba_builder(zval *span, const char *key, const char *value, long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
@@ -129,7 +138,7 @@ static void inline mo_span_ctor(mo_span_builder *psb, char *span_format)
 }
 /* }}} */
 
-static void inline mo_span_init_type_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name);
+void mo_span_init_type_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name);
 
 /* {{{ record fucntion for zipkin format, it is the default set */
 void zn_sart_span(zval **span, char *trace_id, char *service_name, char *span_id, char *parent_id, long timestamp, long duration);

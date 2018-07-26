@@ -59,7 +59,8 @@ typedef void (*span_add_ba_func)(zval *span, const char *key, const char *value,
 typedef void (*span_add_ba_ex_func)(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type);
 
 typedef struct {
-    uint8_t type;    
+    uint8_t type;
+    uint32_t application_id;
     start_span_func         start_span;
     start_span_ex_func      start_span_ex;
     span_add_ba_func        span_add_ba;
@@ -138,7 +139,7 @@ static void inline mo_span_ctor(mo_span_builder *psb, char *span_format)
 }
 /* }}} */
 
-void mo_span_init_type_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name);
+void mo_span_pre_init_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name);
 
 /* {{{ record fucntion for zipkin format, it is the default set */
 void zn_sart_span(zval **span, char *trace_id, char *service_name, char *span_id, char *parent_id, long timestamp, long duration);
@@ -146,6 +147,13 @@ void zn_add_span_annotation(zval *span, const char *value, long timestamp, char 
 void zn_add_span_annotation_ex(zval *span, const char *value, long timestamp, struct mo_chain_st *pct);
 void zn_add_span_bannotation(zval *span, const char *key, const char *value, char *service_name, char *ipv4, long port);
 void zn_add_span_bannotation_ex(zval *span, const char *key, const char *value, struct mo_chain_st *pct);
+/* }}} */
+
+/* {{{ record fucntion for skywalking format, it is the default set */
+char *sk_get_server(char *url);
+int sk_register_application(char *name, char *server_url);
+int sk_register_instance(int application_id);
+void sk_log_segments(int application_id, int instance_id);
 /* }}} */
 
 #endif

@@ -21,6 +21,7 @@
 #include "php_molten.h"
 #include "curl/curl.h"
 
+
 /* use span context */
 /* {{{ build span context */
 void span_context_dtor(void *element)
@@ -50,7 +51,7 @@ void init_span_context(mo_stack *stack)
 void push_span_context(mo_stack *stack)
 {
 #ifdef USE_LEVEL_ID
-    char *span_id; 
+    char *span_id;
     mo_span_context context;
     if (!mo_stack_empty(stack)) {
         mo_span_context *parent_node = (mo_span_context *)mo_stack_top(stack);
@@ -59,7 +60,7 @@ void push_span_context(mo_stack *stack)
     } else {
         build_span_id_level(&span_id, NULL, 0);
     }
-    
+
     context.span_id = span_id;
     context.span_count = 1;
     mo_stack_push(stack, &context);
@@ -122,7 +123,7 @@ void retrieve_span_id(mo_stack *stack, char **span_id)
 void retrieve_parent_span_id(mo_stack *stack, char **parent_span_id)
 {
 #ifdef USE_LEVEL_ID
-   mo_span_context *context = (mo_span_context *) mo_stack_sec_element(stack);
+    mo_span_context *context = (mo_span_context *) mo_stack_sec_element(stack);
    if (context == NULL) {
         *parent_span_id = NULL;
    } else {
@@ -142,22 +143,22 @@ void retrieve_parent_span_id(mo_stack *stack, char **parent_span_id)
 /* {{{ destroy all span context */
 void destroy_span_context(mo_stack *stack)
 {
-   mo_stack_destroy(stack);
+    mo_stack_destroy(stack);
 }
 /* }}} */
 
 void retrieve_span_id_4_frame(mo_frame_t *frame, char **span_id)
 {
-   retrieve_span_id(frame->span_stack, span_id);
+    retrieve_span_id(frame->span_stack, span_id);
 }
 
 void retrieve_parent_span_id_4_frame(mo_frame_t *frame, char **parent_span_id)
 {
-   retrieve_parent_span_id(frame->span_stack, parent_span_id);
+    retrieve_parent_span_id(frame->span_stack, parent_span_id);
 }
 
 /* {{{ build zipkin format main span */
-void zn_start_span(zval **span, char *trace_id, char *server_name, char *span_id, char *parent_id, long timestamp, long duration) 
+void zn_start_span(zval **span, char *trace_id, char *server_name, char *span_id, char *parent_id, long timestamp, long duration)
 {
     MO_ALLOC_INIT_ZVAL(*span);
     array_init(*span);
@@ -170,7 +171,7 @@ void zn_start_span(zval **span, char *trace_id, char *server_name, char *span_id
     }
     add_assoc_long(*span, "timestamp", timestamp);
     add_assoc_long(*span, "duration", duration);
-    
+
     /* add annotions */
     zval *annotations;
     MO_ALLOC_INIT_ZVAL(annotations);
@@ -191,7 +192,7 @@ void zn_start_span(zval **span, char *trace_id, char *server_name, char *span_id
 /* {{{ build zipkin service name */
 char *zn_build_service_name(struct mo_chain_st *pct, char *service_name)
 {
-    char *g_service_name = pct->service_name; 
+    char *g_service_name = pct->service_name;
     int service_len = strlen(service_name) + strlen(g_service_name) + 3;
     char *full_service_name = emalloc(service_len);
     memset(full_service_name, 0x00, service_len);
@@ -202,12 +203,12 @@ char *zn_build_service_name(struct mo_chain_st *pct, char *service_name)
 /* }}} */
 
 /* {{{ add endpoint */
-void zn_add_endpoint(zval *annotation, char *service_name, char *ipv4, long port) 
+void zn_add_endpoint(zval *annotation, char *service_name, char *ipv4, long port)
 {
-    zval *endpoint; 
+    zval *endpoint;
     MO_ALLOC_INIT_ZVAL(endpoint);
     array_init(endpoint);
-    mo_add_assoc_string(endpoint, "serviceName", service_name, 1); 
+    mo_add_assoc_string(endpoint, "serviceName", service_name, 1);
     mo_add_assoc_string(endpoint, "ipv4", ipv4, 1);
     if (port != 0) {
         add_assoc_long(endpoint, "port", port);
@@ -218,7 +219,7 @@ void zn_add_endpoint(zval *annotation, char *service_name, char *ipv4, long port
 /* }}} */
 
 /* {{{ add span annotation */
-void zn_add_span_annotation(zval *span, const char *value, long timestamp, char *service_name, char *ipv4, long port) 
+void zn_add_span_annotation(zval *span, const char *value, long timestamp, char *service_name, char *ipv4, long port)
 {
     if (span == NULL || value == NULL || service_name == NULL || ipv4 == NULL) {
         return;
@@ -281,7 +282,7 @@ void zn_add_span_bannotation(zval *span, const char *key, const char *value, cha
 /* }}} */
 
 /* {{{ add span binnary annotation ex */
-void zn_add_span_bannotation_ex(zval *span, const char *key, const char *value, struct mo_chain_st *pct) 
+void zn_add_span_bannotation_ex(zval *span, const char *key, const char *value, struct mo_chain_st *pct)
 {
     zn_add_span_bannotation(span, key, value, pct->service_name, pct->pch.ip, pct->pch.port);
 }
@@ -334,7 +335,7 @@ void ot_start_span(zval **span, char *op_name, char *trace_id, char *span_id, ch
 
 /* {{{ opentracing add tag */
 /* the tag list @see https://github.com/opentracing-contrib/opentracing-specification-zh/blob/master/semantic_conventions.md */
-void ot_add_tag(zval *span, const char *key, const char *val) 
+void ot_add_tag(zval *span, const char *key, const char *val)
 {
     if (span == NULL || key == NULL || val == NULL ) {
         return;
@@ -389,7 +390,7 @@ void ot_add_log(zval *span, long timestamp, int8_t field_num, ...)
     zval *fields;
     MO_ALLOC_INIT_ZVAL(fields);
     array_init(fields);
-         
+
     va_list arg_ptr;
     int i = 0;
     char *key, *val = NULL;
@@ -401,14 +402,14 @@ void ot_add_log(zval *span, long timestamp, int8_t field_num, ...)
         val = va_arg(arg_ptr, char*);
         mo_add_assoc_string(fields, key, val, 1);
     }
-    
+
     /* build log */
     zval *log;
     MO_ALLOC_INIT_ZVAL(log);
     array_init(log);
     add_assoc_long(log, "timestamp", timestamp);
     add_assoc_zval(log, "fields", fields);
-    
+
     /* add log */
     add_next_index_zval(logs, log);
 
@@ -446,7 +447,7 @@ void zn_span_add_ba_builder(zval *span, const char *key, const char *value, long
     zn_add_span_bannotation(span, key, value, service_name, ipv4, port);
 }
 
-void zn_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type) 
+void zn_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
 {
     zn_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
@@ -576,67 +577,121 @@ void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, l
     ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
 
-void mo_span_init_type_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name) {
+void mo_span_pre_init_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name) {
     if (psb->type == SKYWALKING) {
         //char* server_url = "http://10.40.6.114:10800/agent/jetty";
         char *server_url = sink_http_uri;
-
         globale_init();
-
-        /*char response[128] = "";
-        CURLcode lcode = get_request(server_url, response);
-        SLOG(SLOG_INFO, "get result [%s][%d][%s]", server_url, lcode, response);
-
-        char *http_url1 = "10.40.6.114:12800/application/register";
-        char response1[128] = "";
-        CURLcode curLcode = post_request(http_url1, "[test]", response1);
-        SLOG(SLOG_INFO, "post result [%s][%d][%s]", http_url1, curLcode, response1);*/
-
-        //get the apm server address
-        char response[128] = "";
-        CURLcode lcode = get_request(server_url, response);
-        if (lcode != CURLE_OK || response == "") {
+        char* url = sk_get_server(server_url);
+        if (url == NULL) {
             return ;
         }
-
-        //parse josn string to json object
-        cJSON *pJSON = cJSON_Parse(response);
-        //get the josn array size
-        int size = cJSON_GetArraySize(pJSON);
-        if (size <= 0) {
-            return ;
+        int application_id = sk_register_application(service_name, url);
+        //第一次注册返回的是0，第二次注册才会返回真正的值
+        while (application_id == 0) {
+            sleep(1);
+            application_id = sk_register_application(service_name, url);
         }
-
-        //get the first apm server address
-        //char* http_url = "10.40.6.114:12800/application/register";
-        char* http_url = cJSON_GetArrayItem(pJSON, 0)->valuestring;
-        //parse service name to json array "[\"php_service_01\"]";
-        char post_data[64] = "[";
-        strcat(strcat(post_data, service_name), "]");
-
-        //get register application url
-        strcat(http_url, SK_REGISTER_APPLICATION);
-
-        //post_reqeust(http_url, service_name)
-        //char* result = request(url, post_data);
-        char register_application_response[128] = "";
-        SLOG(SLOG_INFO, "molten register service, url:[%s], service_name:[%s]", http_url, service_name);
-
-        CURLcode curLcode = post_request(http_url, post_data, register_application_response);
-        if (curLcode != CURLE_OK || register_application_response == "") {
-            SLOG(SLOG_ERROR, "molten register service has error ret code [%d] response [%s]", curLcode, register_application_response);
-            return ;
-        }
-        SLOG(SLOG_INFO, "molten register service [%s] result [%s]", http_url, register_application_response);
-
-        cJSON *registerJson = cJSON_Parse(register_application_response);
-        cJSON *json_name = cJSON_GetObjectItem(registerJson, "c");  //获取键值内容
-
-        int application_id =  (int)json_name->valuestring;
-        SLOG(SLOG_INFO, "molten register application id [%d]", http_url, application_id);
-
-        cJSON_Delete(registerJson);  //释放内存
+        psb->application_id = application_id;
+        SLOG(SLOG_INFO, "molten register application id [%d]", application_id);
         //release curl
         globale_release();
     }
+}
+
+/**
+ * get all address from the apm collector server
+ * @param url   get address url
+ * @return  all address
+ */
+char *sk_get_server(char *url) {
+    //get the apm server address
+    char response[128] = "";
+    CURLcode lcode = get_request(url, response);
+    if (lcode != CURLE_OK || response == "") {
+        return NULL;
+    }
+
+    //parse josn string to json object
+    cJSON *pJSON = cJSON_Parse(response);
+    //get the josn array size
+    int size = cJSON_GetArraySize(pJSON);
+    if (size <= 0) {
+        return NULL;
+    }
+
+    //get the first apm server address
+    char *http_url = cJSON_GetArrayItem(pJSON, 0)->valuestring;
+
+    static char result[32];
+    strcpy(result, http_url);
+    return result;
+}
+
+/**
+ * register application to skywalking server
+ * @param name application name
+ * @param server_url register url
+ * @return application id
+ */
+int sk_register_application(char *name, char *server_url) {
+
+    //parse register url
+    char url[64] = "";
+    strcat(strcat(url, server_url), SK_REGISTER_APPLICATION);
+
+    //parse register application data, eg: "[\"php_service_01\"]";
+    char post_data[64] = "[";
+    strcat(strcat(post_data, name), "]");
+
+    char register_application_response[128] = "";
+    SLOG(SLOG_INFO, "molten register service, url:[%s], application name:[%s]", url, name);
+
+    CURLcode curLcode = post_request(url, post_data, register_application_response);
+    if (curLcode != CURLE_OK || register_application_response == "") {
+        SLOG(SLOG_ERROR, "molten register service has error ret code [%d] response [%s]", curLcode, register_application_response);
+        return 0;
+    }
+    SLOG(SLOG_INFO, "molten register application [%s] result [%s]", url, register_application_response);
+
+    cJSON *pRegisterJSON = cJSON_Parse(register_application_response);
+    cJSON *applicationJson = cJSON_GetArrayItem(pRegisterJSON, 0);
+    cJSON *applicationIdJson = cJSON_GetObjectItem(applicationJson, "i");
+    int application_id =  applicationIdJson->valueint;
+
+    cJSON_Delete(applicationJson);  //释放内存
+
+    return application_id;
+}
+
+/**
+ * register instance
+ * request data eg:
+ * {
+ *      "ai": -1,
+ *		"au": "125456ss4sgeessfgsf665111",
+ *		"rt": 1531298394832,
+ *		"oi": {
+ *			"osName": "Windows 7",
+ *			"hostname": "3F-tangzhongyuan",
+ *			"processNo": 21780,
+ *			"ipv4s": ["10.32.5.143"]
+ *		}
+ *	}
+ *
+ * @param application_id
+ * @return  instance id
+ *
+ */
+int sk_register_instance(int application_id) {
+
+}
+
+/**
+ * report segments data to skywalking collector
+ * @param application_id
+ * @param instance_id
+ */
+void sk_log_segments(int application_id, int instance_id) {
+    //TODO: Too complicated, to implement later
 }

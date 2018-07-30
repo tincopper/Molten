@@ -12,7 +12,7 @@
 
 /* deal with the http response */
 size_t process_data(void *data, size_t size, size_t nmemb, char *content) {
-    SLOG(SLOG_INFO, "[http] http response data:%s", data);
+    //SLOG(SLOG_INFO, "[http] http response data:%s", data);
     long sizes = size * nmemb;
     strncpy(content, (char*)data, sizes);
     //response = (char*)data;
@@ -20,7 +20,7 @@ size_t process_data(void *data, size_t size, size_t nmemb, char *content) {
 }
 
 CURLcode get_request(char *uri, char *response) {
-    SLOG(SLOG_INFO, "[get][http] http data sender, uri:%s", uri);
+    //SLOG(SLOG_INFO, "[get][http] http data sender, uri:%s", uri);
     if (uri != NULL && strlen(uri) > 5) {
         CURL *curl = curl_easy_init();
         CURLcode res = CURLE_OK;
@@ -41,7 +41,7 @@ CURLcode get_request(char *uri, char *response) {
             curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
 
             res = curl_easy_perform(curl);
-            SLOG(SLOG_INFO, "[get][http] curl response code:%d", res);
+            //SLOG(SLOG_INFO, "[get][http] curl response code:%d", res);
         } else {
             SLOG(SLOG_INFO, "[get][http] init curl error");
             res = CURLE_FAILED_INIT;
@@ -54,7 +54,7 @@ CURLcode get_request(char *uri, char *response) {
 
 /* {{{ post request , current use curl not php_stream */
 CURLcode post_request(char *uri, char *post_data, char *response) {
-    SLOG(SLOG_INFO, "[post][http] http data sender, uri:[%s], post_data:[%s]", uri, post_data);
+    //SLOG(SLOG_INFO, "[post][http] http data sender, uri:[%s], post_data:[%s]", uri, post_data);
     if (uri != NULL && strlen(uri) > 5) {
         CURL *curl = curl_easy_init();
         CURLcode res = CURLE_OK;
@@ -77,7 +77,7 @@ CURLcode post_request(char *uri, char *post_data, char *response) {
             curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
 
             res = curl_easy_perform(curl);
-            SLOG(SLOG_INFO, "[post][http] curl response code:%d", res);
+            //SLOG(SLOG_INFO, "[post][http] curl response code:%d", res);
 
         } else {
             SLOG(SLOG_INFO, "[post][http] init curl error");

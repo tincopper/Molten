@@ -20,6 +20,7 @@
 
 #include <curl/curl.h>
 #include <unistd.h>
+#include <zend_execute.h>
 #include "php.h"
 #include "php_ini.h"
 #include "ext/standard/info.h"

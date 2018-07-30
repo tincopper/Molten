@@ -15,6 +15,7 @@
  */
 
 #include <string.h>
+#include <common/host_info.h>
 #include "molten_span.h"
 #include "common/molten_http_util.h"
 #include "common/molten_cJSON.h"
@@ -514,6 +515,34 @@ void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, l
     ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
 
+void sk_register_service_builder(char *res_data, int application_id, char *agent_uuid) {
+    cJSON *instanceSpan = cJSON_CreateObject();
+    cJSON_AddNumberToObject(instanceSpan, "ai", application_id);
+    cJSON_AddStringToObject(instanceSpan, "au", agent_uuid);
+    cJSON_AddNumberToObject(instanceSpan, "rt", current_system_time_millis());
+
+    cJSON *osInfo = cJSON_CreateObject();
+    cJSON_AddStringToObject(osInfo, "osName", current_os_name());
+    cJSON_AddStringToObject(osInfo, "hostname", current_host_name());
+    cJSON_AddNumberToObject(osInfo, "processNo", current_thread_pid());
+
+    cJSON *ipv4s = NULL;
+    cJSON_AddItemToObject(osInfo, "ipv4s", ipv4s = cJSON_CreateArray());
+
+    char **ipv4 = current_ipv4();
+    int len = sizeof(ipv4) / sizeof(ipv4[0]);
+    for (int i = 0; i < len; i++) {
+        char *string = ipv4[i];
+        char result1[64] = "";
+        strcpy(result1, string);
+        cJSON_AddItemToArray(ipv4s, cJSON_CreateString(result1));
+    }
+
+    cJSON_AddItemToObject(instanceSpan, "oi", osInfo);
+
+    //将json结构格式化到缓冲区
+    strcpy(res_data, cJSON_Print(instanceSpan));
+}
 
 /** span function wrapper for opentracing */
 void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long start_time, long finish_time, struct mo_chain_st *pct, uint8_t an_type)
@@ -572,6 +601,7 @@ void sk_span_add_ba_builder(zval *span, const char *key, const char *value, long
     }
 
 }
+
 void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
 {
     ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
@@ -586,6 +616,7 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, char* sink_http_uri, char* serv
         if (url == NULL) {
             return ;
         }
+        //register application
         int application_id = sk_register_application(service_name, url);
         //第一次注册返回的是0，第二次注册才会返回真正的值
         while (application_id == 0) {
@@ -594,6 +625,11 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, char* sink_http_uri, char* serv
         }
         psb->application_id = application_id;
         SLOG(SLOG_INFO, "molten register application id [%d]", application_id);
+
+        //register instance
+        int instance_id = sk_register_instance(application_id, url);
+        psb->instance_id = instance_id;
+        SLOG(SLOG_INFO, "-======================================molten register instance id [%d]", instance_id);
         //release curl
         globale_release();
     }
@@ -664,6 +700,13 @@ int sk_register_application(char *name, char *server_url) {
     return application_id;
 }
 
+int get_instance_id(char *response_data) {
+    cJSON *pRegisterJSON = cJSON_Parse(response_data);
+    cJSON *instanceIdJson = cJSON_GetObjectItem(pRegisterJSON, "ii");
+    cJSON_Delete(pRegisterJSON);  //释放内存
+    return instanceIdJson->valueint;
+}
+
 /**
  * register instance
  * request data eg:
@@ -683,8 +726,36 @@ int sk_register_application(char *name, char *server_url) {
  * @return  instance id
  *
  */
-int sk_register_instance(int application_id) {
+int sk_register_instance(int application_id, char *server_url) {
+    //parse register url
+    char url[64] = "";
+    strcat(strcat(url, server_url), SK_REGISTER_SERVICE);
 
+    char res_data[256] = "";
+    char *agentUUId[] = {};
+    rand64hex(agentUUId);
+    sk_register_service_builder(res_data, application_id, agentUUId[0]);
+
+    SLOG(SLOG_INFO, "molten register instance, url:[%s], post_data:[%s]", url, res_data);
+
+    //char response_data[32] = "";
+    char *response_data = malloc(32);
+    CURLcode curLcode = post_request(url, res_data, response_data);
+    if (curLcode != CURLE_OK || response_data == "") {
+        SLOG(SLOG_ERROR, "molten register instance has error ret code [%d] response [%s]", curLcode, response_data);
+        return 0;
+    }
+    SLOG(SLOG_INFO, "molten register instance, url:[%s], response_data:[%s]", url, response_data);
+
+    //get instance id from parse response
+    int instance_id = get_instance_id(response_data);
+    while (instance_id == 0) {
+        sleep(1);
+        post_request(url, res_data, response_data);
+        instance_id = get_instance_id(response_data);
+    }
+    free(response_data);
+    return instance_id;
 }
 
 /**

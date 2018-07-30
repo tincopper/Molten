@@ -59,8 +59,9 @@ typedef void (*span_add_ba_func)(zval *span, const char *key, const char *value,
 typedef void (*span_add_ba_ex_func)(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type);
 
 typedef struct {
-    uint8_t type;
-    uint32_t application_id;
+    uint8_t                 type;
+    uint32_t                application_id; //add by tangzy at 20180730
+    uint32_t                instance_id;   //add by tangzy at 20180730
     start_span_func         start_span;
     start_span_ex_func      start_span_ex;
     span_add_ba_func        span_add_ba;
@@ -82,7 +83,7 @@ void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, l
 
 //skywalking
 void sk_register_application_builder(zval **span);
-void sk_register_service_builder();
+void sk_register_service_builder(char *res_data, int application_id, char *agent_uuid);
 void sk_segments_builder();
 void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long start_time, long finish_time, struct mo_chain_st *pct, uint8_t an_type);
 void sk_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
@@ -152,7 +153,7 @@ void zn_add_span_bannotation_ex(zval *span, const char *key, const char *value, 
 /* {{{ record fucntion for skywalking format, it is the default set */
 char *sk_get_server(char *url);
 int sk_register_application(char *name, char *server_url);
-int sk_register_instance(int application_id);
+int sk_register_instance(int application_id, char *server_url);
 void sk_log_segments(int application_id, int instance_id);
 /* }}} */
 

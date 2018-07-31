@@ -36,7 +36,7 @@
 
 /* Check sapi name */
 #define  CHECK_SAPI_NAME do {                                                                   \
-    if ( (strncmp(sapi_module.name, "fpm-fcgi", sizeof("fpm-fcgi") -1) != 0)                    \
+    if ((strncmp(sapi_module.name, "fpm-fcgi", sizeof("fpm-fcgi") -1) != 0)                    \
             && (strncmp(sapi_module.name, "apache", sizeof("apache") -1) != 0)                  \
             && (strncmp(sapi_module.name, "cli-server", sizeof("cli-server") -1) != 0)) {       \
             if ((PTG(tracing_cli) == 0) || (PTG(tracing_cli) != 0                               \
@@ -45,15 +45,13 @@
                 return SUCCESS;                                                                 \
             }                                                                                   \
     }                                                                                           \
-}while(0)                                                                                 
+} while(0)
 PHP_FUNCTION(molten_curl_setopt);
 PHP_FUNCTION(molten_curl_exec);
 PHP_FUNCTION(molten_curl_setopt_array);
 PHP_FUNCTION(molten_curl_reset);
 PHP_FUNCTION(molten_span_format);
 
-//static void get_reqeust(char *get_uri);
-//static void post_reqeust(char *post_uri, char *post_data);
 void add_http_trace_header(mo_chain_t *pct, zval *header, char *span_id);
 static void frame_build(mo_frame_t *frame, zend_bool internal, unsigned char type, zend_execute_data *caller, zend_execute_data *ex, zend_op_array *op_array TSRMLS_DC);
 static void frame_destroy(mo_frame_t *frame);
@@ -356,6 +354,7 @@ PHP_FUNCTION(molten_curl_exec)
         char *parent_span_id;
         retrieve_parent_span_id(&PTG(span_stack), &parent_span_id);
 
+        /* 这个地方调用molten_span.c中的定义的方法start_span_func */
         PTG(psb).start_span(&curl_span, "php_curl", PTG(pct).pch.trace_id->val, span_id, parent_span_id, entry_time, current_time, &PTG(pct), AN_CLIENT);
         build_curl_bannotation(curl_span, (long)current_time, &PTG(pit), res, "curl_exec", 1);
 
@@ -574,7 +573,6 @@ PHP_MINIT_FUNCTION(molten)
     molten_reload_curl_function();
 
     /* Set common data */
-    /* http request */
     PTG(pct).sapi = sapi_module.name;
 
     /* almost user use fpm or cli */

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "molten_log.h" 
+#include "molten_log.h"
 
 #define CLOSE_LOG_FD do {                   \
         close(log->fd);                     \

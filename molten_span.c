@@ -515,6 +515,11 @@ void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, l
     ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
 
+/* {{{ build opentracing format span  */
+/*                                    */
+/*           **      **              */
+/*               *                    */
+/* * * * * * * * * * * * * * * * * *  */
 void sk_register_service_builder(char *res_data, int application_id, char *agent_uuid) {
     cJSON *instanceSpan = cJSON_CreateObject();
     cJSON_AddNumberToObject(instanceSpan, "ai", application_id);
@@ -547,7 +552,8 @@ void sk_register_service_builder(char *res_data, int application_id, char *agent
 /** span function wrapper for opentracing */
 void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long start_time, long finish_time, struct mo_chain_st *pct, uint8_t an_type)
 {
-    ot_start_span(span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time);
+    sk_log_segments(span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time);
+    //ot_start_span(span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time);
     if (an_type == AN_SERVER) {
         ot_add_tag(*span, "span.kind", "server");
     } else {
@@ -629,7 +635,7 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, char* sink_http_uri, char* serv
         //register instance
         int instance_id = sk_register_instance(application_id, url);
         psb->instance_id = instance_id;
-        SLOG(SLOG_INFO, "-======================================molten register instance id [%d]", instance_id);
+        SLOG(SLOG_INFO, "molten register instance id [%d]", instance_id);
         //release curl
         globale_release();
     }
@@ -763,6 +769,97 @@ int sk_register_instance(int application_id, char *server_url) {
  * @param application_id
  * @param instance_id
  */
-void sk_log_segments(int application_id, int instance_id) {
-    //TODO: Too complicated, to implement later
+void sk_log_segments(zval **span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled, long start_time, long finish_time) {
+
+    MO_ALLOC_INIT_ZVAL(*span);
+    array_init(*span);
+    add_assoc_string(*span, "gt", ""); //globalTraceIds 链路编码，与调用方相同
+
+    /* add trace segment object */
+    zval *segmentObject;
+    MO_ALLOC_INIT_ZVAL(segmentObject);
+    array_init(segmentObject);
+    add_assoc_string(segmentObject, "ts", ""); //traceSegmentId，新产生
+    add_assoc_long(segmentObject, "ai", 0);
+    add_assoc_long(segmentObject, "ii", 1);
+
+    /* add span object */
+    zval *spanObject;
+    MO_ALLOC_INIT_ZVAL(spanObject);
+    array_init(spanObject);
+    add_assoc_long(spanObject, "si", 0); //spanId
+    add_assoc_long(spanObject, "tv", 0); //spanType
+    add_assoc_long(spanObject, "lv", 0); //spanLayer
+    add_assoc_long(spanObject, "ps", 0); //parentSpanId
+    add_assoc_long(spanObject, "st", start_time); //startTime
+    add_assoc_long(spanObject, "et", finish_time); //endTime
+    add_assoc_long(spanObject, "ci", 3); //componentId
+    add_assoc_string(spanObject, "cn", ""); //componentName
+    add_assoc_long(spanObject, "oi", 0); //operationNanmeId
+    add_assoc_string(spanObject, "on", ""); //operationNanme
+    add_assoc_long(spanObject, "pi", 0); //operationNanmeId
+    add_assoc_string(spanObject, "pn", ""); //peerName
+    add_assoc_bool(spanObject, "ie", 0); //isError
+
+    /* add trace segement reference */
+    zval *segementRef;
+    MO_ALLOC_INIT_ZVAL(segementRef);
+    //MAKE_STD_ZVAL(segementRef);
+    array_init(segementRef);
+    add_assoc_string(segementRef, "pts", ""); //parentTraceSegmentId,上级的segment_id 一个应用中的一个实例在链路中产生的编号
+    add_assoc_long(segementRef, "ppi", 2); //parentApplicationInstanceId
+    add_assoc_long(segementRef, "psp", 1); //parentSpanId
+    add_assoc_long(segementRef, "psi", 0); //parentServiceId,上级的服务编号(服务注册后的ID)
+    add_assoc_string(segementRef, "psn", "/www/data/php_service/test.php"); //parentServiceName, 上级的服务名
+    add_assoc_long(segementRef, "ni", 0); //networkAddressId, 上级调用时使用的地址注册后的ID
+    add_assoc_string(segementRef, "nn", "172.25.0.4:20880"); //networkAddress, 上级的地址
+    add_assoc_long(segementRef, "eii", 2); //entryApplicationInstanceId, 入口的实例编号
+    add_assoc_long(segementRef, "esi", 0); //entryServiceId, 入口的服务编号
+    add_assoc_string(segementRef, "esn", ""); //entryServiceName, 入口的服务名词
+    add_assoc_long(segementRef, "rv", 0); //RefTypeValue, 调用方式（CrossProcess，CrossThread）
+
+    zval t_tags, t_tags_tmp;
+    array_init(&t_tags);
+    array_init(&t_tags_tmp);
+
+    zval z_url_k, z_url_v;
+    ZVAL_STRING(&z_url_k, "url");
+    ZVAL_STRING(&z_url_v, "http://www.baidu.com");
+
+    zend_hash_str_update(Z_ARRVAL(t_tags_tmp), "k", sizeof("k") - 1, &z_url_k);
+    zend_hash_str_update(Z_ARRVAL(t_tags_tmp), "v", sizeof("v") - 1, &z_url_v);
+
+    add_index_zval(&t_tags, 0, &t_tags_tmp);
+    add_index_zval(&t_tags, 1, &t_tags_tmp);
+    add_assoc_zval(spanObject, "qq", &t_tags);
+
+    zval arry, array_tmp;
+    ZVAL_LONG(&array_tmp, 1);
+    ZVAL_LONG(&array_tmp, 3);
+    ZVAL_NEW_ARR(&arry);
+    add_index_zval(&arry, 0, &array_tmp);
+    add_assoc_zval(spanObject, "qs", &arry);
+
+    /* add tags */
+    zval *tags;
+    MO_ALLOC_INIT_ZVAL(tags);
+    array_init(tags);
+    add_assoc_zval(spanObject, "to", tags);
+
+    /* add logs */
+    zval *logs;
+    MO_ALLOC_INIT_ZVAL(logs);
+    array_init(logs);
+    add_assoc_zval(spanObject, "lo", logs);
+
+    add_assoc_zval(spanObject, "rs", segementRef);
+    add_assoc_zval(segmentObject, "ss", spanObject);
+    add_assoc_zval(*span, "sg", segmentObject);
+
+    /* free map */
+    MO_FREE_ALLOC_ZVAL(logs);
+    MO_FREE_ALLOC_ZVAL(tags);
+    MO_FREE_ALLOC_ZVAL(segementRef);
+    MO_FREE_ALLOC_ZVAL(spanObject);
+    MO_FREE_ALLOC_ZVAL(segmentObject);
 }

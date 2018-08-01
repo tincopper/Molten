@@ -1250,13 +1250,14 @@ static void guzzle_request_capture(mo_interceptor_t *pit, mo_frame_t *frame)
     init_span_extra(frame);
 
     /* add method */
-    GET_FUNC_ARG(method,0);
+    //GET_FUNC_ARG(method,0);
+    GET_FUNC_ARG(method, 1);
     if (frame->arg_count >= 1 && MO_Z_TYPE_P(method) == IS_STRING) {
         pit->psb->span_add_ba_ex(frame->span_extra,  "http.method", Z_STRVAL_P(method), frame->entry_time, pit->pct, BA_NORMAL);
     }
 
     /* add uri */
-    GET_FUNC_ARG(uri,1);
+    GET_FUNC_ARG(uri, 1);
     if (frame->arg_count >= 2 && MO_Z_TYPE_P(uri) == IS_STRING) {
         pit->psb->span_add_ba_ex(frame->span_extra,  "http.uri", Z_STRVAL_P(uri), frame->entry_time, pit->pct, BA_NORMAL);
     }

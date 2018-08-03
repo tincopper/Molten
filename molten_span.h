@@ -46,6 +46,9 @@
 #define SK_INSTANCE_HEARTBEAT    "instance/heartbeat"
 #define SK_SEGMENTS              "segments"
 
+/* global variable */
+//static zval molten_globale_list;
+
 /* ba type */
 enum ba_type {BA_NORMAL, BA_SA, BA_SA_HOST, BA_SA_IP, BA_SA_DSN, BA_ERROR, BA_PATH};
 
@@ -60,8 +63,6 @@ typedef void (*span_add_ba_ex_func)(zval *span, const char *key, const char *val
 
 typedef struct {
     uint8_t                 type;
-    uint32_t                application_id; //add by tangzy at 20180730
-    uint32_t                instance_id;   //add by tangzy at 20180730
     start_span_func         start_span;
     start_span_ex_func      start_span_ex;
     span_add_ba_func        span_add_ba;
@@ -114,7 +115,6 @@ void retrieve_span_id_4_frame(mo_frame_t *frame, char **span_id);
 void retrieve_parent_span_id_4_frame(mo_frame_t *frame, char **parent_span_id);
 /* }}} */
 
-
 /* {{{ pt span ctor */
 static void inline mo_span_ctor(mo_span_builder *psb, char *span_format)
 {
@@ -140,7 +140,7 @@ static void inline mo_span_ctor(mo_span_builder *psb, char *span_format)
 }
 /* }}} */
 
-void mo_span_pre_init_ctor(mo_span_builder *psb, char* sink_http_uri, char* service_name);
+void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char *sink_http_uri, char *service_name);
 
 /* {{{ record fucntion for zipkin format, it is the default set */
 void zn_sart_span(zval **span, char *trace_id, char *service_name, char *span_id, char *parent_id, long timestamp, long duration);
@@ -154,8 +154,8 @@ void zn_add_span_bannotation_ex(zval *span, const char *key, const char *value, 
 char *sk_get_server(char *url);
 int sk_register_application(char *name, char *server_url);
 int sk_register_instance(int application_id, char *server_url);
-//void sk_log_segments(int application_id, int instance_id);
-void sk_log_segments(zval **span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled, long start_time, long finish_time);
+//void sk_add_segments(zval **span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
+//                     long start_time, long finish_time, struct mo_chain_st *pct);
 /* }}} */
 
 #endif

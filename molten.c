@@ -589,7 +589,7 @@ PHP_MINIT_FUNCTION(molten)
     mo_shm_ctor(&PTG(msm));   
     mo_ctrl_ctor(&PTG(prt), &PTG(msm), PTG(notify_uri), PTG(ip), PTG(sampling_type), PTG(sampling_rate), PTG(sampling_request), PTG(pct).is_cli);
     mo_span_ctor(&PTG(psb), PTG(span_format));
-    mo_span_pre_init_ctor(&PTG(psb), PTG(sink_http_uri), PTG(service_name));
+    mo_span_pre_init_ctor(&PTG(psb), &PTG(pct), PTG(sink_http_uri), PTG(service_name));
     mo_chain_log_ctor(&PTG(pcl), PTG(host_name), PTG(chain_log_path), PTG(sink_type), PTG(output_type), PTG(sink_http_uri), PTG(sink_syslog_unix_socket));
     mo_intercept_ctor(&PTG(pit), &PTG(pct), &PTG(psb));
 

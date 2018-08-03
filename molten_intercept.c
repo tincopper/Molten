@@ -57,7 +57,7 @@ zend_bool mo_intercept_hit(mo_interceptor_t *pit, mo_interceptor_ele_t **eleDest
         smart_string_0(&k);
     }
 
-     if (mo_zend_hash_find(pit->elements, smart_string_str(k), smart_string_len(k) + 1, (void **)&ele) != SUCCESS) {
+    if (mo_zend_hash_find(pit->elements, smart_string_str(k), smart_string_len(k) + 1, (void **)&ele) != SUCCESS) {
          ret = 0;
     } else {
          *eleDest = ele;

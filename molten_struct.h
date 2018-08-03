@@ -71,8 +71,8 @@ typedef struct mo_chain_st {
     mo_stack *span_stack;               /* link to global stack */ 
     
     /* excute time */
-    long execute_begin_time;            /* execute begin time */
-    long execute_end_time;              /* execute end time */
+    long long execute_begin_time;            /* execute begin time */
+    long long execute_end_time;              /* execute end time */
 
     /* http request detail */
     const char *sapi;

@@ -159,7 +159,7 @@ void retrieve_parent_span_id_4_frame(mo_frame_t *frame, char **parent_span_id)
 }
 
 /* {{{ build zipkin format main span */
-void zn_start_span(zval **span, char *trace_id, char *server_name, char *span_id, char *parent_id, long timestamp, long duration)
+void zn_start_span(zval **span, char *trace_id, char *server_name, char *span_id, char *parent_id, long long timestamp, long duration)
 {
     MO_ALLOC_INIT_ZVAL(*span);
     array_init(*span);
@@ -220,7 +220,7 @@ void zn_add_endpoint(zval *annotation, char *service_name, char *ipv4, long port
 /* }}} */
 
 /* {{{ add span annotation */
-void zn_add_span_annotation(zval *span, const char *value, long timestamp, char *service_name, char *ipv4, long port)
+void zn_add_span_annotation(zval *span, const char *value, long long timestamp, char *service_name, char *ipv4, long port)
 {
     if (span == NULL || value == NULL || service_name == NULL || ipv4 == NULL) {
         return;
@@ -244,7 +244,7 @@ void zn_add_span_annotation(zval *span, const char *value, long timestamp, char 
 /* }}} */
 
 /* {{{ add span annotation ex */
-void zn_add_span_annotation_ex(zval *span, const char *value, long timestamp, struct mo_chain_st *pct)
+void zn_add_span_annotation_ex(zval *span, const char *value, long long timestamp, struct mo_chain_st *pct)
 {
     zn_add_span_annotation(span, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port);
 }
@@ -295,7 +295,7 @@ void zn_add_span_bannotation_ex(zval *span, const char *key, const char *value, 
 /* |spanContext(map){traceID, spanID, parentSpanID}         |   */
 /* |tags(map)|logs(list)|references(not used)               |   */
 /* ------------------------------------------------------------ */
-void ot_start_span(zval **span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled, long start_time, long finish_time)
+void ot_start_span(zval **span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled, long long start_time, long long finish_time)
 {
     MO_ALLOC_INIT_ZVAL(*span);
     array_init(*span);
@@ -376,7 +376,7 @@ void ot_add_tag_bool(zval *span, const char *key, uint8_t val)
 }
 
 /* {{{ opentracing add log */
-void ot_add_log(zval *span, long timestamp, int8_t field_num, ...)
+void ot_add_log(zval *span, long long timestamp, int8_t field_num, ...)
 {
     if (span == NULL) {
         return;
@@ -420,7 +420,7 @@ void ot_add_log(zval *span, long timestamp, int8_t field_num, ...)
 }
 
 /* span function wrapper for zipkin */
-void zn_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long start_time, long finish_time, struct mo_chain_st *pct, uint8_t an_type)
+void zn_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long long start_time, long long finish_time, struct mo_chain_st *pct, uint8_t an_type)
 {
     zn_start_span(span, trace_id, service_name, span_id, parent_id, start_time, finish_time - start_time);
     if (an_type == AN_SERVER) {
@@ -443,18 +443,18 @@ void zn_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_s
     zn_start_span_builder(span, service_name, pct->pch.trace_id->val, span_id, parent_span_id, frame->entry_time, frame->exit_time, pct, an_type);
 }
 
-void zn_span_add_ba_builder(zval *span, const char *key, const char *value, long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
+void zn_span_add_ba_builder(zval *span, const char *key, const char *value, long long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
 {
     zn_add_span_bannotation(span, key, value, service_name, ipv4, port);
 }
 
-void zn_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
+void zn_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
 {
     zn_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
 
 /** span function wrapper for opentracing */
-void ot_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long start_time, long finish_time, struct mo_chain_st *pct, uint8_t an_type)
+void ot_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long long start_time, long long finish_time, struct mo_chain_st *pct, uint8_t an_type)
 {
     ot_start_span(span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time);
     if (an_type == AN_SERVER) {
@@ -475,7 +475,7 @@ void ot_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_s
     ot_start_span_builder(span, service_name, pct->pch.trace_id->val, span_id, parent_span_id, frame->entry_time, frame->exit_time, pct, an_type);
 }
 
-void ot_span_add_ba_builder(zval *span, const char *key, const char *value, long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
+void ot_span_add_ba_builder(zval *span, const char *key, const char *value, long long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
 {
     switch (ba_type) {
         case BA_NORMAL:
@@ -510,7 +510,7 @@ void ot_span_add_ba_builder(zval *span, const char *key, const char *value, long
     }
 
 }
-void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
+void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
 {
     ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
@@ -521,13 +521,163 @@ void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, l
 /*               *                    */
 /* * * * * * * * * * * * * * * * * *  */
 
+/* {{{ skywalking add tag */
+/* the tag list @see https://github.com/opentracing-contrib/opentracing-specification-zh/blob/master/semantic_conventions.md */
+void sk_add_tag(zval *span, const char *key, const char *val)
+{
+    if (span == NULL || key == NULL || val == NULL ) {
+        return;
+    }
+    zval *tags, *tags_tmp, *span_obj, *segment_obj;
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "sg", sizeof("sg"), (void **)&segment_obj) == FAILURE) {
+        return;
+    }
+
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(segment_obj), "ss", sizeof("ss"), (void **)&span_obj) == FAILURE) {
+        return;
+    }
+
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span_obj), "to", sizeof("to"), (void **)&tags) == FAILURE) {
+        return;
+    }
+
+    MO_ALLOC_INIT_ZVAL(tags_tmp);
+    array_init(tags_tmp);
+    zval tag_key, tag_val;
+    ZVAL_STRING(&tag_key, key);
+    ZVAL_STRING(&tag_val, (char *)val);
+
+    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
+    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
+
+    add_next_index_zval(tags, tags_tmp);
+
+    MO_FREE_ALLOC_ZVAL(tags_tmp);
+}
+
+// 传值
+int callback(zval *val) {
+    zval *tmp, *segement_ref; // 增加一个临时 zval 避免 convert_to_string 污染原元素
+
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(val), "rs", sizeof("rs"), (void **)&segement_ref) == FAILURE) {
+        return 0;
+    }
+    return ZEND_HASH_APPLY_KEEP;
+}
+
+/* add parent span object */
+void sk_add_parent_span(zval *span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
+                 long long start_time, long long finish_time, struct mo_chain_st *pct) {
+
+    if (span == NULL) {
+        return;
+    }
+
+    zval *segment_obj, *span_obj, *segement_ref, *segement_ref_tmp;
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "sg", sizeof("sg"), (void **)&segment_obj) == FAILURE) {
+        return;
+    }
+
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(segment_obj), "ss", sizeof("ss"), (void **)&span_obj) == FAILURE) {
+        return;
+    }
+
+    int num_in = zend_hash_num_elements(Z_ARRVAL_P(span_obj));
+    // iterator array
+    zend_hash_apply(Z_ARRVAL_P(span_obj), callback);
+
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span_obj), "rs", sizeof("rs"), (void **)&segement_ref) == FAILURE) {
+        return;
+    }
+
+    MO_ALLOC_INIT_ZVAL(segement_ref_tmp);
+    array_init(segement_ref_tmp);
+
+    add_assoc_string(segement_ref_tmp, "pts", ""); //parentTraceSegmentId,上级的segment_id 一个应用中的一个实例在链路中产生的编号
+    add_assoc_long(segement_ref_tmp, "ppi", 2); //parentApplicationInstanceId
+    add_assoc_long(segement_ref_tmp, "psp", 1); //parentSpanId
+    add_assoc_long(segement_ref_tmp, "psi", 0); //parentServiceId,上级的服务编号(服务注册后的ID)
+    add_assoc_string(segement_ref_tmp, "psn", "/www/data/php_service/test.php"); //parentServiceName, 上级的服务名
+    add_assoc_long(segement_ref_tmp, "ni", 0); //networkAddressId, 上级调用时使用的地址注册后的ID
+    add_assoc_string(segement_ref_tmp, "nn", "172.25.0.4:20880"); //networkAddress, 上级的地址
+    add_assoc_long(segement_ref_tmp, "eii", 2); //entryApplicationInstanceId, 入口的实例编号
+    add_assoc_long(segement_ref_tmp, "esi", 0); //entryServiceId, 入口的服务编号
+    add_assoc_string(segement_ref_tmp, "esn", ""); //entryServiceName, 入口的服务名词
+    add_assoc_long(segement_ref_tmp, "rv", 0); //RefTypeValue, 调用方式（CrossProcess，CrossThread）
+
+    add_next_index_zval(segement_ref, segement_ref_tmp);
+
+    MO_FREE_ALLOC_ZVAL(segement_ref_tmp);
+}
+
+/* add span object */
+void sk_add_span(zval *span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
+                 long long start_time, long long finish_time, struct mo_chain_st *pct) {
+    if (span == NULL) {
+        return;
+    }
+
+    zval *segment_obj, *span_object, *span_object_tmp;
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "sg", sizeof("sg"), (void **)&segment_obj) == FAILURE) {
+        return;
+    }
+
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(segment_obj), "ss", sizeof("ss"), (void **)&span_object) == FAILURE) {
+        return;
+    }
+
+    MO_ALLOC_INIT_ZVAL(span_object_tmp);
+    array_init(span_object_tmp);
+
+    add_assoc_long(span_object_tmp, "si", 0); //spanId
+    add_assoc_long(span_object_tmp, "tv", 0); //spanType
+    add_assoc_long(span_object_tmp, "lv", 0); //spanLayer
+    add_assoc_long(span_object_tmp, "ps", 0); //parentSpanId
+    add_assoc_double(span_object_tmp, "st", start_time); //startTime
+    add_assoc_double(span_object_tmp, "et", finish_time); //endTime
+    //add_assoc_long(span_object_tmp, "ci", 3); //componentId
+    add_assoc_string(span_object_tmp, "cn", pct->service_name); //componentName
+    //add_assoc_long(span_object_tmp, "oi", 0); //operationNanmeId
+    add_assoc_string(span_object_tmp, "on", op_name); //operationNanme
+    //add_assoc_long(span_object_tmp, "pi", 0); //operationNanmeId
+    //add_assoc_string(span_object_tmp, "pn", ""); //peerName
+    add_assoc_bool(span_object_tmp, "ie", 0); //isError
+
+    /* add trace segement reference */
+    zval *segement_ref;
+    MO_ALLOC_INIT_ZVAL(segement_ref);
+    array_init(segement_ref);
+    add_assoc_zval(span_object_tmp, "rs", segement_ref);
+
+    /* add tags */
+    zval *tags;
+    MO_ALLOC_INIT_ZVAL(tags);
+    array_init(tags);
+    add_assoc_zval(span_object_tmp, "to", tags);
+
+    /* add logs */
+    zval *logs;
+    MO_ALLOC_INIT_ZVAL(logs);
+    array_init(logs);
+    add_assoc_zval(span_object_tmp, "lo", logs);
+
+    add_next_index_zval(span_object, span_object_tmp);
+
+    /* free map */
+    MO_FREE_ALLOC_ZVAL(logs);
+    MO_FREE_ALLOC_ZVAL(tags);
+    MO_FREE_ALLOC_ZVAL(segement_ref);
+    MO_FREE_ALLOC_ZVAL(span_object_tmp);
+}
+
+
 /**
  * report segments data to skywalking collector
  * @param application_id
  * @param instance_id
  */
 void sk_add_segments(zval **span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
-                     long start_time, long finish_time, struct mo_chain_st *pct) {
+                     long long start_time, long long finish_time, struct mo_chain_st *pct) {
 
     MO_ALLOC_INIT_ZVAL(*span);
     array_init(*span);
@@ -549,30 +699,33 @@ void sk_add_segments(zval **span, char *op_name, char *trace_id, char *span_id, 
     MO_ALLOC_INIT_ZVAL(segmentObject);
     array_init(segmentObject);
 
-    add_assoc_zval(segmentObject, "ts", &globalTraceIds); //traceSegmentId，新产生
+    add_assoc_zval(segmentObject, "ts", &traceId); //traceSegmentId，新产生
     add_assoc_long(segmentObject, "ai", pct->application_id);
     add_assoc_long(segmentObject, "ii", pct->instance_id);
+    add_assoc_zval(*span, "sg", segmentObject);
 
     /* add span object */
     zval *spanObject;
     MO_ALLOC_INIT_ZVAL(spanObject);
     array_init(spanObject);
-    add_assoc_long(spanObject, "si", 0); //spanId
+    /*add_assoc_long(spanObject, "si", 0); //spanId
     add_assoc_long(spanObject, "tv", 0); //spanType
     add_assoc_long(spanObject, "lv", 0); //spanLayer
     add_assoc_long(spanObject, "ps", 0); //parentSpanId
     add_assoc_double(spanObject, "st", start_time); //startTime
     add_assoc_double(spanObject, "et", finish_time); //endTime
-    add_assoc_long(spanObject, "ci", 3); //componentId
-    add_assoc_string(spanObject, "cn", ""); //componentName
-    add_assoc_long(spanObject, "oi", 0); //operationNanmeId
-    add_assoc_string(spanObject, "on", ""); //operationNanme
-    add_assoc_long(spanObject, "pi", 0); //operationNanmeId
+    //add_assoc_long(spanObject, "ci", 3); //componentId
+    add_assoc_string(spanObject, "cn", pct->service_name); //componentName
+    //add_assoc_long(spanObject, "oi", 0); //operationNanmeId
+    add_assoc_string(spanObject, "on", op_name); //operationNanme
+    //add_assoc_long(spanObject, "pi", 0); //operationNanmeId
     add_assoc_string(spanObject, "pn", ""); //peerName
-    add_assoc_bool(spanObject, "ie", 0); //isError
+    add_assoc_bool(spanObject, "ie", 0); //isError*/
+    add_assoc_zval(segmentObject, "ss", spanObject);
 
     /* add trace segement reference */
-    zval *segementRef;
+    /*
+     * zval *segementRef;
     MO_ALLOC_INIT_ZVAL(segementRef);
     //MAKE_STD_ZVAL(segementRef);
     array_init(segementRef);
@@ -587,8 +740,10 @@ void sk_add_segments(zval **span, char *op_name, char *trace_id, char *span_id, 
     add_assoc_long(segementRef, "esi", 0); //entryServiceId, 入口的服务编号
     add_assoc_string(segementRef, "esn", ""); //entryServiceName, 入口的服务名词
     add_assoc_long(segementRef, "rv", 0); //RefTypeValue, 调用方式（CrossProcess，CrossThread）
+    add_assoc_zval(spanObject, "rs", segementRef);
+    */
 
-    zval t_tags, t_tags_tmp;
+    /*zval t_tags, t_tags_tmp;
     array_init(&t_tags);
     array_init(&t_tags_tmp);
 
@@ -601,28 +756,24 @@ void sk_add_segments(zval **span, char *op_name, char *trace_id, char *span_id, 
 
     add_index_zval(&t_tags, 0, &t_tags_tmp);
     add_index_zval(&t_tags, 1, &t_tags_tmp);
-    add_assoc_zval(spanObject, "qq", &t_tags);
+    add_assoc_zval(spanObject, "qq", &t_tags);*/
 
-    /* add tags */
+    /* add tags *//*
     zval *tags;
     MO_ALLOC_INIT_ZVAL(tags);
     array_init(tags);
     add_assoc_zval(spanObject, "to", tags);
 
-    /* add logs */
+    *//* add logs *//*
     zval *logs;
     MO_ALLOC_INIT_ZVAL(logs);
     array_init(logs);
     add_assoc_zval(spanObject, "lo", logs);
 
-    add_assoc_zval(spanObject, "rs", segementRef);
-    add_assoc_zval(segmentObject, "ss", spanObject);
-    add_assoc_zval(*span, "sg", segmentObject);
-
-    /* free map */
+    *//* free map *//*
     MO_FREE_ALLOC_ZVAL(logs);
     MO_FREE_ALLOC_ZVAL(tags);
-    MO_FREE_ALLOC_ZVAL(segementRef);
+    MO_FREE_ALLOC_ZVAL(segementRef);*/
     MO_FREE_ALLOC_ZVAL(spanObject);
     MO_FREE_ALLOC_ZVAL(segmentObject);
 }
@@ -657,13 +808,16 @@ void sk_register_service_builder(char *res_data, int application_id, char *agent
 }
 
 /** span function wrapper for opentracing */
-void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long start_time, long finish_time, struct mo_chain_st *pct, uint8_t an_type)
+void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long long start_time, long long finish_time, struct mo_chain_st *pct, uint8_t an_type)
 {
     sk_add_segments(span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
+    sk_add_span(*span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
+    sk_add_parent_span(*span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
+
     if (an_type == AN_SERVER) {
-        ot_add_tag(*span, "span.kind", "server");
+        sk_add_tag(*span, "span.kind", "server");
     } else {
-        ot_add_tag(*span, "span.kind", "client");
+        sk_add_tag(*span, "span.kind", "client");
     }
 }
 
@@ -678,29 +832,29 @@ void sk_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_s
     sk_start_span_builder(span, service_name, pct->pch.trace_id->val, span_id, parent_span_id, frame->entry_time, frame->exit_time, pct, an_type);
 }
 
-void sk_span_add_ba_builder(zval *span, const char *key, const char *value, long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
+void sk_span_add_ba_builder(zval *span, const char *key, const char *value, long long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
 {
     switch (ba_type) {
         case BA_NORMAL:
-            ot_add_tag(span, key, value);
+            sk_add_tag(span, key, value);
             break;
         case BA_SA:
-            ot_add_tag(span, "peer.ipv4", ipv4);
+            sk_add_tag(span, "peer.ipv4", ipv4);
             ot_add_tag_long(span, "peer.port", port);
-            ot_add_tag(span, "peer.service", service_name);
+            sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_HOST:
-            ot_add_tag(span, "peer.hostname", ipv4);
+            sk_add_tag(span, "peer.hostname", ipv4);
             ot_add_tag_long(span, "peer.port", port);
-            ot_add_tag(span, "peer.service", service_name);
+            sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_IP:
-            ot_add_tag(span, "peer.ipv4", ipv4);
+            sk_add_tag(span, "peer.ipv4", ipv4);
             ot_add_tag_long(span, "peer.port", port);
-            ot_add_tag(span, "peer.service", service_name);
+            sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_DSN:
-            ot_add_tag(span, "peer.address", value);
+            sk_add_tag(span, "peer.address", value);
             break;
         case BA_PATH:
             /* not use for opentracing */
@@ -714,9 +868,9 @@ void sk_span_add_ba_builder(zval *span, const char *key, const char *value, long
 
 }
 
-void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
+void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long long timestamp, struct mo_chain_st *pct, uint8_t ba_type)
 {
-    ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
+    sk_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
 
 void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* sink_http_uri, char* service_name) {

@@ -56,10 +56,10 @@ enum ba_type {BA_NORMAL, BA_SA, BA_SA_HOST, BA_SA_IP, BA_SA_DSN, BA_ERROR, BA_PA
 typedef void (*build_span_id_func)(char **span_id, char *parent_span_id, int span_count);
 
 /* span_builder */
-typedef void (*start_span_func)(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long long start_time, long long finish_time, struct mo_chain_st *pct, uint8_t an_type);
+typedef void (*start_span_func)(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type);
 typedef void (*start_span_ex_func)(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
-typedef void (*span_add_ba_func)(zval *span, const char *key, const char *value, long long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
-typedef void (*span_add_ba_ex_func)(zval *span, const char *key, const char *value, long long timestamp, struct mo_chain_st *pct, uint8_t ba_type);
+typedef void (*span_add_ba_func)(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
+typedef void (*span_add_ba_ex_func)(zval *span, const char *key, const char *value, uint64_t timestamp, struct mo_chain_st *pct, uint8_t ba_type);
 
 typedef struct {
     uint8_t                 type;
@@ -71,23 +71,23 @@ typedef struct {
 
 /* {{{ span builder for two format */
 //zipkin
-void zn_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long long start_time, long long finish_time, struct mo_chain_st *pct, uint8_t an_type);
+void zn_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type);
 void zn_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
-void zn_span_add_ba_builder(zval *span, const char *key, const char *value, long long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
-void zn_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long long timestamp, struct mo_chain_st *pct, uint8_t ba_type);
+void zn_span_add_ba_builder(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
+void zn_span_add_ba_ex_builder(zval *span, const char *key, const char *value, uint64_t timestamp, struct mo_chain_st *pct, uint8_t ba_type);
 
 //opentracing
-void ot_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long long start_time, long long finish_time, struct mo_chain_st *pct, uint8_t an_type);
+void ot_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type);
 void ot_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
-void ot_span_add_ba_builder(zval *span, const char *key, const char *value, long long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
-void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long long timestamp, struct mo_chain_st *pct, uint8_t ba_type);
+void ot_span_add_ba_builder(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
+void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, uint64_t timestamp, struct mo_chain_st *pct, uint8_t ba_type);
 
 //skywalking
 void sk_register_service_builder(char *res_data, int application_id, char *agent_uuid);
-void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, long long start_time, long long finish_time, struct mo_chain_st *pct, uint8_t an_type);
+void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type);
 void sk_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
-void sk_span_add_ba_builder(zval *span, const char *key, const char *value, long long timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
-void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, long long timestamp, struct mo_chain_st *pct, uint8_t ba_type);
+void sk_span_add_ba_builder(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
+void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, uint64_t timestamp, struct mo_chain_st *pct, uint8_t ba_type);
 //void sk_register_application_builder(zval **span);
 //void sk_segments_builder();
 /* }}} */
@@ -143,9 +143,9 @@ static void inline mo_span_ctor(mo_span_builder *psb, char *span_format)
 void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char *sink_http_uri, char *service_name);
 
 /* {{{ record fucntion for zipkin format, it is the default set */
-void zn_sart_span(zval **span, char *trace_id, char *service_name, char *span_id, char *parent_id, long long timestamp, long duration);
-void zn_add_span_annotation(zval *span, const char *value, long long timestamp, char *service_name, char *ipv4, long port);
-void zn_add_span_annotation_ex(zval *span, const char *value, long long timestamp, struct mo_chain_st *pct);
+void zn_sart_span(zval **span, char *trace_id, char *service_name, char *span_id, char *parent_id, uint64_t timestamp, long duration);
+void zn_add_span_annotation(zval *span, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port);
+void zn_add_span_annotation_ex(zval *span, const char *value, uint64_t timestamp, struct mo_chain_st *pct);
 void zn_add_span_bannotation(zval *span, const char *key, const char *value, char *service_name, char *ipv4, long port);
 void zn_add_span_bannotation_ex(zval *span, const char *key, const char *value, struct mo_chain_st *pct);
 /* }}} */

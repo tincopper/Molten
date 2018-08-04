@@ -234,7 +234,8 @@ void mo_chain_ctor(mo_chain_t *pct, mo_chain_log_t *pcl, mo_span_builder *psb, m
 
         /* execute time */
         //pct->execute_begin_time = (long) SG(global_request_time) * 1000000.00;
-        pct->execute_begin_time = mo_time_usec();
+        //pct->execute_begin_time = mo_time_usec();
+        pct->execute_begin_time = mo_time_millis();
         pct->execute_end_time = 0;
         
         /* script */
@@ -261,7 +262,8 @@ void mo_chain_ctor(mo_chain_t *pct, mo_chain_log_t *pcl, mo_span_builder *psb, m
 void mo_chain_dtor(mo_chain_t *pct, mo_span_builder *psb, mo_stack *span_stack)
 {
     if (pct->pch.is_sampled == 1) {
-        pct->execute_end_time = mo_time_usec();
+        //pct->execute_end_time = mo_time_usec();
+        pct->execute_end_time = mo_time_millis();
 
         /* add main span */
         zval *span;

@@ -99,7 +99,7 @@ static void llist_apply_func(void *data, void *arg)
     array_init(pack);
     mo_add_assoc_string(pack, "uri", e->uri, 1);
     mo_add_assoc_string(pack, "error", e->error, 1);
-    add_assoc_long(pack, "timestamp", e->timestamp);
+    add_assoc_double(pack, "timestamp", e->timestamp);
 
     add_next_index_zval(arr, pack); 
     MO_FREE_ALLOC_ZVAL(pack);

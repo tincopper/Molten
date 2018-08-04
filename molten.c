@@ -291,10 +291,11 @@ PHP_FUNCTION(molten_curl_exec)
     zval *res;
     char *span_id = NULL;
     uint64_t entry_time = 0;
-    
+
     /* build span_id */
     if (PTG(pct).pch.is_sampled == 1) {
-        entry_time = mo_time_usec();
+        //entry_time = mo_time_usec();
+        entry_time = mo_time_millis();
         push_span_context(&PTG(span_stack));
     }
 
@@ -349,14 +350,16 @@ PHP_FUNCTION(molten_curl_exec)
     /* after */
     /* must sampling will do this */
     if (result == SUCCESS && PTG(pct).pch.is_sampled == 1) {
-        uint64_t current_time = mo_time_usec(); 
+        //uint64_t current_time = mo_time_usec();
+        uint64_t current_time = mo_time_millis();
+
         zval *curl_span;
         char *parent_span_id;
         retrieve_parent_span_id(&PTG(span_stack), &parent_span_id);
 
         /* 这个地方调用molten_span.c中的定义的方法start_span_func */
         PTG(psb).start_span(&curl_span, "php_curl", PTG(pct).pch.trace_id->val, span_id, parent_span_id, entry_time, current_time, &PTG(pct), AN_CLIENT);
-        build_curl_bannotation(curl_span, (long)current_time, &PTG(pit), res, "curl_exec", 1);
+        build_curl_bannotation(curl_span, current_time, &PTG(pit), res, "curl_exec", 1);
 
         /* record response if response exist */
         if (return_value != NULL && MO_Z_TYPE_P(return_value) == IS_STRING && Z_STRLEN_P(return_value) > 0) {
@@ -1032,7 +1035,8 @@ ZEND_API void mo_execute_core(int internal, zend_execute_data *execute_data, zva
         }
 #endif
 
-        frame.entry_time = mo_time_usec();
+        //frame.entry_time = mo_time_usec();
+        frame.entry_time = mo_time_millis();
     }
 
     /* Call original under zend_try. baitout will be called when exit(), error
@@ -1077,7 +1081,8 @@ ZEND_API void mo_execute_core(int internal, zend_execute_data *execute_data, zva
     } zend_end_try();
 
     if (match_intercept) {
-        frame.exit_time = mo_time_usec();
+        //frame.exit_time = mo_time_usec();
+        frame.exit_time = mo_time_millis();
 
         if (!dobailout) {
 #if PHP_VERSION_ID < 50500

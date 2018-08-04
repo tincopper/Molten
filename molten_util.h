@@ -77,6 +77,20 @@ static inline long mo_time_u2s(long usec)
     return (long) usec/(MO_USEC_PER_SEC);
 }
 
+static inline long long mo_time_millis() {
+    struct timeval tv;
+    gettimeofday(&tv, NULL);
+    /**
+     * int ：表示数据范围在-32768到32767之间
+     * long int : 表示的范围在-2147483648到2147483647之间
+     * long long : 表示的范围在-9223372036854775808 到 9223372036854775807之间
+     *
+     * 毫秒有13位超过了long int范围，所需要转为long long类型
+     */
+    long long time = (long long)tv.tv_sec;
+    return time * 1000LL + time / 1000LL;
+}
+
 static inline long mo_time_usec()
 {
     struct timeval tv;

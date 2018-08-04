@@ -71,8 +71,8 @@ typedef struct mo_chain_st {
     mo_stack *span_stack;               /* link to global stack */ 
     
     /* excute time */
-    long long execute_begin_time;            /* execute begin time */
-    long long execute_end_time;              /* execute end time */
+    uint64_t execute_begin_time;            /* execute begin time */
+    uint64_t execute_end_time;              /* execute end time */
 
     /* http request detail */
     const char *sapi;
@@ -100,8 +100,8 @@ typedef struct {
 
     uint32_t            arg_count;        /* arguments number */
 
-    int64_t             entry_time;       /* entry wall time */ 
-    int64_t             exit_time;        /* exit wall time */
+    uint64_t             entry_time;       /* entry wall time */
+    uint64_t             exit_time;        /* exit wall time */
 
 #if PHP_VERSION_ID < 70000
     zval                **ori_args;       /* origin args */

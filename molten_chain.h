@@ -48,6 +48,7 @@
 
 void mo_chain_ctor(mo_chain_t *pct, mo_chain_log_t *pcl, mo_span_builder *psb, mo_stack *span_stack, char *service_name, char *ip);
 void mo_chain_dtor(mo_chain_t *pct, mo_span_builder *psb, mo_stack *span_stack);
+void mo_chain_segments_dtor(mo_chain_t *pct, mo_span_builder *psb);
 char *mo_rebuild_url(mo_chain_t *pct, char *ori_url);
 void mo_obtain_local_ip(char *ip);
 #endif

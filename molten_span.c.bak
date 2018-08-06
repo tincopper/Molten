@@ -528,43 +528,60 @@ void sk_add_log(zval *span, uint64_t timestamp, int8_t field_num, ...) {
         return;
     }
 
-    //traversing the array
-    zval *logs, *logs_tmp, *log_filed, *log_filed_tmp;
-
-    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "lo", sizeof("lo"), (void **)&logs) == FAILURE) {
+    zval *span_obj_tmp, *span_obj, *segment_obj;
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "sg", sizeof("sg"), (void **)&segment_obj) == FAILURE) {
         return;
     }
 
-    MO_ALLOC_INIT_ZVAL(logs_tmp);
-    array_init(logs_tmp);
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(segment_obj), "ss", sizeof("ss"), (void **)&span_obj) == FAILURE) {
+        return;
+    }
 
-    MO_ALLOC_INIT_ZVAL(log_filed);
-    array_init(log_filed);
+    //traversing the array
+    zval *logs, *logs_tmp, *log_filed, *log_filed_tmp;
+    for (zend_hash_internal_pointer_reset(Z_ARRVAL_P(span_obj));
+         zend_hash_has_more_elements(Z_ARRVAL_P(span_obj)) == SUCCESS;
+         zend_hash_move_forward(Z_ARRVAL_P(span_obj))) {
 
-    add_assoc_double(logs_tmp, "ti", timestamp);
-    add_assoc_zval(logs_tmp, "ld", log_filed);
+        if (mo_zend_hash_get_current_data_zval(Z_ARRVAL_P(span_obj), (void **) &span_obj_tmp) == FAILURE) {
+            continue;
+        }
 
-    add_next_index_zval(logs, logs_tmp);
+        if (mo_zend_hash_zval_find(Z_ARRVAL_P(span_obj_tmp), "lo", sizeof("lo"), (void **)&logs) == FAILURE) {
+            continue;
+        }
 
-    /* build fields */
-    va_list arg_ptr;
-    zval filed_key, filed_val;
-    va_start(arg_ptr, field_num);
+        MO_ALLOC_INIT_ZVAL(logs_tmp);
+        array_init(logs_tmp);
 
-    /* fetch very key and val */
-    for (int i = 0; i < field_num; i++) {
-        MO_ALLOC_INIT_ZVAL(log_filed_tmp);
-        array_init(log_filed_tmp);
+        MO_ALLOC_INIT_ZVAL(log_filed);
+        array_init(log_filed);
 
-        ZVAL_STRING(&filed_key, va_arg(arg_ptr, char*));
-        ZVAL_STRING(&filed_val, va_arg(arg_ptr, char*));
+        add_assoc_double(logs_tmp, "ti", timestamp);
+        add_assoc_zval(logs_tmp, "ld", log_filed);
 
-        zend_hash_str_update(Z_ARRVAL_P(log_filed_tmp), "k", sizeof("k") - 1, &filed_key);
-        zend_hash_str_update(Z_ARRVAL_P(log_filed_tmp), "v", sizeof("v") - 1, &filed_val);
+        add_next_index_zval(logs, logs_tmp);
 
-        add_next_index_zval(log_filed, log_filed_tmp);
+        /* build fields */
+        va_list arg_ptr;
+        zval filed_key, filed_val;
+        va_start(arg_ptr, field_num);
 
-        MO_FREE_ALLOC_ZVAL(log_filed_tmp);
+        /* fetch very key and val */
+        for (int i = 0; i < field_num; i++) {
+            MO_ALLOC_INIT_ZVAL(log_filed_tmp);
+            array_init(log_filed_tmp);
+
+            ZVAL_STRING(&filed_key, va_arg(arg_ptr, char*));
+            ZVAL_STRING(&filed_val, va_arg(arg_ptr, char*));
+
+            zend_hash_str_update(Z_ARRVAL_P(log_filed_tmp), "k", sizeof("k") - 1, &filed_key);
+            zend_hash_str_update(Z_ARRVAL_P(log_filed_tmp), "v", sizeof("v") - 1, &filed_val);
+
+            add_next_index_zval(log_filed, log_filed_tmp);
+
+            MO_FREE_ALLOC_ZVAL(log_filed_tmp);
+        }
     }
 
     MO_FREE_ALLOC_ZVAL(log_filed);
@@ -579,22 +596,40 @@ void sk_add_tag(zval *span, const char *key, const char *val)
         return;
     }
 
-    zval *tags, *tags_tmp;
-    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "to", sizeof("to"), (void **) &tags) == FAILURE) {
+    zval *tags, *tags_tmp, *span_obj, *segment_obj;
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "sg", sizeof("sg"), (void **)&segment_obj) == FAILURE) {
         return;
     }
 
-    MO_ALLOC_INIT_ZVAL(tags_tmp);
-    array_init(tags_tmp);
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(segment_obj), "ss", sizeof("ss"), (void **)&span_obj) == FAILURE) {
+        return;
+    }
 
-    zval tag_key, tag_val;
-    ZVAL_STRING(&tag_key, key);
-    ZVAL_STRING(&tag_val, val);
+    //traversing the array
+    for (zend_hash_internal_pointer_reset(Z_ARRVAL_P(span_obj));
+         zend_hash_has_more_elements(Z_ARRVAL_P(span_obj)) == SUCCESS;
+         zend_hash_move_forward(Z_ARRVAL_P(span_obj))) {
 
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
+        zval * span_obj_tmp;
+        if (mo_zend_hash_get_current_data_zval(Z_ARRVAL_P(span_obj), (void **) &span_obj_tmp) == FAILURE) {
+            continue;
+        }
 
-    add_next_index_zval(tags, tags_tmp);
+        if (mo_zend_hash_zval_find(Z_ARRVAL_P(span_obj_tmp), "to", sizeof("to"), (void **) &tags) == FAILURE) {
+            continue;
+        }
+
+        MO_ALLOC_INIT_ZVAL(tags_tmp);
+        array_init(tags_tmp);
+        zval tag_key, tag_val;
+        ZVAL_STRING(&tag_key, key);
+        ZVAL_STRING(&tag_val, (char *)val);
+
+        zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
+        zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
+
+        add_next_index_zval(tags, tags_tmp);
+    }
 
     MO_FREE_ALLOC_ZVAL(tags_tmp);
 }
@@ -604,23 +639,40 @@ void sk_add_tag_bool(zval *span, const char *key, uint8_t val)
     if (span == NULL || key == NULL) {
         return;
     }
-
-    zval *tags, *tags_tmp;
-    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "to", sizeof("to"), (void **) &tags) == FAILURE) {
+    zval *tags, *tags_tmp, *span_obj, *segment_obj;
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "sg", sizeof("sg"), (void **)&segment_obj) == FAILURE) {
         return;
     }
 
-    MO_ALLOC_INIT_ZVAL(tags_tmp);
-    array_init(tags_tmp);
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(segment_obj), "ss", sizeof("ss"), (void **)&span_obj) == FAILURE) {
+        return;
+    }
 
-    zval tag_key, tag_val;
-    ZVAL_STRING(&tag_key, key);
-    ZVAL_BOOL(&tag_val, val);
+    //traversing the array
+    for (zend_hash_internal_pointer_reset(Z_ARRVAL_P(span_obj));
+         zend_hash_has_more_elements(Z_ARRVAL_P(span_obj)) == SUCCESS;
+         zend_hash_move_forward(Z_ARRVAL_P(span_obj))) {
 
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
+        zval * span_obj_tmp;
+        if (mo_zend_hash_get_current_data_zval(Z_ARRVAL_P(span_obj), (void **) &span_obj_tmp) == FAILURE) {
+            continue;
+        }
 
-    add_next_index_zval(tags, tags_tmp);
+        if (mo_zend_hash_zval_find(Z_ARRVAL_P(span_obj_tmp), "to", sizeof("to"), (void **) &tags) == FAILURE) {
+            continue;
+        }
+
+        MO_ALLOC_INIT_ZVAL(tags_tmp);
+        array_init(tags_tmp);
+        zval tag_key, tag_val;
+        ZVAL_STRING(&tag_key, key);
+        ZVAL_BOOL(&tag_val, val);
+
+        zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
+        zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
+
+        add_next_index_zval(tags, tags_tmp);
+    }
 
     MO_FREE_ALLOC_ZVAL(tags_tmp);
 }
@@ -630,23 +682,40 @@ void sk_add_tag_long(zval *span, const char *key, long val)
     if (span == NULL || key == NULL) {
         return;
     }
-
-    zval *tags, *tags_tmp;
-    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "to", sizeof("to"), (void **) &tags) == FAILURE) {
+    zval *tags, *tags_tmp, *span_obj, *segment_obj;
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "sg", sizeof("sg"), (void **)&segment_obj) == FAILURE) {
         return;
     }
 
-    MO_ALLOC_INIT_ZVAL(tags_tmp);
-    array_init(tags_tmp);
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(segment_obj), "ss", sizeof("ss"), (void **)&span_obj) == FAILURE) {
+        return;
+    }
 
-    zval tag_key, tag_val;
-    ZVAL_STRING(&tag_key, key);
-    ZVAL_LONG(&tag_val, val);
+    //traversing the array
+    for (zend_hash_internal_pointer_reset(Z_ARRVAL_P(span_obj));
+         zend_hash_has_more_elements(Z_ARRVAL_P(span_obj)) == SUCCESS;
+         zend_hash_move_forward(Z_ARRVAL_P(span_obj))) {
 
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
+        zval * span_obj_tmp;
+        if (mo_zend_hash_get_current_data_zval(Z_ARRVAL_P(span_obj), (void **) &span_obj_tmp) == FAILURE) {
+            continue;
+        }
 
-    add_next_index_zval(tags, tags_tmp);
+        if (mo_zend_hash_zval_find(Z_ARRVAL_P(span_obj_tmp), "to", sizeof("to"), (void **) &tags) == FAILURE) {
+            continue;
+        }
+
+        MO_ALLOC_INIT_ZVAL(tags_tmp);
+        array_init(tags_tmp);
+        zval tag_key, tag_val;
+        ZVAL_STRING(&tag_key, key);
+        ZVAL_LONG(&tag_val, val);
+
+        zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
+        zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
+
+        add_next_index_zval(tags, tags_tmp);
+    }
 
     MO_FREE_ALLOC_ZVAL(tags_tmp);
 }
@@ -654,90 +723,124 @@ void sk_add_tag_long(zval *span, const char *key, long val)
 /* add parent span object */
 void sk_add_parent_span(zval *span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
                         uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct) {
+
     if (span == NULL) {
         return;
     }
-    zval *segment_ref, *segment_ref_tmp;
-    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "rs", sizeof("rs"), (void **)&segment_ref) == FAILURE) {
+
+    zval *segment_obj, *span_obj, *segement_ref, *segement_ref_tmp;
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "sg", sizeof("sg"), (void **)&segment_obj) == FAILURE) {
         return;
     }
 
-    MO_ALLOC_INIT_ZVAL(segment_ref_tmp);
-    array_init(segment_ref_tmp);
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(segment_obj), "ss", sizeof("ss"), (void **)&span_obj) == FAILURE) {
+        return;
+    }
 
-    add_assoc_string(segment_ref_tmp, "pts", ""); //parentTraceSegmentId,上级的segment_id 一个应用中的一个实例在链路中产生的编号
-    add_assoc_long(segment_ref_tmp, "ppi", 2); //parentApplicationInstanceId
-    add_assoc_long(segment_ref_tmp, "psp", 1); //parentSpanId
-    add_assoc_long(segment_ref_tmp, "psi", 0); //parentServiceId,上级的服务编号(服务注册后的ID)
-    add_assoc_string(segment_ref_tmp, "psn", "/www/data/php_service/test.php"); //parentServiceName, 上级的服务名
-    add_assoc_long(segment_ref_tmp, "ni", 0); //networkAddressId, 上级调用时使用的地址注册后的ID
-    add_assoc_string(segment_ref_tmp, "nn", "172.25.0.4:20880"); //networkAddress, 上级的地址
-    add_assoc_long(segment_ref_tmp, "eii", 2); //entryApplicationInstanceId, 入口的实例编号
-    add_assoc_long(segment_ref_tmp, "esi", 0); //entryServiceId, 入口的服务编号
-    add_assoc_string(segment_ref_tmp, "esn", ""); //entryServiceName, 入口的服务名词
-    add_assoc_long(segment_ref_tmp, "rv", 0); //RefTypeValue, 调用方式（CrossProcess，CrossThread）
+    //traversing the array
+    for (zend_hash_internal_pointer_reset(Z_ARRVAL_P(span_obj));
+         zend_hash_has_more_elements(Z_ARRVAL_P(span_obj)) == SUCCESS;
+         zend_hash_move_forward(Z_ARRVAL_P(span_obj))) {
 
-    add_next_index_zval(segment_ref, segment_ref_tmp);
+        zval *span_obj_tmp;
+        if (mo_zend_hash_get_current_data_zval(Z_ARRVAL_P(span_obj), (void **)&span_obj_tmp) == FAILURE) {
+            continue;
+        }
 
-    MO_FREE_ALLOC_ZVAL(segment_ref_tmp);
+        if (mo_zend_hash_zval_find(Z_ARRVAL_P(span_obj_tmp), "rs", sizeof("rs"), (void **)&segement_ref) == FAILURE) {
+            continue;
+        }
+
+        MO_ALLOC_INIT_ZVAL(segement_ref_tmp);
+        array_init(segement_ref_tmp);
+
+        add_assoc_string(segement_ref_tmp, "pts", ""); //parentTraceSegmentId,上级的segment_id 一个应用中的一个实例在链路中产生的编号
+        add_assoc_long(segement_ref_tmp, "ppi", 2); //parentApplicationInstanceId
+        add_assoc_long(segement_ref_tmp, "psp", 1); //parentSpanId
+        add_assoc_long(segement_ref_tmp, "psi", 0); //parentServiceId,上级的服务编号(服务注册后的ID)
+        add_assoc_string(segement_ref_tmp, "psn", "/www/data/php_service/test.php"); //parentServiceName, 上级的服务名
+        add_assoc_long(segement_ref_tmp, "ni", 0); //networkAddressId, 上级调用时使用的地址注册后的ID
+        add_assoc_string(segement_ref_tmp, "nn", "172.25.0.4:20880"); //networkAddress, 上级的地址
+        add_assoc_long(segement_ref_tmp, "eii", 2); //entryApplicationInstanceId, 入口的实例编号
+        add_assoc_long(segement_ref_tmp, "esi", 0); //entryServiceId, 入口的服务编号
+        add_assoc_string(segement_ref_tmp, "esn", ""); //entryServiceName, 入口的服务名词
+        add_assoc_long(segement_ref_tmp, "rv", 0); //RefTypeValue, 调用方式（CrossProcess，CrossThread）
+
+        add_next_index_zval(segement_ref, segement_ref_tmp);
+
+        //zval_dtor(span_obj_tmp);
+    }
+    MO_FREE_ALLOC_ZVAL(segement_ref_tmp);
 }
 
 /* add span object */
-void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
+void sk_add_span(zval *span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
                  uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct) {
-
-    MO_ALLOC_INIT_ZVAL(*span);
-    array_init(*span);
-
-    //add_assoc_long(*span, "si", span_id); //spanId
-    add_assoc_long(*span, "si", (int)span_id); //spanId
-    add_assoc_long(*span, "tv", 0); //spanType  -1 Unknown, 0 Entry, 1 Exit, 2 Local
-    add_assoc_long(*span, "lv", 3); //spanLayer 0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED
-    add_assoc_double(*span, "st", start_time); //startTime
-    add_assoc_double(*span, "et", finish_time); //endTime
-    //add_assoc_long(*span, "ci", 3); //componentId
-    add_assoc_string(*span, "cn", op_name); //componentName
-    //add_assoc_long(*span, "oi", 0); //operationNanmeId
-    add_assoc_string(*span, "on", pct->script); //operationNanme
-    //add_assoc_long(*span, "pi", 0); //operationNanmeId
-    if (pct->error_list != NULL) {
-        add_assoc_bool(*span, "ie", 0); //isError
-    } else {
-        add_assoc_bool(*span, "ie", 1); //isError
-    };
-    //add_assoc_string(*span, "pn", ""); //peerName
-
-    /* add trace segment reference */
-    zval *segment_ref;
-    if (parent_id == NULL) {
-        add_assoc_long(*span, "ps", -1); //parentSpanId
-    } else {
-        MO_ALLOC_INIT_ZVAL(segment_ref);
-        array_init(segment_ref);
-        add_assoc_long(*span, "ps", (int)parent_id); //parentSpanId
-        add_assoc_zval(*span, "rs", segment_ref);
-
-        MO_FREE_ALLOC_ZVAL(segment_ref);
+    if (span == NULL) {
+        return;
     }
+
+    zval *segment_obj, *span_object, *span_object_tmp;
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "sg", sizeof("sg"), (void **)&segment_obj) == FAILURE) {
+        return;
+    }
+
+    if (mo_zend_hash_zval_find(Z_ARRVAL_P(segment_obj), "ss", sizeof("ss"), (void **)&span_object) == FAILURE) {
+        return;
+    }
+
+    MO_ALLOC_INIT_ZVAL(span_object_tmp);
+    array_init(span_object_tmp);
+
+    //add_assoc_long(span_object_tmp, "si", span_id); //spanId
+    add_assoc_string(span_object_tmp, "si", span_id); //spanId
+    add_assoc_long(span_object_tmp, "tv", 0); //spanType  -1 Unknown, 0 Entry, 1 Exit, 2 Local
+    add_assoc_long(span_object_tmp, "lv", 3); //spanLayer 0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED
+    //add_assoc_long(span_object_tmp, "ps", parent_id); //parentSpanId
+    if (parent_id == NULL) {
+        add_assoc_string(span_object_tmp, "ps", "-1"); //parentSpanId
+    } else {
+        add_assoc_string(span_object_tmp, "ps", parent_id); //parentSpanId
+    }
+    add_assoc_double(span_object_tmp, "st", start_time); //startTime
+    add_assoc_double(span_object_tmp, "et", finish_time); //endTime
+    //add_assoc_long(span_object_tmp, "ci", 3); //componentId
+    add_assoc_string(span_object_tmp, "cn", op_name); //componentName
+    //add_assoc_long(span_object_tmp, "oi", 0); //operationNanmeId
+    add_assoc_string(span_object_tmp, "on", pct->script); //operationNanme
+    //add_assoc_long(span_object_tmp, "pi", 0); //operationNanmeId
+    if (pct->error_list != NULL) {
+        add_assoc_bool(span_object_tmp, "ie", 0); //isError
+    } else {
+        add_assoc_bool(span_object_tmp, "ie", 1); //isError
+    };
+    //add_assoc_string(span_object_tmp, "pn", ""); //peerName
+
+    /* add trace segement reference */
+    zval *segement_ref;
+    MO_ALLOC_INIT_ZVAL(segement_ref);
+    array_init(segement_ref);
+    add_assoc_zval(span_object_tmp, "rs", segement_ref);
 
     /* add tags */
     zval *tags;
     MO_ALLOC_INIT_ZVAL(tags);
     array_init(tags);
-    add_assoc_zval(*span, "to", tags);
+    add_assoc_zval(span_object_tmp, "to", tags);
 
     /* add logs */
     zval *logs;
     MO_ALLOC_INIT_ZVAL(logs);
     array_init(logs);
-    add_assoc_zval(*span, "lo", logs);
+    add_assoc_zval(span_object_tmp, "lo", logs);
 
-    //add_next_index_zval(span, span_object_tmp);
+    add_next_index_zval(span_object, span_object_tmp);
 
     /* free map */
     MO_FREE_ALLOC_ZVAL(logs);
     MO_FREE_ALLOC_ZVAL(tags);
-    //MO_FREE_ALLOC_ZVAL(span_object_tmp);
+    MO_FREE_ALLOC_ZVAL(segement_ref);
+    MO_FREE_ALLOC_ZVAL(span_object_tmp);
 }
 
 
@@ -746,14 +849,14 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
  * @param application_id
  * @param instance_id
  */
-void sk_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pct) {
+void sk_add_segments(zval **span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
+                     uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct) {
 
-    MO_ALLOC_INIT_ZVAL(*segments);
-    array_init(*segments);
+    MO_ALLOC_INIT_ZVAL(*span);
+    array_init(*span);
 
     /* add global trace id */
-    zval segments_tmp, globalTraceIds, traceId;
-    array_init(&segments_tmp);
+    zval globalTraceIds, traceId;
     array_init(&globalTraceIds);
     array_init(&traceId);
 
@@ -762,7 +865,7 @@ void sk_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pc
     add_next_index_double(&traceId, current_system_time_millis());
     add_next_index_zval(&globalTraceIds, &traceId);
 
-    add_assoc_zval(&segments_tmp, "gt", &globalTraceIds); //globalTraceIds 链路编码，与调用方相同
+    add_assoc_zval(*span, "gt", &globalTraceIds); //globalTraceIds 链路编码，与调用方相同
 
     /* add trace segment object */
     zval *segmentObject;
@@ -772,17 +875,15 @@ void sk_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pc
     add_assoc_zval(segmentObject, "ts", &traceId); //traceSegmentId，新产生
     add_assoc_long(segmentObject, "ai", pct->application_id);
     add_assoc_long(segmentObject, "ii", pct->instance_id);
-    add_assoc_zval(&segments_tmp, "sg", segmentObject);
+    add_assoc_zval(*span, "sg", segmentObject);
 
     /* add span object */
-    //zval *spanObject;
-    //MO_ALLOC_INIT_ZVAL(spanObject);
-    //array_init(spanObject);
-    add_assoc_zval(segmentObject, "ss", span);
+    zval *spanObject;
+    MO_ALLOC_INIT_ZVAL(spanObject);
+    array_init(spanObject);
+    add_assoc_zval(segmentObject, "ss", spanObject);
 
-    add_next_index_zval(*segments, &segments_tmp);
-
-    //MO_FREE_ALLOC_ZVAL(spanObject);
+    MO_FREE_ALLOC_ZVAL(spanObject);
     MO_FREE_ALLOC_ZVAL(segmentObject);
 }
 
@@ -818,7 +919,8 @@ void sk_register_service_builder(char *res_data, int application_id, char *agent
 /** span function wrapper for opentracing */
 void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type)
 {
-    sk_add_span(span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
+    sk_add_segments(span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
+    sk_add_span(*span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
     sk_add_parent_span(*span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
 
     if (an_type == AN_SERVER) {

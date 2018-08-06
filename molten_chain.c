@@ -80,6 +80,7 @@ void mo_obtain_local_ip(char *ip)
 /* }}} */
 
 /* build chain header */
+int i = 0;
 void mo_build_chain_header(mo_chain_t *pct, mo_span_builder *psb, char *ip)
 {
     /* loaded header */
@@ -357,4 +358,15 @@ void mo_chain_dtor(mo_chain_t *pct, mo_span_builder *psb, mo_stack *span_stack)
         /* pop parent span content */
         pop_span_context(span_stack);
     }
+
+}
+
+void mo_chain_segments_dtor(mo_chain_t *pct, mo_span_builder *psb) {
+    zval *span = pct->pcl->spans;
+    zval *sgements;
+    psb->start_span_header(&sgements, span, pct);
+
+    pct->pcl->spans = sgements;
+
+    MO_FREE_ALLOC_ZVAL(span);
 }

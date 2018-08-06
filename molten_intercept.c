@@ -190,7 +190,7 @@ static void curl_multi_remove_handle_record(mo_interceptor_t *pit, mo_frame_t *f
 /* }}} */
 
 /* {{{ Build curl bannotation */
-void build_curl_bannotation(zval *span, long timestamp, mo_interceptor_t *pit, zval *handle, char *method, zend_bool check_error) 
+void build_curl_bannotation(zval *span, uint64_t timestamp, mo_interceptor_t *pit, zval *handle, char *method, zend_bool check_error)
 {
     zval func;
     zval *args[1];
@@ -203,24 +203,32 @@ void build_curl_bannotation(zval *span, long timestamp, mo_interceptor_t *pit, z
     MO_ZVAL_STRING(&func, "curl_getinfo", 1);
     zval ret1;
     zval ret;
-    int result = mo_call_user_function(EG(function_table), (zval **)NULL, &func, &ret1, 1, args);   
+    int result = mo_call_user_function(EG(function_table), (zval **)NULL, &func, &ret1, 1, args);
     if (result == SUCCESS) {
         if (Z_TYPE(ret1) == IS_ARRAY) {
-           if (mo_zend_hash_zval_find(Z_ARRVAL(ret1), "url", sizeof("url"), (void **)&url) == FAILURE) {
+
+            /*smart_string tmp = {0};
+            mo_php_json_encode(&tmp, &ret1, 0);
+            if (smart_string_str(tmp) != NULL) {
+                SLOG(SLOG_INFO, "[ret1] mo log  %s", smart_string_str(tmp));
+                smart_string_free(&tmp);
+            }*/
+
+            if (mo_zend_hash_zval_find(Z_ARRVAL(ret1), "url", sizeof("url"), (void **)&url) == FAILURE) {
                 url = NULL;
-           }
+            }
 
-           if (mo_zend_hash_zval_find(Z_ARRVAL(ret1), "http_code", sizeof("http_code"), (void **)&http_code) == FAILURE) {
+            if (mo_zend_hash_zval_find(Z_ARRVAL(ret1), "http_code", sizeof("http_code"), (void **)&http_code) == FAILURE) {
                 http_code = NULL;
-           }
+            }
             
-           if (mo_zend_hash_zval_find(Z_ARRVAL(ret1), "primary_ip", sizeof("primary_ip"), (void **)&primary_ip) == FAILURE) {
+            if (mo_zend_hash_zval_find(Z_ARRVAL(ret1), "primary_ip", sizeof("primary_ip"), (void **)&primary_ip) == FAILURE) {
                 primary_ip = NULL;
-           }
+            }
 
-           if (mo_zend_hash_zval_find(Z_ARRVAL(ret1), "primary_port", sizeof("primary_port"), (void **)&primary_port) == FAILURE) {
+            if (mo_zend_hash_zval_find(Z_ARRVAL(ret1), "primary_port", sizeof("primary_port"), (void **)&primary_port) == FAILURE) {
                 primary_port = NULL;
-           }
+            }
         }
     }
     mo_zval_dtor(&func);

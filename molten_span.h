@@ -56,6 +56,7 @@ enum ba_type {BA_NORMAL, BA_SA, BA_SA_HOST, BA_SA_IP, BA_SA_DSN, BA_ERROR, BA_PA
 typedef void (*build_span_id_func)(char **span_id, char *parent_span_id, int span_count);
 
 /* span_builder */
+typedef void (*start_span_header_func)(zval **segments, zval *span, struct mo_chain_st *pct);
 typedef void (*start_span_func)(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type);
 typedef void (*start_span_ex_func)(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
 typedef void (*span_add_ba_func)(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
@@ -63,6 +64,7 @@ typedef void (*span_add_ba_ex_func)(zval *span, const char *key, const char *val
 
 typedef struct {
     uint8_t                 type;
+    start_span_header_func  start_span_header;
     start_span_func         start_span;
     start_span_ex_func      start_span_ex;
     span_add_ba_func        span_add_ba;
@@ -83,6 +85,7 @@ void ot_span_add_ba_builder(zval *span, const char *key, const char *value, uint
 void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, uint64_t timestamp, struct mo_chain_st *pct, uint8_t ba_type);
 
 //skywalking
+void sk_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pct);
 void sk_register_service_builder(char *res_data, int application_id, char *agent_uuid);
 void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type);
 void sk_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
@@ -132,6 +135,7 @@ static void inline mo_span_ctor(mo_span_builder *psb, char *span_format)
         psb->span_add_ba_ex     = &ot_span_add_ba_ex_builder;
     } else {
         psb->type = SKYWALKING;
+        psb->start_span_header  = &sk_add_segments_builder;
         psb->start_span         = &sk_start_span_builder;
         psb->start_span_ex      = &sk_start_span_ex_builder;
         psb->span_add_ba        = &sk_span_add_ba_builder;

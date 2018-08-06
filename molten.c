@@ -379,6 +379,7 @@ PHP_FUNCTION(molten_curl_exec)
         }
         mo_chain_add_span(&PTG(pcl), curl_span);
         pop_span_context(&PTG(span_stack));
+        /* next step to RSHUTDOWN */
     }
 
 }
@@ -618,7 +619,6 @@ PHP_MSHUTDOWN_FUNCTION(molten)
     
     CHECK_SAPI_NAME;
 
-
     /* Restore original executor */
 #if PHP_VERSION_ID < 50500
     zend_execute = ori_execute;
@@ -716,7 +716,11 @@ PHP_RSHUTDOWN_FUNCTION(molten)
     PTG(in_request) = 0;
     
     /* Chain dtor */
+    /* request exit span */
     mo_chain_dtor(&PTG(pct), &PTG(psb), &PTG(span_stack));
+
+    /* add header */
+    mo_chain_segments_dtor(&PTG(pct), &PTG(psb));
 
     /* Flush and dtor log */
     if (PTG(pct).pch.is_sampled == 1) {

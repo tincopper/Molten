@@ -127,7 +127,7 @@ typedef struct {
 
     uint64_t total_size;
     uint64_t alloc_size;
-    zval *spans;
+    zval *spans;                /* the final span data to collector*/
 } mo_chain_log_t;
 
 /* function */

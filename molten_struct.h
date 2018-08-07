@@ -57,6 +57,8 @@ typedef struct mo_chain_st {
     /* app id info */
     int32_t application_id; //add by tangzy at 20180730
     int32_t instance_id;    //add by tangzy at 20180730
+
+    int32_t span_type;      //-1 Unknown, 0 Entry, 1 Exit, 2 Local
     
     /* chain header */
     mo_chain_header_t pch;              /* chain header */

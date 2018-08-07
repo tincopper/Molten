@@ -694,7 +694,7 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
 
     //add_assoc_long(*span, "si", span_id); //spanId
     add_assoc_long(*span, "si", spanId); //spanId
-    add_assoc_long(*span, "tv", 0); //spanType  -1 Unknown, 0 Entry, 1 Exit, 2 Local
+    add_assoc_long(*span, "tv", pct->span_type); //spanType  -1 Unknown, 0 Entry, 1 Exit, 2 Local
     add_assoc_long(*span, "lv", 3); //spanLayer 0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED
     add_assoc_double(*span, "st", start_time); //startTime
     add_assoc_double(*span, "et", finish_time); //endTime
@@ -708,7 +708,8 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
     } else {
         add_assoc_bool(*span, "ie", 1); //isError
     }
-    //add_assoc_string(*span, "pn", ""); //peerName
+
+    add_assoc_string(*span, "pn", pct->pch.ip); //peerName
 
     /* add trace segment reference */
     zval *segment_ref;
@@ -797,8 +798,8 @@ void sk_register_service_builder(char *res_data, int application_id, char *agent
 
     cJSON *osInfo = cJSON_CreateObject();
     cJSON_AddStringToObject(osInfo, "osName", current_os_name());
-    cJSON_AddStringToObject(osInfo, "hostname", current_host_name());
-    cJSON_AddNumberToObject(osInfo, "processNo", current_thread_pid());
+    cJSON_AddStringToObject(osInfo, "hostName", current_host_name());
+    cJSON_AddNumberToObject(osInfo, "processId", current_thread_pid());
 
     cJSON *ipv4s = NULL;
     cJSON_AddItemToObject(osInfo, "ipv4s", ipv4s = cJSON_CreateArray());

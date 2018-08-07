@@ -235,7 +235,12 @@ void build_curl_bannotation(zval *span, uint64_t timestamp, mo_interceptor_t *pi
 
     /* http.url */
     convert_to_string(url);
-    pit->psb->span_add_ba_ex(span, "http.url", Z_STRVAL_P(url), timestamp, pit->pct, BA_NORMAL);
+
+    if (pit->psb->type == SKYWALKING) {
+        pit->psb->span_add_ba_ex(span, "url", Z_STRVAL_P(url), timestamp, pit->pct, BA_NORMAL);
+    } else {
+        pit->psb->span_add_ba_ex(span, "http.url", Z_STRVAL_P(url), timestamp, pit->pct, BA_NORMAL);
+    }
 
     if (check_error == 1) {
         /* curl_error */

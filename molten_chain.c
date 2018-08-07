@@ -265,6 +265,7 @@ void mo_chain_dtor(mo_chain_t *pct, mo_span_builder *psb, mo_stack *span_stack)
     if (pct->pch.is_sampled == 1) {
         //pct->execute_end_time = mo_time_usec();
         pct->execute_end_time = mo_time_millis();
+        pct->span_type = 1;
 
         /* add main span */
         zval *span;
@@ -296,7 +297,12 @@ void mo_chain_dtor(mo_chain_t *pct, mo_span_builder *psb, mo_stack *span_stack)
                 char *url = emalloc(url_len);
                 memset(url, 0x00, url_len);
                 snprintf(url, url_len, "http://%s%s", Z_STRVAL_P(http_host), Z_STRVAL_P(request_uri));
-                psb->span_add_ba_ex(span, "http.url", url, pct->execute_begin_time, pct, BA_NORMAL);
+                if (psb->type == SKYWALKING) {
+                    psb->span_add_ba_ex(span, "url", url, pct->execute_begin_time, pct, BA_NORMAL);
+                } else {
+                    psb->span_add_ba_ex(span, "http.url", url, pct->execute_begin_time, pct, BA_NORMAL);
+                }
+
                 efree(url);
             }
         }

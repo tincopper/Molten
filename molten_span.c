@@ -689,13 +689,16 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
     MO_ALLOC_INIT_ZVAL(*span);
     array_init(*span);
 
+    unsigned int spanId;
+    sscanf(span_id, "%d", &spanId);
+
     //add_assoc_long(*span, "si", span_id); //spanId
-    add_assoc_long(*span, "si", (int)span_id); //spanId
+    add_assoc_long(*span, "si", spanId); //spanId
     add_assoc_long(*span, "tv", 0); //spanType  -1 Unknown, 0 Entry, 1 Exit, 2 Local
     add_assoc_long(*span, "lv", 3); //spanLayer 0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED
     add_assoc_double(*span, "st", start_time); //startTime
     add_assoc_double(*span, "et", finish_time); //endTime
-    //add_assoc_long(*span, "ci", 3); //componentId
+    add_assoc_long(*span, "ci", 2); //componentId 2:http_client
     add_assoc_string(*span, "cn", op_name); //componentName
     //add_assoc_long(*span, "oi", 0); //operationNanmeId
     add_assoc_string(*span, "on", pct->script); //operationNanme
@@ -704,7 +707,7 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
         add_assoc_bool(*span, "ie", 0); //isError
     } else {
         add_assoc_bool(*span, "ie", 1); //isError
-    };
+    }
     //add_assoc_string(*span, "pn", ""); //peerName
 
     /* add trace segment reference */
@@ -714,7 +717,11 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
     } else {
         MO_ALLOC_INIT_ZVAL(segment_ref);
         array_init(segment_ref);
-        add_assoc_long(*span, "ps", (int)parent_id); //parentSpanId
+
+        unsigned int parentId;
+        sscanf(parent_id, "%d", &parentId);
+
+        add_assoc_long(*span, "ps", parentId); //parentSpanId
         add_assoc_zval(*span, "rs", segment_ref);
 
         MO_FREE_ALLOC_ZVAL(segment_ref);
@@ -775,14 +782,10 @@ void sk_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pc
     add_assoc_zval(&segments_tmp, "sg", segmentObject);
 
     /* add span object */
-    //zval *spanObject;
-    //MO_ALLOC_INIT_ZVAL(spanObject);
-    //array_init(spanObject);
     add_assoc_zval(segmentObject, "ss", span);
 
     add_next_index_zval(*segments, &segments_tmp);
 
-    //MO_FREE_ALLOC_ZVAL(spanObject);
     MO_FREE_ALLOC_ZVAL(segmentObject);
 }
 

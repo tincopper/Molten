@@ -87,9 +87,18 @@ void rand64hex(char **output)
 }
 
 /* build span id random */
+int step = 0;
 void build_span_id_random(char **span_id, char *parent_span_id, int span_count)
 {
-    rand64hex(span_id);
+    //rand64hex(span_id);
+    int len = 8 * 2 + 1;
+    *span_id = emalloc(len);
+    memset(*span_id, 0x00, len);
+
+    //char *tmp = (char *)step++;
+    sprintf(*span_id, "%d", step++);
+    (*span_id)[len-1] = '\0';
+    //strcpy(*span_id, tmp);
 }
 
 /* span id change to 1.1.x.x 

@@ -226,7 +226,7 @@ void mo_chain_ctor(mo_chain_t *pct, mo_chain_log_t *pcl, mo_span_builder *psb, m
     if (pct->pch.is_sampled == 1) {
         /* request method */
         pct->method = (char *) SG(request_info).request_method;
-
+        pct->span_type = 1;
         pct->span_stack = span_stack;
 
         /* init error list */
@@ -265,7 +265,7 @@ void mo_chain_dtor(mo_chain_t *pct, mo_span_builder *psb, mo_stack *span_stack)
     if (pct->pch.is_sampled == 1) {
         //pct->execute_end_time = mo_time_usec();
         pct->execute_end_time = mo_time_millis();
-        pct->span_type = 1;
+        pct->span_type = 0;
 
         /* add main span */
         zval *span;

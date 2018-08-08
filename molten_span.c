@@ -599,58 +599,6 @@ void sk_add_tag(zval *span, const char *key, const char *val)
     MO_FREE_ALLOC_ZVAL(tags_tmp);
 }
 
-void sk_add_tag_bool(zval *span, const char *key, uint8_t val)
-{
-    if (span == NULL || key == NULL) {
-        return;
-    }
-
-    zval *tags, *tags_tmp;
-    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "to", sizeof("to"), (void **) &tags) == FAILURE) {
-        return;
-    }
-
-    MO_ALLOC_INIT_ZVAL(tags_tmp);
-    array_init(tags_tmp);
-
-    zval tag_key, tag_val;
-    ZVAL_STRING(&tag_key, key);
-    ZVAL_BOOL(&tag_val, val);
-
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
-
-    add_next_index_zval(tags, tags_tmp);
-
-    MO_FREE_ALLOC_ZVAL(tags_tmp);
-}
-
-void sk_add_tag_long(zval *span, const char *key, long val)
-{
-    if (span == NULL || key == NULL) {
-        return;
-    }
-
-    zval *tags, *tags_tmp;
-    if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "to", sizeof("to"), (void **) &tags) == FAILURE) {
-        return;
-    }
-
-    MO_ALLOC_INIT_ZVAL(tags_tmp);
-    array_init(tags_tmp);
-
-    zval tag_key, tag_val;
-    ZVAL_STRING(&tag_key, key);
-    ZVAL_LONG(&tag_val, val);
-
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
-
-    add_next_index_zval(tags, tags_tmp);
-
-    MO_FREE_ALLOC_ZVAL(tags_tmp);
-}
-
 /* add parent span object */
 void sk_add_parent_span(zval *span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
                         uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct) {
@@ -698,10 +646,14 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
     add_assoc_long(*span, "lv", 3); //spanLayer 0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED
     add_assoc_double(*span, "st", start_time); //startTime
     add_assoc_double(*span, "et", finish_time); //endTime
-    add_assoc_long(*span, "ci", 2); //componentId 2:http_client
-    add_assoc_string(*span, "cn", op_name); //componentName
+    add_assoc_long(*span, "ci", pct->component_id); //componentId 2:http_client
+
+    char cn[128];
+    sprintf(cn, "%s/%s_%d", pct->service_name, op_name);
+    add_assoc_string(*span, "cn", cn); //componentName pct->script
+
     //add_assoc_long(*span, "oi", 0); //operationNanmeId
-    add_assoc_string(*span, "on", pct->script); //operationNanme
+    add_assoc_string(*span, "on", op_name); //operationNanme
     //add_assoc_long(*span, "pi", 0); //operationNanmeId
     if (pct->error_list != NULL) {
         add_assoc_bool(*span, "ie", 0); //isError
@@ -709,23 +661,21 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
         add_assoc_bool(*span, "ie", 1); //isError
     }
 
-    add_assoc_string(*span, "pn", pct->pch.ip); //peerName
+    //add_assoc_string(*span, "pn", pct->pch.ip); //peerName
 
     /* add trace segment reference */
     zval *segment_ref;
     if (parent_id == NULL) {
         add_assoc_long(*span, "ps", -1); //parentSpanId
     } else {
-        MO_ALLOC_INIT_ZVAL(segment_ref);
-        array_init(segment_ref);
-
         unsigned int parentId;
         sscanf(parent_id, "%d", &parentId);
-
         add_assoc_long(*span, "ps", parentId); //parentSpanId
-        add_assoc_zval(*span, "rs", segment_ref);
 
-        MO_FREE_ALLOC_ZVAL(segment_ref);
+        //MO_ALLOC_INIT_ZVAL(segment_ref);
+        //array_init(segment_ref);
+        //add_assoc_zval(*span, "rs", segment_ref);
+        //MO_FREE_ALLOC_ZVAL(segment_ref);
     }
 
     /* add tags */
@@ -823,7 +773,7 @@ void sk_register_service_builder(char *res_data, int application_id, char *agent
 void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type)
 {
     sk_add_span(span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
-    sk_add_parent_span(*span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
+    //sk_add_parent_span(*span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
 
     if (an_type == AN_SERVER) {
         sk_add_tag(*span, "span.kind", "server");
@@ -845,24 +795,26 @@ void sk_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_s
 
 void sk_span_add_ba_builder(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
 {
+    char str_port[64];
+    sprintf(str_port, "%ld", port);
+
     switch (ba_type) {
         case BA_NORMAL:
             sk_add_tag(span, key, value);
-            //sk_add_log(span, timestamp, 3, "event", "error", "error.kind", "Exception", "message", value);
             break;
         case BA_SA:
             sk_add_tag(span, "peer.ipv4", ipv4);
-            sk_add_tag_long(span, "peer.port", port);
+            sk_add_tag(span, "peer.port", str_port);
             sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_HOST:
             sk_add_tag(span, "peer.hostname", ipv4);
-            sk_add_tag_long(span, "peer.port", port);
+            sk_add_tag(span, "peer.port", str_port);
             sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_IP:
             sk_add_tag(span, "peer.ipv4", ipv4);
-            sk_add_tag_long(span, "peer.port", port);
+            sk_add_tag(span, "peer.port", str_port);
             sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_DSN:
@@ -870,9 +822,11 @@ void sk_span_add_ba_builder(zval *span, const char *key, const char *value, uint
             break;
         case BA_PATH:
             /* not use for opentracing */
+            sk_add_tag(span, key, value);
             break;
         case BA_ERROR:
-            sk_add_tag_bool(span, "error", 1);
+            sk_add_tag(span, "error", "true");
+            add_assoc_bool(span, "ie", 1);
             sk_add_log(span, timestamp, 3, "event", "error", "error.kind", "Exception", "message", value);
         default:
             break;
@@ -895,6 +849,10 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* 
         if (url == NULL) {
             return ;
         }
+
+        memset(sink_http_uri, 0x00, sizeof(sink_http_uri));
+        strcat(strcat(sink_http_uri, url), SK_SEGMENTS);
+
         //register application
         int application_id = sk_register_application(service_name, url);
         //第一次注册返回的是0，第二次注册才会返回真正的值

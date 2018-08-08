@@ -237,6 +237,21 @@ void build_curl_bannotation(zval *span, uint64_t timestamp, mo_interceptor_t *pi
     convert_to_string(url);
 
     if (pit->psb->type == SKYWALKING) {
+        /*zval *peer_name;
+        if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "pn", sizeof("pn"), (void **)&peer_name) == SUCCESS) {
+            //add_next_index_string(peer_name, Z_STRVAL_P(primary_ip));
+        }*/
+        pit->pct->component_id = 2; //http
+
+        /*char host[64];
+        char *ip = Z_STRVAL_P(primary_ip);
+        int port = primary_port == NULL ? 80 : Z_LVAL_P(primary_port);
+        sprintf(host, "%s:%d", ip, port);*/
+
+        char host[64];
+        sscanf(Z_STRVAL_P(url), "http://%s", host);
+
+        add_assoc_string(span, "pn", host); //peerName
         pit->psb->span_add_ba_ex(span, "url", Z_STRVAL_P(url), timestamp, pit->pct, BA_NORMAL);
     } else {
         pit->psb->span_add_ba_ex(span, "http.url", Z_STRVAL_P(url), timestamp, pit->pct, BA_NORMAL);

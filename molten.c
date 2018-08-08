@@ -357,6 +357,7 @@ PHP_FUNCTION(molten_curl_exec)
         char *parent_span_id;
         retrieve_parent_span_id(&PTG(span_stack), &parent_span_id);
 
+        PTG(pct).component_id = 2;
         /* 这个地方调用molten_span.c中的定义的方法start_span_func */
         PTG(psb).start_span(&curl_span, "php_curl", PTG(pct).pch.trace_id->val, span_id, parent_span_id, entry_time, current_time, &PTG(pct), AN_CLIENT);
         build_curl_bannotation(curl_span, current_time, &PTG(pit), res, "curl_exec", 1);

@@ -87,15 +87,16 @@ static inline long long mo_time_millis() {
      *
      * 毫秒有13位超过了long int范围，所需要转为long long类型
      */
-    long long time = (long long)tv.tv_sec;
-    return time * 1000LL + time / 1000LL;
+    long long t_sec = (long long)tv.tv_sec;
+    long long t_usec = (long long)tv.tv_usec;
+    return (t_sec * 1000000LL + t_usec) / 1000LL;
 }
 
-static inline long mo_time_usec()
+static inline long long mo_time_usec()
 {
     struct timeval tv;
     gettimeofday(&tv, 0);
-    return (long) tv.tv_sec * MO_USEC_PER_SEC + (long) tv.tv_usec;
+    return (long long) tv.tv_sec * MO_USEC_PER_SEC + (long long) tv.tv_usec;
 }
 
 /* {{{ find server variables */

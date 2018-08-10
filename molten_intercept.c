@@ -241,7 +241,8 @@ void build_curl_bannotation(zval *span, uint64_t timestamp, mo_interceptor_t *pi
         if (mo_zend_hash_zval_find(Z_ARRVAL_P(span), "pn", sizeof("pn"), (void **)&peer_name) == SUCCESS) {
             //add_next_index_string(peer_name, Z_STRVAL_P(primary_ip));
         }*/
-        pit->pct->component_id = 2; //http
+        pit->pct->component_id = HTTP_CLIENT_CN; //http
+        pit->pct->span_layer = HTTP_LAYER; //http
 
         /*char host[64];
         char *ip = Z_STRVAL_P(primary_ip);
@@ -250,8 +251,8 @@ void build_curl_bannotation(zval *span, uint64_t timestamp, mo_interceptor_t *pi
 
         char host[64];
         sscanf(Z_STRVAL_P(url), "http://%s", host);
-
         add_assoc_string(span, "pn", host); //peerName
+
         pit->psb->span_add_ba_ex(span, "url", Z_STRVAL_P(url), timestamp, pit->pct, BA_NORMAL);
     } else {
         pit->psb->span_add_ba_ex(span, "http.url", Z_STRVAL_P(url), timestamp, pit->pct, BA_NORMAL);
@@ -404,7 +405,10 @@ static void analyze_data_source(zval *span, char *db_type, char *data_source, mo
 /* {{{ pdo record */
 static void pdo_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
-    zval *object = frame->object;    
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
+
+    zval *object = frame->object;
 
     GET_FUNC_ARG(fir_arg,0);
     zval *span;
@@ -466,7 +470,10 @@ static void pdo_record(mo_interceptor_t *pit, mo_frame_t *frame)
 /* {{{ pdo statement record */
 static void pdo_statement_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
-    zval *object = frame->object;    
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
+
+    zval *object = frame->object;
     zval *span;
     char db_type[64]={0};
     pit->psb->start_span_ex(&span, "PDOStatement::execute", pit->pct, frame, AN_CLIENT);
@@ -527,8 +534,14 @@ static void pdo_statement_record(mo_interceptor_t *pit, mo_frame_t *frame)
 /* {{{ redis record */
 static void redis_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
-    zval *object = frame->object;    
+    pit->pct->span_layer = CACHE_LAYER;
+    pit->pct->component_id = JEDIS_CN;
+
+    zval *object = frame->object;
     zval *span;
+
+    pit->pct->span_layer = CACHE_LAYER;
+    pit->pct->component_id = JEDIS_CN;
 
     pit->psb->start_span_ex(&span, smart_string_str(frame->function), pit->pct, frame, AN_CLIENT);
 
@@ -636,6 +649,9 @@ static void memcached_common_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
     zval *span;
 
+    pit->pct->span_layer = CACHE_LAYER;
+    pit->pct->component_id = MEMCACHED_CN;
+
     pit->psb->start_span_ex(&span, smart_string_str(frame->function), pit->pct, frame, AN_CLIENT);
     memcached_common_call(pit, frame, span);
 }
@@ -647,6 +663,8 @@ static void memcached_add_server_record(mo_interceptor_t *pit, mo_frame_t *frame
 {
     zval *span;
 
+    pit->pct->span_layer = CACHE_LAYER;
+    pit->pct->component_id = MEMCACHED_CN;
     pit->psb->start_span_ex(&span, smart_string_str(frame->function), pit->pct, frame, AN_CLIENT);
 
     if (frame->arg_count >= 2) {
@@ -671,6 +689,10 @@ static void memcached_add_server_record(mo_interceptor_t *pit, mo_frame_t *frame
 static void memcached_add_servers_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
     zval *span;
+
+    pit->pct->span_layer = CACHE_LAYER;
+    pit->pct->component_id = MEMCACHED_CN;
+
     pit->psb->start_span_ex(&span, smart_string_str(frame->function), pit->pct, frame, AN_CLIENT);
 
     GET_FUNC_ARG(servers, 0);
@@ -771,8 +793,9 @@ static void mysqli_connect_common_record(mo_interceptor_t *pit, mo_frame_t *fram
     }
 
     /* db.instance */
-    GET_FUNC_ARG(dbname,3);
-    if (frame->arg_count >= 3 && MO_Z_TYPE_P(dbname) == IS_STRING) {
+    GET_FUNC_ARG(dbname, 3);
+    //if (frame->arg_count >= 3 && MO_Z_TYPE_P(dbname) == IS_STRING) {
+    if (frame->arg_count > 3 && MO_Z_TYPE_P(dbname) == IS_STRING) {
         pit->psb->span_add_ba_ex(span,  "db.instance",Z_STRVAL_P(dbname), frame->exit_time, pit->pct, BA_NORMAL);
     }
 
@@ -805,16 +828,21 @@ static void mysqli_connect_common_record(mo_interceptor_t *pit, mo_frame_t *fram
 /* {{{ mysqli procedural */
 static void mysqli_connect_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
     mysqli_connect_common_record(pit, frame, 1);
 }
 /* }}} */
 
 /* {{{ myqli real connect */
-static void mysqli_real_connect_record(mo_interceptor_t *pit, mo_frame_t *frame) 
+static void mysqli_real_connect_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
     if (frame->arg_count < 2) {
         return;
     }
+
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
 
     zval *span = build_com_record(pit, frame, 0);
 
@@ -1011,6 +1039,9 @@ static void db_query_record(mo_interceptor_t *pit, mo_frame_t *frame, int proced
 /* {{{ mysqli procedural */
 static void mysqli_query_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
+
     db_query_record(pit, frame, 1);
 }
 /* }}} */
@@ -1018,6 +1049,9 @@ static void mysqli_query_record(mo_interceptor_t *pit, mo_frame_t *frame)
 /* {{{ mysqli oo connect recrod */
 static void mysqli_construct_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
+
     mysqli_connect_common_record(pit, frame, 0);
 }
 /* }}} */
@@ -1025,6 +1059,9 @@ static void mysqli_construct_record(mo_interceptor_t *pit, mo_frame_t *frame)
 /* {{{ mysqli oo query reocrd */
 static void mysqli_oo_query_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
+
     db_query_record(pit, frame, 0);
 }
 /* }}} */
@@ -1032,6 +1069,9 @@ static void mysqli_oo_query_record(mo_interceptor_t *pit, mo_frame_t *frame)
 /* {{{ mysqli common record */
 static void mysqli_common_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
+
     zval *span = build_com_record(pit, frame, 0);
     pit->psb->span_add_ba_ex(span, "db.type", "mysql", frame->exit_time, pit->pct, BA_NORMAL);
     mo_chain_add_span(pit->pct->pcl, span);
@@ -1135,6 +1175,9 @@ static void mysqli_stmt_exe_common_record(mo_interceptor_t *pit, mo_frame_t *fra
 /* {{{ mysqli stmt exe oo record */
 static void mysqli_stmt_exe_oo_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
+
     if (smart_strcmp(frame->function, "prepare") == 0) {
         mysqli_stmt_prepare_common_record(pit, frame, 0);
     } else {
@@ -1146,6 +1189,9 @@ static void mysqli_stmt_exe_oo_record(mo_interceptor_t *pit, mo_frame_t *frame)
 /* {{{ mysqli stmt prepare procedural */
 static void mysqli_stmt_prepare_procedural_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
+
     mysqli_stmt_prepare_common_record(pit, frame, 1);
 }
 /* }}} */
@@ -1153,6 +1199,9 @@ static void mysqli_stmt_prepare_procedural_record(mo_interceptor_t *pit, mo_fram
 /* {{{ mysqli stmt procedural */
 static void mysqli_stmt_exe_procedural_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
+    pit->pct->span_layer = DATABASE_LAYER;
+    pit->pct->component_id = MYSQL_CN;
+
     mysqli_stmt_exe_common_record(pit, frame, 1);
 }
 /* }}} */
@@ -1167,7 +1216,10 @@ static void mongodb_record(mo_interceptor_t *pit, mo_frame_t *frame)
     if (frame->arg_count < 1) {
         return;
     }
-    
+
+    pit->pct->span_layer = CACHE_LAYER;
+    pit->pct->component_id = MONGODB_CN;
+
     zval *span = build_com_record(pit, frame, 0);
     
     /* add db statement */
@@ -1204,6 +1256,9 @@ static void mongodb_server_record(mo_interceptor_t *pit, mo_frame_t *frame)
     if (frame->arg_count < 1) {
         return;
     }
+
+    pit->pct->span_layer = CACHE_LAYER;
+    pit->pct->component_id = MONGODB_CN;
     
     zval *span = build_com_record(pit, frame, 0);
     
@@ -1331,7 +1386,10 @@ static void guzzle_request_record(mo_interceptor_t *pit, mo_frame_t *frame)
 /* {{{ es request record */
 static void es_request_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
-    zval *client = frame->object;    
+    zval *client = frame->object;
+
+    //pit->pct->span_layer = CACHE_LAYER;
+    //pit->pct->component_id = CN;
 
     zval *span = build_com_record(pit, frame, 0);
 

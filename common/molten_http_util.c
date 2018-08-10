@@ -15,7 +15,6 @@ size_t process_data(void *data, size_t size, size_t nmemb, char *content) {
     //SLOG(SLOG_INFO, "[http] http response data:%s", data);
     long sizes = size * nmemb;
     strncpy(content, (char*)data, sizes);
-    //response = (char*)data;
     return sizes;
 }
 

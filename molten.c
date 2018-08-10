@@ -234,8 +234,10 @@ static void molten_clear_reload_function()
         if ((orig = zend_hash_str_find_ptr(CG(function_table), p->save_func, strlen(p->save_func))) != NULL) {
               zend_hash_str_update_mem(CG(function_table), p->orig_func, strlen(p->orig_func), orig, sizeof(zend_internal_function));
               function_add_ref(orig);
-              zend_hash_str_del(CG(function_table), p->save_func, strlen(p->save_func)); 
-         }
+              /* Segmentation fault */
+              //zend_hash_str_del(CG(function_table), p->save_func, strlen(p->save_func));
+              zend_hash_str_del(CG(function_table), ZEND_STRS(p->save_func));
+        }
         p++;
     }
 #endif
@@ -357,7 +359,8 @@ PHP_FUNCTION(molten_curl_exec)
         char *parent_span_id;
         retrieve_parent_span_id(&PTG(span_stack), &parent_span_id);
 
-        PTG(pct).component_id = 2;
+        PTG(pct).component_id = HTTP_CLIENT_CN;
+        PTG(pct).span_layer = HTTP_LAYER;
         /* 这个地方调用molten_span.c中的定义的方法start_span_func */
         PTG(psb).start_span(&curl_span, "php_curl", PTG(pct).pch.trace_id->val, span_id, parent_span_id, entry_time, current_time, &PTG(pct), AN_CLIENT);
         build_curl_bannotation(curl_span, current_time, &PTG(pit), res, "curl_exec", 1);
@@ -1023,7 +1026,7 @@ ZEND_API void mo_execute_core(int internal, zend_execute_data *execute_data, zva
         frame_build(&frame, internal, MO_FRAME_ENTRY, caller, execute_data, NULL TSRMLS_CC);
 #endif
         /* run capture */
-        i_ele->capture != NULL ? i_ele->capture(&PTG(pit), &frame) : NULL;  
+        i_ele->capture != NULL ? i_ele->capture(&PTG(pit), &frame) : NULL;
 
         /* Register return value ptr */
 #if PHP_VERSION_ID < 70000
@@ -1106,7 +1109,7 @@ ZEND_API void mo_execute_core(int internal, zend_execute_data *execute_data, zva
         frame.type = MO_FRAME_EXIT;
 
         /* Record call result */
-        i_ele->record(&PTG(pit), &frame);  
+        i_ele->record(&PTG(pit), &frame);
 
 #if PHP_VERSION_ID < 70000
         /* Free return value */

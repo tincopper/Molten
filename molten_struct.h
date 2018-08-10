@@ -59,6 +59,7 @@ typedef struct mo_chain_st {
     int32_t instance_id;    //add by tangzy at 20180730
 
     int32_t span_type;      //-1 Unknown, 0 Entry, 1 Exit, 2 Local
+    int32_t span_layer;     //0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED
     int32_t component_id;   //2 HttpClient, 3 Dubbo, 23 GRPC, 30 Jedis, 33 mysql, 34 ojdbc, 42 mongodb,
 
     /* chain header */

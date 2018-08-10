@@ -643,17 +643,17 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
     //add_assoc_long(*span, "si", span_id); //spanId
     add_assoc_long(*span, "si", spanId); //spanId
     add_assoc_long(*span, "tv", pct->span_type); //spanType  -1 Unknown, 0 Entry, 1 Exit, 2 Local
-    add_assoc_long(*span, "lv", 3); //spanLayer 0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED
+    add_assoc_long(*span, "lv", pct->span_layer); //spanLayer 0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED
     add_assoc_double(*span, "st", start_time); //startTime
     add_assoc_double(*span, "et", finish_time); //endTime
     add_assoc_long(*span, "ci", pct->component_id); //componentId 2:http_client
 
-    char cn[128];
-    sprintf(cn, "%s/%s_%d", pct->service_name, op_name);
-    add_assoc_string(*span, "cn", cn); //componentName pct->script
+    char on[128];
+    sprintf(on, "%s/%s_%s", pct->service_name, op_name, span_id);
+    add_assoc_string(*span, "cn", op_name); //componentName pct->script
 
     //add_assoc_long(*span, "oi", 0); //operationNanmeId
-    add_assoc_string(*span, "on", op_name); //operationNanme
+    add_assoc_string(*span, "on", on); //operationNanme
     //add_assoc_long(*span, "pi", 0); //operationNanmeId
     if (pct->error_list != NULL) {
         add_assoc_bool(*span, "ie", 0); //isError
@@ -798,21 +798,27 @@ void sk_span_add_ba_builder(zval *span, const char *key, const char *value, uint
     char str_port[64];
     sprintf(str_port, "%ld", port);
 
+    char peer_name[64];
+    sprintf(peer_name, "%s:%s", ipv4, str_port);
+
     switch (ba_type) {
         case BA_NORMAL:
             sk_add_tag(span, key, value);
             break;
         case BA_SA:
+            add_assoc_string(span, "pn", peer_name); //peerName
             sk_add_tag(span, "peer.ipv4", ipv4);
             sk_add_tag(span, "peer.port", str_port);
             sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_HOST:
+            add_assoc_string(span, "pn", peer_name); //peerName
             sk_add_tag(span, "peer.hostname", ipv4);
             sk_add_tag(span, "peer.port", str_port);
             sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_IP:
+            add_assoc_string(span, "pn", peer_name); //peerName
             sk_add_tag(span, "peer.ipv4", ipv4);
             sk_add_tag(span, "peer.port", str_port);
             sk_add_tag(span, "peer.service", service_name);
@@ -880,9 +886,9 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* 
  */
 char *sk_get_server(char *url) {
     //get the apm server address
-    char response[128] = "";
+    char response[256];
     CURLcode lcode = get_request(url, response);
-    if (lcode != CURLE_OK || response == "") {
+    if (lcode != CURLE_OK || response == NULL) {
         return NULL;
     }
 

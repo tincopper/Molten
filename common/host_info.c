@@ -28,8 +28,9 @@ LONG current_system_time_millis() {
      *
      * 毫秒有13位超过了long int范围，所需要转为long long类型
      */
-    LONG time = (LONG)tv.tv_sec;
-    return time * 1000LL + time / 1000LL;
+    LONG t_sec = (LONG)tv.tv_sec;
+    LONG t_usec = (LONG)tv.tv_usec;
+    return (t_sec * 1000000LL + t_usec) / 1000LL;
 }
 
 int current_thread_pid() {

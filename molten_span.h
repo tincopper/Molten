@@ -40,6 +40,30 @@
 #define AN_SERVER      0
 #define AN_CLIENT      1
 
+/* span type */
+#define UNKNOWN_TYPE -1
+#define ENTRY_TYPE    0
+#define EXIT_TYPE     1
+#define LOCAL_TYPE    2
+
+/* span layer type */
+#define UNRECOGNIZED_LAYER   -1
+#define UNKNOWN_LAYER         0
+#define DATABASE_LAYER        1
+#define RPC_LAYER             2
+#define HTTP_LAYER            3
+#define MQ_LAYER              4
+#define CACHE_LAYER           5
+
+/* component type */
+#define HTTP_CLIENT_CN  2
+#define GRPC_CN        23
+#define JEDIS_CN       30
+#define MYSQL_CN       33
+#define OJDBC_CN       34
+#define MEMCACHED_CN   36
+#define MONGODB_CN     42
+
 #define SK_REGISTER_APPLICATION  "application/register"
 #define SK_REGISTER_SERVICE      "instance/register"
 #define SK_SERVICENAME_DISCOVERY "servicename/discovery"

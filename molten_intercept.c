@@ -251,7 +251,8 @@ void build_curl_bannotation(zval *span, uint64_t timestamp, mo_interceptor_t *pi
 
         char host[64];
         sscanf(Z_STRVAL_P(url), "http://%s", host);
-        add_assoc_string(span, "pn", host); //peerName
+        //add_assoc_string(span, "pn", host); //peerName
+        mo_add_assoc_string(span, "pn", host, 1);
 
         pit->psb->span_add_ba_ex(span, "url", Z_STRVAL_P(url), timestamp, pit->pct, BA_NORMAL);
     } else {

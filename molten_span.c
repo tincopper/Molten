@@ -15,7 +15,7 @@
  */
 
 #include <string.h>
-#include <common/host_info.h>
+#include "common/host_info.h"
 #include "molten_span.h"
 #include "common/molten_http_util.h"
 #include "common/molten_cJSON.h"

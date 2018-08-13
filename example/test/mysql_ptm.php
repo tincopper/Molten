@@ -55,7 +55,7 @@ $data = curl_exec($curl);
 //关闭URL请求
 curl_close($curl);
 //显示获得的数据
-print_r($data);
+//print_r($data);
 
 $t2 = msectime();
 $t = $t2 - $t1;

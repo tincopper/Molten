@@ -40,7 +40,7 @@
             && (strncmp(sapi_module.name, "apache", sizeof("apache") -1) != 0)                  \
             && (strncmp(sapi_module.name, "cli-server", sizeof("cli-server") -1) != 0)) {       \
             if ((PTG(tracing_cli) == 0) || (PTG(tracing_cli) != 0                               \
-                        && strncmp(sapi_module.name, "cli", sizeof("cli") -1) != 0) ) {         \
+                        && strncmp(sapi_module.name, "cli", sizeof("cli") -1) != 0)) {         \
                 PTG(enable_sapi) = 0;                                                           \
                 return SUCCESS;                                                                 \
             }                                                                                   \

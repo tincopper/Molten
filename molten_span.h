@@ -58,11 +58,11 @@
 /* component type */
 #define HTTP_CLIENT_CN  2
 #define GRPC_CN        23
-#define JEDIS_CN       30
-#define MYSQL_CN       33
-#define OJDBC_CN       34
-#define MEMCACHED_CN   36
-#define MONGODB_CN     42
+#define JEDIS_CN       7    //beta2 - 30
+#define MYSQL_CN       5    //beta2 - 33
+#define OJDBC_CN       6    //beta2 - 34
+#define MEMCACHED_CN   20   //beta2 - 36
+#define MONGODB_CN     9    //beta2 - 42
 
 #define SK_REGISTER_APPLICATION  "application/register"
 #define SK_REGISTER_SERVICE      "instance/register"

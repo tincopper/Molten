@@ -852,7 +852,7 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* 
     if (psb->type == SKYWALKING) {
         //char* server_url = "http://10.40.6.114:10800/agent/jetty";
         char *server_url = sink_http_uri;
-        globale_init();
+        //globale_init();
         char* url = sk_get_server(server_url);
         if (url == NULL) {
             return ;
@@ -877,7 +877,7 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* 
         SLOG(SLOG_INFO, "molten register instance id [%d]", instance_id);
 
         //release curl
-        globale_release();
+        //globale_release();
     }
 }
 

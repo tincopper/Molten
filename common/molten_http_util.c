@@ -109,13 +109,13 @@ CURL* init() {
 }
 
 void release(CURL* curl) {
-    curl_easy_cleanup(curl);
+    //curl_easy_cleanup(curl);
 }
 
 void globale_init() {
-    curl_global_init(CURL_GLOBAL_ALL);
+    //curl_global_init(CURL_GLOBAL_ALL);
 }
 
 void globale_release() {
-    curl_global_cleanup();
+    //curl_global_cleanup();
 }

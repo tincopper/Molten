@@ -552,12 +552,13 @@ void sk_add_log(zval *span, uint64_t timestamp, int8_t field_num, ...) {
     va_start(arg_ptr, field_num);
 
     /* fetch very key and val */
-    for (int i = 0; i < field_num; i++) {
+    int i;
+    for (i = 0; i < field_num; i++) {
         MO_ALLOC_INIT_ZVAL(log_filed_tmp);
         array_init(log_filed_tmp);
 
-        ZVAL_STRING(&filed_key, va_arg(arg_ptr, char*));
-        ZVAL_STRING(&filed_val, va_arg(arg_ptr, char*));
+        MO_ZVAL_STRING(&filed_key, va_arg(arg_ptr, char*), 1);
+        MO_ZVAL_STRING(&filed_val, va_arg(arg_ptr, char*), 1);
 
         zend_hash_str_update(Z_ARRVAL_P(log_filed_tmp), "k", sizeof("k") - 1, &filed_key);
         zend_hash_str_update(Z_ARRVAL_P(log_filed_tmp), "v", sizeof("v") - 1, &filed_val);
@@ -588,8 +589,8 @@ void sk_add_tag(zval *span, const char *key, const char *val)
     array_init(tags_tmp);
 
     zval tag_key, tag_val;
-    ZVAL_STRING(&tag_key, key);
-    ZVAL_STRING(&tag_val, val);
+    MO_ZVAL_STRING(&tag_key, key, 1);
+    MO_ZVAL_STRING(&tag_val, val, 1);
 
     zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
     zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
@@ -756,7 +757,8 @@ void sk_register_service_builder(char *res_data, int application_id, char *agent
 
     char **ipv4 = current_ipv4();
     int len = sizeof(ipv4) / sizeof(ipv4[0]);
-    for (int i = 0; i < len; i++) {
+    int i;
+    for (i = 0; i < len; i++) {
         char *string = ipv4[i];
         char result1[64] = "";
         strcpy(result1, string);

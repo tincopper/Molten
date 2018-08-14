@@ -613,16 +613,16 @@ void sk_add_parent_span(zval *span, char *op_name, char *trace_id, char *span_id
     MO_ALLOC_INIT_ZVAL(segment_ref_tmp);
     array_init(segment_ref_tmp);
 
-    add_assoc_string(segment_ref_tmp, "pts", ""); //parentTraceSegmentId,上级的segment_id 一个应用中的一个实例在链路中产生的编号
+    mo_add_assoc_string(segment_ref_tmp, "pts", "", 1); //parentTraceSegmentId,上级的segment_id 一个应用中的一个实例在链路中产生的编号
     add_assoc_long(segment_ref_tmp, "ppi", 2); //parentApplicationInstanceId
     add_assoc_long(segment_ref_tmp, "psp", 1); //parentSpanId
     add_assoc_long(segment_ref_tmp, "psi", 0); //parentServiceId,上级的服务编号(服务注册后的ID)
-    add_assoc_string(segment_ref_tmp, "psn", "/www/data/php_service/test.php"); //parentServiceName, 上级的服务名
+    mo_add_assoc_string(segment_ref_tmp, "psn", "/www/data/php_service/test.php", 1); //parentServiceName, 上级的服务名
     add_assoc_long(segment_ref_tmp, "ni", 0); //networkAddressId, 上级调用时使用的地址注册后的ID
-    add_assoc_string(segment_ref_tmp, "nn", "172.25.0.4:20880"); //networkAddress, 上级的地址
+    mo_add_assoc_string(segment_ref_tmp, "nn", "172.25.0.4:20880", 1); //networkAddress, 上级的地址
     add_assoc_long(segment_ref_tmp, "eii", 2); //entryApplicationInstanceId, 入口的实例编号
     add_assoc_long(segment_ref_tmp, "esi", 0); //entryServiceId, 入口的服务编号
-    add_assoc_string(segment_ref_tmp, "esn", ""); //entryServiceName, 入口的服务名词
+    mo_add_assoc_string(segment_ref_tmp, "esn", "", 1); //entryServiceName, 入口的服务名词
     add_assoc_long(segment_ref_tmp, "rv", 0); //RefTypeValue, 调用方式（CrossProcess，CrossThread）
 
     add_next_index_zval(segment_ref, segment_ref_tmp);
@@ -650,10 +650,10 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
 
     char on[128];
     sprintf(on, "%s/%s_%s", pct->service_name, op_name, span_id);
-    add_assoc_string(*span, "cn", op_name); //componentName pct->script
+    mo_add_assoc_string(*span, "cn", op_name, 1); //componentName pct->script
 
     //add_assoc_long(*span, "oi", 0); //operationNanmeId
-    add_assoc_string(*span, "on", on); //operationNanme
+    mo_add_assoc_string(*span, "on", on, 1); //operationNanme
     //add_assoc_long(*span, "pi", 0); //operationNanmeId
     if (pct->error_list != NULL) {
         add_assoc_bool(*span, "ie", 0); //isError
@@ -806,19 +806,19 @@ void sk_span_add_ba_builder(zval *span, const char *key, const char *value, uint
             sk_add_tag(span, key, value);
             break;
         case BA_SA:
-            add_assoc_string(span, "pn", peer_name); //peerName
+            mo_add_assoc_string(span, "pn", peer_name, 1); //peerName
             sk_add_tag(span, "peer.ipv4", ipv4);
             sk_add_tag(span, "peer.port", str_port);
             sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_HOST:
-            add_assoc_string(span, "pn", peer_name); //peerName
+            mo_add_assoc_string(span, "pn", peer_name, 1); //peerName
             sk_add_tag(span, "peer.hostname", ipv4);
             sk_add_tag(span, "peer.port", str_port);
             sk_add_tag(span, "peer.service", service_name);
             break;
         case BA_SA_IP:
-            add_assoc_string(span, "pn", peer_name); //peerName
+            mo_add_assoc_string(span, "pn", peer_name, 1); //peerName
             sk_add_tag(span, "peer.ipv4", ipv4);
             sk_add_tag(span, "peer.port", str_port);
             sk_add_tag(span, "peer.service", service_name);

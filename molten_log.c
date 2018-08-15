@@ -226,7 +226,7 @@ void mo_chain_log_dtor(mo_chain_log_t *log)
 void mo_chain_log_init(mo_chain_log_t *log)
 {
     memset(log->buf, 0x00, log->total_size);
-    log->alloc_size = 0; 
+    log->alloc_size = 0;
     MO_ALLOC_INIT_ZVAL(log->spans);
     array_init(log->spans);
 }

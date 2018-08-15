@@ -333,9 +333,8 @@ static inline int mo_zend_hash_update_ptr(HashTable *ht, char *k, int len, void 
 
 static inline int mo_zend_hash_update(HashTable *ht, char *k, int len, void *val, int nDataSize, void **pDest)
 {
-    //return zend_hash_str_update_ptr(ht, k, len, val) ? SUCCESS : FAILURE;
     void **v = (void **)val;
-    return zend_hash_str_update_ptr(ht, k, len - 1, *v) ? SUCCESS : FAILURE;
+    return zend_hash_str_update(ht, k, len - 1, *v) ? SUCCESS : FAILURE;
 }
 
 static inline int mo_zend_hash_index_update(HashTable *ht, ulong h, void *pData, uint nDataSize, void **pDest)

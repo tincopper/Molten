@@ -97,12 +97,14 @@ typedef struct {
 
 /* {{{ span builder for two format */
 //zipkin
+void zn_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pct);
 void zn_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type);
 void zn_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
 void zn_span_add_ba_builder(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
 void zn_span_add_ba_ex_builder(zval *span, const char *key, const char *value, uint64_t timestamp, struct mo_chain_st *pct, uint8_t ba_type);
 
 //opentracing
+void ot_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pct);
 void ot_start_span_builder(zval **span, char *service_name, char *trace_id, char *span_id, char *parent_id, uint64_t start_time, uint64_t finish_time, struct mo_chain_st *pct, uint8_t an_type);
 void ot_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_st *pct, mo_frame_t *frame, uint8_t an_type);
 void ot_span_add_ba_builder(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type);
@@ -147,12 +149,14 @@ static void inline mo_span_ctor(mo_span_builder *psb, char *span_format)
 {
     if (strncmp(span_format, "zipkin", sizeof("zipkin") - 1) == 0) {
         psb->type = ZIPKIN;
+        psb->start_span_header  = &zn_add_segments_builder;
         psb->start_span         = &zn_start_span_builder;
         psb->start_span_ex      = &zn_start_span_ex_builder;
         psb->span_add_ba        = &zn_span_add_ba_builder;
         psb->span_add_ba_ex     = &zn_span_add_ba_ex_builder;
     } else if (strncmp(span_format, "opentracing", sizeof("opentracing") - 1) == 0) {
         psb->type = OPENTRACING;
+        psb->start_span_header  = &ot_add_segments_builder;
         psb->start_span         = &ot_start_span_builder;
         psb->start_span_ex      = &ot_start_span_ex_builder;
         psb->span_add_ba        = &ot_span_add_ba_builder;

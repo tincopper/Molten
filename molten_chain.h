@@ -43,7 +43,7 @@
 #define zend_true                   1
 #define zend_flase                  0
 
-#define ADD_HASH_MOLTEN_KEY(ht, pck) mo_zend_hash_update(ht, pck->name, (strlen(pck->name) + 1), \
+#define ADD_HASH_MOLTEN_KEY(ht, pck) mo_zend_hash_update_ptr(ht, pck->name, (strlen(pck->name) + 1), \
         (void *)&pck, sizeof(mo_chain_key_t *), NULL)
 
 void mo_chain_ctor(mo_chain_t *pct, mo_chain_log_t *pcl, mo_span_builder *psb, mo_stack *span_stack, char *service_name, char *ip);

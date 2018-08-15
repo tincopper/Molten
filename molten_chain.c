@@ -350,7 +350,6 @@ void mo_chain_dtor(mo_chain_t *pct, mo_span_builder *psb, mo_stack *span_stack)
 
         mo_chain_add_span(pct->pcl, span);
 
-
         /* free error list */
         mo_zval_ptr_dtor(&pct->error_list);
         MO_FREE_ALLOC_ZVAL(pct->error_list);
@@ -368,11 +367,14 @@ void mo_chain_dtor(mo_chain_t *pct, mo_span_builder *psb, mo_stack *span_stack)
 }
 
 void mo_chain_segments_dtor(mo_chain_t *pct, mo_span_builder *psb) {
+
     zval *span = pct->pcl->spans;
-    zval *sgements;
-    psb->start_span_header(&sgements, span, pct);
+    zval *segments = NULL;
 
-    pct->pcl->spans = sgements;
+    psb->start_span_header(&segments, span, pct);
 
-    MO_FREE_ALLOC_ZVAL(span);
+    if (segments != NULL) {
+        pct->pcl->spans = segments;
+        MO_FREE_ALLOC_ZVAL(span);
+    }
 }

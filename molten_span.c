@@ -443,6 +443,10 @@ void zn_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_s
     zn_start_span_builder(span, service_name, pct->pch.trace_id->val, span_id, parent_span_id, frame->entry_time, frame->exit_time, pct, an_type);
 }
 
+void zn_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pct) {
+
+}
+
 void zn_span_add_ba_builder(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
 {
     zn_add_span_bannotation(span, key, value, service_name, ipv4, port);
@@ -473,6 +477,10 @@ void ot_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_s
     retrieve_parent_span_id_4_frame(frame, &parent_span_id);
 
     ot_start_span_builder(span, service_name, pct->pch.trace_id->val, span_id, parent_span_id, frame->entry_time, frame->exit_time, pct, an_type);
+}
+
+void ot_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pct) {
+
 }
 
 void ot_span_add_ba_builder(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
@@ -548,7 +556,6 @@ void sk_add_log(zval *span, uint64_t timestamp, int8_t field_num, ...) {
 
     /* build fields */
     va_list arg_ptr;
-    zval filed_key, filed_val;
     va_start(arg_ptr, field_num);
 
     /* fetch very key and val */
@@ -557,11 +564,8 @@ void sk_add_log(zval *span, uint64_t timestamp, int8_t field_num, ...) {
         MO_ALLOC_INIT_ZVAL(log_filed_tmp);
         array_init(log_filed_tmp);
 
-        MO_ZVAL_STRING(&filed_key, va_arg(arg_ptr, char*), 1);
-        MO_ZVAL_STRING(&filed_val, va_arg(arg_ptr, char*), 1);
-
-        zend_hash_str_update(Z_ARRVAL_P(log_filed_tmp), "k", sizeof("k") - 1, &filed_key);
-        zend_hash_str_update(Z_ARRVAL_P(log_filed_tmp), "v", sizeof("v") - 1, &filed_val);
+        mo_add_assoc_string(log_filed_tmp, "k", (char *)va_arg(arg_ptr, char*), 1);
+        mo_add_assoc_string(log_filed_tmp, "v", (char *)va_arg(arg_ptr, char*), 1);
 
         add_next_index_zval(log_filed, log_filed_tmp);
 
@@ -588,13 +592,8 @@ void sk_add_tag(zval *span, const char *key, const char *val)
     MO_ALLOC_INIT_ZVAL(tags_tmp);
     array_init(tags_tmp);
 
-    zval tag_key, tag_val;
-    MO_ZVAL_STRING(&tag_key, key, 1);
-    MO_ZVAL_STRING(&tag_val, val, 1);
-
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "k", sizeof("k") - 1, &tag_key);
-    zend_hash_str_update(Z_ARRVAL_P(tags_tmp), "v", sizeof("v") - 1, &tag_val);
-
+    mo_add_assoc_string(tags_tmp, "k", (char *)key, 1);
+    mo_add_assoc_string(tags_tmp, "v", (char *)val, 1);
     add_next_index_zval(tags, tags_tmp);
 
     MO_FREE_ALLOC_ZVAL(tags_tmp);
@@ -691,12 +690,9 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
     array_init(logs);
     add_assoc_zval(*span, "lo", logs);
 
-    //add_next_index_zval(span, span_object_tmp);
-
     /* free map */
     MO_FREE_ALLOC_ZVAL(logs);
     MO_FREE_ALLOC_ZVAL(tags);
-    //MO_FREE_ALLOC_ZVAL(span_object_tmp);
 }
 
 
@@ -711,33 +707,39 @@ void sk_add_segments_builder(zval **segments, zval *span, struct mo_chain_st *pc
     array_init(*segments);
 
     /* add global trace id */
-    zval segments_tmp, globalTraceIds, traceId;
-    array_init(&segments_tmp);
-    array_init(&globalTraceIds);
-    array_init(&traceId);
+    zval *segments_tmp, *globalTraceIds, *traceId;
+    MO_ALLOC_INIT_ZVAL(segments_tmp);
+    MO_ALLOC_INIT_ZVAL(globalTraceIds);
+    MO_ALLOC_INIT_ZVAL(traceId);
+    array_init(segments_tmp);
+    array_init(globalTraceIds);
+    array_init(traceId);
 
-    add_next_index_long(&traceId, pct->instance_id); //applicationInstanceId
-    add_next_index_long(&traceId, current_thread_pid()); //pid
-    add_next_index_double(&traceId, current_system_time_millis());
-    add_next_index_zval(&globalTraceIds, &traceId);
+    add_next_index_long(traceId, pct->instance_id); //applicationInstanceId
+    add_next_index_long(traceId, current_thread_pid()); //pid
+    add_next_index_double(traceId, current_system_time_millis());
+    add_next_index_zval(globalTraceIds, traceId);
 
-    add_assoc_zval(&segments_tmp, "gt", &globalTraceIds); //globalTraceIds 链路编码，与调用方相同
+    add_assoc_zval(segments_tmp, "gt", globalTraceIds); //globalTraceIds 链路编码，与调用方相同
 
     /* add trace segment object */
     zval *segmentObject;
     MO_ALLOC_INIT_ZVAL(segmentObject);
     array_init(segmentObject);
 
-    add_assoc_zval(segmentObject, "ts", &traceId); //traceSegmentId，新产生
+    add_assoc_zval(segmentObject, "ts", traceId); //traceSegmentId，新产生
     add_assoc_long(segmentObject, "ai", pct->application_id);
     add_assoc_long(segmentObject, "ii", pct->instance_id);
-    add_assoc_zval(&segments_tmp, "sg", segmentObject);
+    add_assoc_zval(segments_tmp, "sg", segmentObject);
 
     /* add span object */
     add_assoc_zval(segmentObject, "ss", span);
 
-    add_next_index_zval(*segments, &segments_tmp);
+    add_next_index_zval(*segments, segments_tmp);
 
+    MO_FREE_ALLOC_ZVAL(segments_tmp);
+    MO_FREE_ALLOC_ZVAL(globalTraceIds);
+    MO_FREE_ALLOC_ZVAL(traceId);
     MO_FREE_ALLOC_ZVAL(segmentObject);
 }
 

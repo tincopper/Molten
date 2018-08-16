@@ -63,6 +63,7 @@
 #define OJDBC_CN       6    //beta2 - 34
 #define MEMCACHED_CN   20   //beta2 - 36
 #define MONGODB_CN     9    //beta2 - 42
+#define PHP_CLI        5001 //beta2 - 5001
 
 #define SK_REGISTER_APPLICATION  "application/register"
 #define SK_REGISTER_SERVICE      "instance/register"

@@ -646,7 +646,7 @@ void sk_add_span(zval **span, char *op_name, char *trace_id, char *span_id, char
     add_assoc_long(*span, "lv", pct->span_layer); //spanLayer 0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED
     add_assoc_double(*span, "st", start_time); //startTime
     add_assoc_double(*span, "et", finish_time); //endTime
-    add_assoc_long(*span, "ci", pct->component_id); //componentId 2:http_client
+    add_assoc_long(*span, "ci", pct->component_id == 0 ? PHP_CLI : pct->component_id); //componentId 2:http_client
 
     char on[128];
     sprintf(on, "%s/%s_%s", pct->service_name, op_name, span_id);

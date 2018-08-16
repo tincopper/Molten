@@ -136,7 +136,7 @@ if test "$PHP_PRACING" != "no"; then
   fi
 
   dnl check librdkafka
-  KAFKA_SEARCH_PATH="/usr/local /usr"
+  KAFKA_SEARCH_PATH="/usr/local/usr"
   KAFKA_SEARCH_FOR="/include/librdkafka/rdkafka.h"
   AC_MSG_CHECKING([for librdkafka/rdkafka.h])
   for i in $KAFKA_SEARCH_PATH; do

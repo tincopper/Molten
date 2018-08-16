@@ -38,9 +38,9 @@ void slog_destroy() {
 
 void slog_record(int level, const char *file, int line, const char *fmt, ...) {
     va_list args;
-    char format[256]    = {0};
-    char time_buf[64]   = {0};
-    char log_buf[4096]   = {0};
+    char format[256]        = {0};
+    char time_buf[64]       = {0};
+    char log_buf[512000]    = {0}; //500k
 
     const char *color_format = "%s %s%-5s\x1b[0m  \x1b[90m%s:%d:\x1b[0m ";
     const char *normal_format = "%s %-5s %s:%d: ";

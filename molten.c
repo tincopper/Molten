@@ -1255,7 +1255,7 @@ void add_http_trace_header(mo_chain_t *pct, zval *header, char *span_id)
 
 #if PHP_VERSION_ID < 70000
             /* check set current x-w-sampled flag or not */
-            for(zend_hash_internal_pointer_reset(header_ht); 
+            for (zend_hash_internal_pointer_reset(header_ht);
                     zend_hash_has_more_elements(header_ht) == SUCCESS;
                     zend_hash_move_forward(header_ht)) {
                 if (mo_zend_hash_get_current_data(header_ht, (void **)&tmp_header) == SUCCESS) {

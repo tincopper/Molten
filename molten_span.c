@@ -799,11 +799,22 @@ void sk_start_span_ex_builder(zval **span, char *service_name, struct mo_chain_s
 
 void sk_span_add_ba_builder(zval *span, const char *key, const char *value, uint64_t timestamp, char *service_name, char *ipv4, long port, uint8_t ba_type)
 {
+
+    if (span == NULL || key == NULL || value == NULL) {
+        return ;
+    }
+
     char str_port[64];
     sprintf(str_port, "%ld", port);
 
     char peer_name[64];
     sprintf(peer_name, "%s:%s", ipv4, str_port);
+
+    if (strlen(value) > 128) {
+        char tmp[128];
+        strncpy(tmp, value, 128);
+        value = tmp;
+    }
 
     switch (ba_type) {
         case BA_NORMAL:

@@ -240,10 +240,17 @@ void mo_chain_add_span(mo_chain_log_t *log, zval *span)
     /* Only for sampling record */
     /* can del after */
     if (log == NULL || log->spans == NULL) {
-        SLOG(SLOG_ERROR, "[add span] log span is null");
+        SLOG(SLOG_ERROR, "[add span] log span is null.");
         return;
     }
-    add_next_index_zval(log->spans, span);
+
+    int num_elements = zend_hash_num_elements(Z_ARRVAL_P(log->spans));
+    if (num_elements < 300) {
+        add_next_index_zval(log->spans, span);
+    } else {
+        SLOG(SLOG_ERROR, "[add span] log span exceeds the maximum limit of 300.");
+    }
+
     MO_FREE_ALLOC_ZVAL(span);
 }
 /* }}} */

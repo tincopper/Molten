@@ -535,9 +535,6 @@ static void pdo_statement_record(mo_interceptor_t *pit, mo_frame_t *frame)
 /* {{{ redis record */
 static void redis_record(mo_interceptor_t *pit, mo_frame_t *frame)
 {
-    pit->pct->span_layer = CACHE_LAYER;
-    pit->pct->component_id = JEDIS_CN;
-
     zval *object = frame->object;
     zval *span;
 

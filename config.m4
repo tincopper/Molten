@@ -26,8 +26,8 @@ if test "$PHP_PRACING" != "no"; then
       AC_DEFINE(USE_LEVEL_ID, 1, [Enable level span id])
   fi
 
-  dnl check support record log
-  AC_DEFINE(MOLTEN_DEBUG, , [Enable log])
+  dnl check support record log, and set log level. 0:debug, 1:info, 2:warn, 3:error, 4:fatal
+  AC_DEFINE(MOLTEN_LOG_LEVEL, 0, [set log level, 0:debug, 1:info, 2:warn, 3:error, 4:fatal])
 
   dnl check for php json
   AC_MSG_CHECKING([check for php json])

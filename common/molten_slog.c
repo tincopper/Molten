@@ -13,6 +13,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif
+
 #include "molten_slog.h"
 
 static molten_slog slg;
@@ -37,6 +42,11 @@ void slog_destroy() {
 }
 
 void slog_record(int level, const char *file, int line, const char *fmt, ...) {
+
+    if (level < MOLTEN_LOG_LEVEL) {
+        return ;
+    }
+
     va_list args;
     char format[256]        = {0};
     char time_buf[64]       = {0};
@@ -64,7 +74,6 @@ void slog_record(int level, const char *file, int line, const char *fmt, ...) {
         //avoid warning with -Wformat-security
         //printf("the log file path is : [%s][%s][%s]\n", slg.log_file, slg.fp, log_buf);
         fprintf(slg.fp, log_buf, NULL);
-        //fputs(log_buf, slg.fp);
         //flush the buffer data to log file
         fflush(slg.fp);
         //fclose(slg.fp);

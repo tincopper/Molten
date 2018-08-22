@@ -19,6 +19,7 @@
 #include "molten_span.h"
 #include "common/molten_http_util.h"
 #include "common/molten_cJSON.h"
+#include "common/load_balance.h"
 #include "php_molten.h"
 #include "curl/curl.h"
 
@@ -915,12 +916,25 @@ char *sk_get_server(char *url) {
         return NULL;
     }
 
+    char **servers = emalloc(sizeof(char));
+    for (int i = 0; i < size; i++) {
+        servers[i] = cJSON_GetArrayItem(pJSON, i)->valuestring;
+    }
+
+    /* init load balancer */
+    server *ss = initDefaultServers(servers, size);
+    int index = getNextServerIndex(ss, size);
+
+    return ss[index].name;
+
+    /*
     //get the first apm server address
     char *http_url = cJSON_GetArrayItem(pJSON, 0)->valuestring;
 
     static char result[32];
     strcpy(result, http_url);
     return result;
+    */
 }
 
 /**

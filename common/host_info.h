@@ -2,6 +2,9 @@
 // Created by tangzy on 18-7-26.
 //
 
+#ifndef HOST_INFO_H
+#define HOST_INFO_H
+
 #define LONG long long
 #define INT long int
 
@@ -64,3 +67,5 @@ char *current_ipv6();
  * @return
  */
 char *current_host_mac();
+
+#endif

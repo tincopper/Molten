@@ -29,7 +29,7 @@ static void generate_log_path(mo_chain_log_t *log);
 void send_data_by_http(char *post_uri, char *post_data)
 {
     if (strlen(post_data) < 1024) {
-        SLOG(SLOG_INFO, "[sink][http] http data sender, post_uri:%s, post_data:%s", post_uri, post_data);
+        SLOG(SLOG_DEBUG, "[sink][http] http data sender, post_uri:%s, post_data:%s", post_uri, post_data);
     }
     if (post_uri != NULL && strlen(post_uri) > 5) {
         CURL *curl = curl_easy_init();
@@ -52,7 +52,7 @@ void send_data_by_http(char *post_uri, char *post_data)
             //avoid unused warning
             (void)res;
         } else {
-            SLOG(SLOG_INFO, "[sink][http] init curl error");
+            SLOG(SLOG_ERROR, "[sink][http] init curl error");
         }
     }
 }
@@ -129,7 +129,7 @@ static void trans_log_by_kafka(mo_chain_log_t *log, char *post_data)
 /* {{{ init syslog unix domain udp sink */
 static void syslog_sink_init(mo_chain_log_t *log)
 {
-        SLOG(SLOG_INFO, "[sink][syslog] syslog data sender");
+        SLOG(SLOG_DEBUG, "[sink][syslog] syslog data sender");
         if (log->unix_socket == NULL) {
             return;
         }
@@ -183,7 +183,7 @@ void mo_chain_log_ctor(mo_chain_log_t *log, char *host_name, char *log_path, lon
     log->support_type = SINK_LOG | SINK_STD | SINK_SYSLOG ;
 #ifdef HAS_CURL
     log->support_type |= SINK_HTTP;
-    SLOG(SLOG_INFO, "[sink] has libcurl");
+    SLOG(SLOG_DEBUG, "[sink] has libcurl");
 #endif
 
 #ifdef HAS_KAFKA
@@ -207,7 +207,7 @@ void mo_chain_log_ctor(mo_chain_log_t *log, char *host_name, char *log_path, lon
 void mo_chain_log_dtor(mo_chain_log_t *log)
 {
 
-    SLOG(SLOG_INFO, "[sink] log module dtor");
+    SLOG(SLOG_DEBUG, "[sink] log module dtor");
     pefree(log->buf, 1);
 
     /* log fd close */

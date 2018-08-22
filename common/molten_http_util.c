@@ -42,7 +42,7 @@ CURLcode get_request(char *uri, char *response) {
             res = curl_easy_perform(curl);
             //SLOG(SLOG_INFO, "[get][http] curl response code:%d", res);
         } else {
-            SLOG(SLOG_INFO, "[get][http] init curl error");
+            SLOG(SLOG_ERROR, "[get][http] init curl error");
             res = CURLE_FAILED_INIT;
         }
 
@@ -76,10 +76,8 @@ CURLcode post_request(char *uri, char *post_data, char *response) {
             curl_easy_setopt(curl, CURLOPT_TIMEOUT, 30);
 
             res = curl_easy_perform(curl);
-            //SLOG(SLOG_INFO, "[post][http] curl response code:%d", res);
-
         } else {
-            SLOG(SLOG_INFO, "[post][http] init curl error");
+            SLOG(SLOG_ERROR, "[post][http] init curl error");
             res = CURLE_FAILED_INIT;
         }
 

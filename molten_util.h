@@ -138,8 +138,8 @@ static inline zend_bool join_ori_url(smart_string *url, zend_bool trim_query_str
         if (trim_query_string) {
             int i; 
             char *string = smart_string_str(tmp);
-            for(i=Z_STRLEN_P(http_host); i < smart_string_len(tmp); i++) {
-                if(string[i] == '?') {
+            for (i=Z_STRLEN_P(http_host); i < smart_string_len(tmp); i++) {
+                if (string[i] == '?') {
                      smart_string_appendl(url, smart_string_str(tmp), i);
                      break;
                 }

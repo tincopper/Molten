@@ -997,7 +997,7 @@ ZEND_API void mo_execute_core(int internal, zend_execute_data *execute_data, zva
 
     PTG(level)++;
 
-    zend_bool match_intercept = 1; 
+    zend_bool match_intercept = 1;
     mo_interceptor_ele_t *i_ele;
 
     /* If not in request life time, we do nothing. because of the we not init the info

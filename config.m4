@@ -26,6 +26,9 @@ if test "$PHP_PRACING" != "no"; then
       AC_DEFINE(USE_LEVEL_ID, 1, [Enable level span id])
   fi
 
+  dnl check support record log
+  AC_DEFINE(MOLTEN_DEBUG, , [Enable log])
+
   dnl check for php json
   AC_MSG_CHECKING([check for php json])
   json_inc_path=""

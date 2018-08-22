@@ -28,7 +28,7 @@ static void generate_log_path(mo_chain_log_t *log);
 /* {{{ trans log by http , current use curl not php_stream */
 void send_data_by_http(char *post_uri, char *post_data)
 {
-    if (strlen(post_data) < 512) {
+    if (strlen(post_data) < 1024) {
         SLOG(SLOG_INFO, "[sink][http] http data sender, post_uri:%s, post_data:%s", post_uri, post_data);
     }
     if (post_uri != NULL && strlen(post_uri) > 5) {

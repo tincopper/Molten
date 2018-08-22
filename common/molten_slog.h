@@ -16,7 +16,9 @@
 #ifndef MOLTEN_SLOG_H
 #define MOLTEN_SLOG_H
 
-#define MOLTEN_DEBUG
+/* #define MOLTEN_DEBUG
+ * define in config.m4
+ * */
 
 #include <time.h>
 #include <stdio.h>

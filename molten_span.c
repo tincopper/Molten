@@ -864,10 +864,9 @@ void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, u
 void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* sink_http_uri, char* service_name) {
 
     if (psb->type == SKYWALKING) {
-        //char* server_url = "http://10.40.6.114:10800/agent/jetty";
         char *server_url = sink_http_uri;
-        //globale_init();
         char* url = sk_get_server(server_url);
+
         if (url == NULL) {
             return ;
         }
@@ -890,8 +889,6 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* 
         pct->instance_id = instance_id;
         SLOG(SLOG_INFO, "molten register instance id [%d]", instance_id);
 
-        //release curl
-        //globale_release();
     }
 }
 
@@ -926,15 +923,6 @@ char *sk_get_server(char *url) {
     int index = getNextServerIndex(ss, size);
 
     return ss[index].name;
-
-    /*
-    //get the first apm server address
-    char *http_url = cJSON_GetArrayItem(pJSON, 0)->valuestring;
-
-    static char result[32];
-    strcpy(result, http_url);
-    return result;
-    */
 }
 
 /**
@@ -1011,8 +999,7 @@ int sk_register_instance(int application_id, char *server_url) {
 
     SLOG(SLOG_INFO, "molten register instance, url:[%s], post_data:[%s]", url, res_data);
 
-    //char response_data[32] = "";
-    char *response_data = malloc(32);
+    char *response_data = emalloc(32);
     CURLcode curLcode = post_request(url, res_data, response_data);
     if (curLcode != CURLE_OK || response_data == "") {
         SLOG(SLOG_ERROR, "molten register instance has error ret code [%d] response [%s]", curLcode, response_data);

@@ -8,10 +8,4 @@
 CURLcode post_request(char *uri, char *post_data, char *response);
 CURLcode get_request(char *uri, char *resposne);
 
-//char* request(char *get_uri, char *post_data);
-CURL* init();
-void release(CURL* curl);
-void globale_init();
-void globale_release();
-
 #endif

@@ -10,14 +10,12 @@
 
 /* deal with the http response */
 size_t process_data(void *data, size_t size, size_t nmemb, char *content) {
-    //SLOG(SLOG_INFO, "[http] http response data:%s", data);
     long sizes = size * nmemb;
     strncpy(content, (char*)data, sizes);
     return sizes;
 }
 
 CURLcode get_request(char *uri, char *response) {
-    //SLOG(SLOG_INFO, "[get][http] http data sender, uri:%s", uri);
     if (uri != NULL && strlen(uri) > 5) {
         CURL *curl = curl_easy_init();
         CURLcode res = CURLE_OK;
@@ -46,7 +44,6 @@ CURLcode get_request(char *uri, char *response) {
 
 /* {{{ post request , current use curl not php_stream */
 CURLcode post_request(char *uri, char *post_data, char *response) {
-    //SLOG(SLOG_INFO, "[post][http] http data sender, uri:[%s], post_data:[%s]", uri, post_data);
     if (uri != NULL && strlen(uri) > 5) {
         CURL *curl = curl_easy_init();
         CURLcode res = CURLE_OK;

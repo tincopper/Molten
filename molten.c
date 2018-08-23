@@ -223,20 +223,20 @@ static void molten_clear_reload_function()
     zend_function *orig;
     while (p->orig_func != NULL) {
         if (zend_hash_find(CG(function_table), p->save_func, strlen(p->save_func)+1, (void **)&orig) == SUCCESS) {
-              zend_hash_update(CG(function_table), p->orig_func, strlen(p->orig_func)+1, orig, sizeof(zend_function), NULL);
-              zend_hash_del(CG(function_table), p->save_func, strlen(p->save_func)+1); 
-         }
+            zend_hash_update(CG(function_table), p->orig_func, strlen(p->orig_func)+1, orig, sizeof(zend_function), NULL);
+            zend_hash_del(CG(function_table), p->save_func, strlen(p->save_func)+1);
+        }
         p++;
     }
 #else
     zend_function *orig;
     while (p->orig_func != NULL) {
         if ((orig = zend_hash_str_find_ptr(CG(function_table), p->save_func, strlen(p->save_func))) != NULL) {
-              zend_hash_str_update_mem(CG(function_table), p->orig_func, strlen(p->orig_func), orig, sizeof(zend_internal_function));
-              function_add_ref(orig);
-              /* Segmentation fault */
-              //zend_hash_str_del(CG(function_table), p->save_func, strlen(p->save_func));
-              zend_hash_str_del(CG(function_table), ZEND_STRS(p->save_func));
+            zend_hash_str_update_mem(CG(function_table), p->orig_func, strlen(p->orig_func), orig, sizeof(zend_internal_function));
+            function_add_ref(orig);
+            /* Segmentation fault */
+            //zend_hash_str_del(CG(function_table), p->save_func, strlen(p->save_func));
+            zend_hash_str_del(CG(function_table), ZEND_STRS(p->save_func));
         }
         p++;
     }

@@ -524,7 +524,7 @@ void ot_span_add_ba_ex_builder(zval *span, const char *key, const char *value, u
     ot_span_add_ba_builder(span, key, value, timestamp, pct->service_name, pct->pch.ip, pct->pch.port, ba_type);
 }
 
-/* {{{ build opentracing format span  */
+/* {{{ build skywalking format span  */
 /*                                    */
 /*           **      **              */
 /*               *                    */
@@ -914,7 +914,8 @@ char *sk_get_server(char *url) {
     }
 
     char **servers = emalloc(sizeof(char));
-    for (int i = 0; i < size; i++) {
+    int i;
+    for (i = 0; i < size; i++) {
         servers[i] = cJSON_GetArrayItem(pJSON, i)->valuestring;
     }
 
@@ -999,7 +1000,7 @@ int sk_register_instance(int application_id, char *server_url) {
 
     SLOG(SLOG_INFO, "molten register instance, url:[%s], post_data:[%s]", url, res_data);
 
-    char *response_data = emalloc(32);
+    char response_data[32];
     CURLcode curLcode = post_request(url, res_data, response_data);
     if (curLcode != CURLE_OK || response_data == "") {
         SLOG(SLOG_ERROR, "molten register instance has error ret code [%d] response [%s]", curLcode, response_data);
@@ -1014,6 +1015,5 @@ int sk_register_instance(int application_id, char *server_url) {
         post_request(url, res_data, response_data);
         instance_id = get_instance_id(response_data);
     }
-    free(response_data);
     return instance_id;
 }

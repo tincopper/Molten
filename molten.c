@@ -1223,7 +1223,7 @@ void add_http_trace_header(mo_chain_t *pct, zval *header, char *span_id)
 
             /* append current header */
             HashTable *ht = pct->pch.chain_header_key;
-            for(zend_hash_internal_pointer_reset(ht); 
+            for (zend_hash_internal_pointer_reset(ht);
                     zend_hash_has_more_elements(ht) == SUCCESS;
                     zend_hash_move_forward(ht)) {
                 
@@ -1236,7 +1236,7 @@ void add_http_trace_header(mo_chain_t *pct, zval *header, char *span_id)
                         value = span_id;
                     } else if (strncmp(pck->name, "parent_span_id", sizeof("parent_span_id") - 1) == 0 && parent_span_id != NULL) {
                         value = parent_span_id;
-                    }else {
+                    } else {
                         value = pck->val;
                     }
                     value_size = strlen(pck->pass_key) + sizeof(": ") - 1 + strlen(value) + 1;

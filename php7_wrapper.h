@@ -76,7 +76,7 @@
 
 static inline void mo_array_merge(zval *dest, zval *src TSRMLS_DC) 
 {
-    php_array_merge(Z_ARRVAL_P(dest), Z_ARRVAL_P(src), 1);  
+    php_array_merge(Z_ARRVAL_P(dest), Z_ARRVAL_P(src), 1);
 }
 
 static inline void array_init_persist(zval *arg ZEND_FILE_LINE_DC)

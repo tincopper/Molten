@@ -163,7 +163,11 @@ if test "$PHP_PRACING" != "no"; then
       fi
   done
 
-  PHP_MOLTEN_SOURCE_FILES="\
+ dnl Check for pthread
+ PHP_ADD_LIBRARY_WITH_PATH(pthread, /usr/lib/i386-linux-gnu/, MOLTEN_SHARED_LIBADD)
+ PHP_SUBST(MOLTEN_SHARED_LIBADD)
+
+ PHP_MOLTEN_SOURCE_FILES="\
     molten.c \
     molten_log.c \
     molten_intercept.c \

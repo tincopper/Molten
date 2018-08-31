@@ -57,6 +57,7 @@ typedef struct mo_chain_st {
     /* app id info */
     int32_t application_id; //add by tangzy at 20180730
     int32_t instance_id;    //add by tangzy at 20180730
+    char *server_url;       //add by tangzy at 20180829
 
     int32_t span_type;      //-1 Unknown, 0 Entry, 1 Exit, 2 Local
     int32_t span_layer;     //0 Unknown, 1 Database, 2 RPC, 3 Http, 4 MQ, 5 Cache, -1 UNRECOGNIZED

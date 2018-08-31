@@ -15,6 +15,7 @@
  */
 
 #include <string.h>
+#include <pthread.h>
 #include "common/host_info.h"
 #include "molten_span.h"
 #include "common/molten_http_util.h"
@@ -864,13 +865,18 @@ void sk_span_add_ba_ex_builder(zval *span, const char *key, const char *value, u
 void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* sink_http_uri, char* service_name) {
 
     if (psb->type == SKYWALKING) {
-        char *server_url = sink_http_uri;
-        char* url = sk_get_server(server_url);
+        //char *server_url = sink_http_uri;
+        //char server_url[32] = "";
 
+        char *server_url = emalloc(sizeof(char) * 64);
+        strcpy(server_url, sink_http_uri);
+
+        char* url = sk_get_server(server_url);
         if (url == NULL) {
             return ;
         }
 
+        pct->server_url = server_url;
         memset(sink_http_uri, 0x00, sizeof(sink_http_uri));
         strcat(strcat(sink_http_uri, url), SK_SEGMENTS);
 
@@ -889,6 +895,10 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* 
         pct->instance_id = instance_id;
         SLOG(SLOG_INFO, "molten register instance id [%d]", instance_id);
 
+        //create thread to listener heart beat
+        sk_instance_heartbeat(pct);
+
+        //efree(server_url);
     }
 }
 
@@ -913,7 +923,7 @@ char *sk_get_server(char *url) {
         return NULL;
     }
 
-    char **servers = emalloc(sizeof(char));
+    char **servers = emalloc(sizeof(char) * 64);
     int i;
     for (i = 0; i < size; i++) {
         servers[i] = cJSON_GetArrayItem(pJSON, i)->valuestring;
@@ -922,6 +932,10 @@ char *sk_get_server(char *url) {
     /* init load balancer */
     server *ss = initDefaultServers(servers, size);
     int index = getNextServerIndex(ss, size);
+
+    if (servers != NULL) {
+        efree(servers);
+    }
 
     return ss[index].name;
 }
@@ -960,6 +974,28 @@ int sk_register_application(char *name, char *server_url) {
     cJSON_Delete(applicationJson);  //释放内存
 
     return application_id;
+}
+
+void register_heartbeat_callback(struct mo_chain_st *pct) {
+    for (;;) {
+        if (pct->server_url == NULL) {
+            return ;
+        }
+        php_printf("This is a pthread.  instance_id: %d, server_url: %s, size:%d\n", pct->instance_id, pct->server_url, strlen(pct->server_url));
+        //register heart beat
+
+        php_sleep(1);
+    }
+}
+
+void sk_instance_heartbeat(struct mo_chain_st *pct) {
+    pthread_t id;
+    int ret;
+    ret = pthread_create(&id, NULL, (void *) register_heartbeat_callback, pct); // 传入多个参数，使用结构体
+    if (ret != 0) {
+        printf("Create pthread error!\n");
+        exit(1);
+    }
 }
 
 int get_instance_id(char *response_data) {

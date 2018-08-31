@@ -723,11 +723,10 @@ PHP_RSHUTDOWN_FUNCTION(molten)
     /* request exit span */
     mo_chain_dtor(&PTG(pct), &PTG(psb), &PTG(span_stack));
 
-    /* add header */
-    mo_chain_segments_dtor(&PTG(pct), &PTG(psb));
-
     /* Flush and dtor log */
     if (PTG(pct).pch.is_sampled == 1) {
+        /* add header */
+        mo_chain_segments_dtor(&PTG(pct), &PTG(psb));
         mo_chain_log_flush(&PTG(pcl));
         mo_stack_destroy(&PTG(span_stack));
     }

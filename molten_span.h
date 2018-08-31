@@ -187,6 +187,7 @@ void zn_add_span_bannotation_ex(zval *span, const char *key, const char *value, 
 char *sk_get_server(char *url);
 int sk_register_application(char *name, char *server_url);
 int sk_register_instance(int application_id, char *server_url);
+void sk_instance_heartbeat(struct mo_chain_st *pct);
 //void sk_add_segments(zval **span, char *op_name, char *trace_id, char *span_id, char *parent_id, int sampled,
 //                     long start_time, long finish_time, struct mo_chain_st *pct);
 /* }}} */

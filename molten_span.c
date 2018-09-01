@@ -782,14 +782,6 @@ void sk_start_span_builder(zval **span, char *service_name, char *trace_id, char
     //sk_add_parent_span(*span, service_name, trace_id, span_id, parent_id, 1, start_time, finish_time, pct);
 
     if (an_type == AN_SERVER) {
-        char on[128];
-        if (pct->request_uri == NULL) {
-            sprintf(on, "%s/%s", pct->service_name, pct->script);
-        } else {
-            sprintf(on, "%s/%s", pct->service_name, pct->request_uri);
-        }
-
-        mo_add_assoc_string(*span, "on", on, 1); //componentName pct->script
         sk_add_tag(*span, "span.kind", "server");
     } else {
         sk_add_tag(*span, "span.kind", "client");

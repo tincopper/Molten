@@ -298,9 +298,16 @@ void mo_chain_dtor(mo_chain_t *pct, mo_span_builder *psb, mo_stack *span_stack)
                 memset(url, 0x00, url_len);
                 snprintf(url, url_len, "http://%s%s", Z_STRVAL_P(http_host), Z_STRVAL_P(request_uri));
 
-                pct->request_uri = url;
                 if (psb->type == SKYWALKING) {
+                    unsigned char tmp = (unsigned char)(strchr(Z_STRVAL_P(request_uri), '?') - Z_STRVAL_P(request_uri));
+                    char *result = (tmp > 0) ? strndup(Z_STRVAL_P(request_uri), tmp) : strdup(Z_STRVAL_P(request_uri));
+
+                    //char on[128];
+                    //sprintf(on, "%s/%s", pct->service_name, result);
+                    mo_add_assoc_string(span, "on", result, 1); //componentName pct->script
+
                     psb->span_add_ba_ex(span, "url", url, pct->execute_begin_time, pct, BA_NORMAL);
+
                 } else {
                     psb->span_add_ba_ex(span, "http.url", url, pct->execute_begin_time, pct, BA_NORMAL);
                 }

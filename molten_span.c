@@ -897,9 +897,7 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* 
         SLOG(SLOG_INFO, "molten register instance id [%d]", instance_id);
 
         //create thread to listener heart beat
-        sk_instance_heartbeat(pct);
-
-        //efree(server_url);
+        //sk_instance_heartbeat(pct);
     }
 }
 

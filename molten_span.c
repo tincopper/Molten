@@ -869,6 +869,7 @@ void mo_span_pre_init_ctor(mo_span_builder *psb, struct mo_chain_st *pct, char* 
         //char server_url[32] = "";
 
         char *server_url = emalloc(sizeof(char) * 64);
+        memset(server_url, 0x00, sizeof (char) * 64);
         strcpy(server_url, sink_http_uri);
 
         char* url = sk_get_server(server_url);
@@ -978,10 +979,11 @@ int sk_register_application(char *name, char *server_url) {
 
 void register_heartbeat_callback(struct mo_chain_st *pct) {
     for (;;) {
-        if (pct->server_url == NULL) {
+        if (pct->server_url == NULL || strlen(pct->server_url) > sizeof(char) * 64) {
             return ;
         }
         php_printf("This is a pthread.  instance_id: %d, server_url: %s, size:%d\n", pct->instance_id, pct->server_url, strlen(pct->server_url));
+        SLOG(SLOG_INFO, "This is a pthread.  instance_id: %d, server_url: %s, size:%d", pct->instance_id, pct->server_url, strlen(pct->server_url));
         //register heart beat
 
         php_sleep(1);
